@@ -28,4 +28,10 @@ export const routes = {
     if (artistId) params.set("artist", artistId);
     return `/api/discover?${params.toString()}`;
   },
+  /** Morceaux proches d'un artiste (et d'un genre), pour prolonger la file. */
+  radioApi: ({ artistId, genre }: { artistId: string; genre?: string | null | undefined }) => {
+    const params = new URLSearchParams({ artist: artistId });
+    if (genre) params.set("genre", genre);
+    return `/api/radio?${params.toString()}`;
+  },
 } as const;

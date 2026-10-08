@@ -31,12 +31,16 @@ export interface PlayerState {
   muted: boolean;
   shuffle: boolean;
   repeat: RepeatMode;
+  /** Radio : la file se prolonge d'elle-même avec des morceaux proches. */
+  radio: boolean;
 }
 
 export interface PlayerActions {
   playTracks: (tracks: readonly Track[], startIndex?: number) => void;
   playQueueItem: (index: number) => void;
   addToQueue: (track: Track) => void;
+  /** Ajoute plusieurs morceaux en fin de file, sans toucher au morceau courant. */
+  extendQueue: (tracks: readonly Track[]) => void;
   removeFromQueue: (queueId: string) => void;
   togglePlay: () => void;
   setPlaying: (isPlaying: boolean) => void;
@@ -48,6 +52,7 @@ export interface PlayerActions {
   toggleMute: () => void;
   toggleShuffle: () => void;
   cycleRepeat: () => void;
+  toggleRadio: () => void;
   /** Appelé par le moteur audio en fin de morceau. */
   handleEnded: () => void;
   /** Appelé par le moteur audio quand la lecture échoue. */
@@ -69,6 +74,7 @@ const initialState: PlayerState = {
   muted: false,
   shuffle: false,
   repeat: "off",
+  radio: true,
 };
 
 export const usePlayerStore = create<PlayerStore>()(
@@ -120,6 +126,11 @@ export const usePlayerStore = create<PlayerStore>()(
             useProgressStore.getState().reset(track.durationSeconds);
             set({ currentIndex: 0 });
           }
+        },
+
+        extendQueue(tracks) {
+          if (tracks.length === 0) return;
+          set({ queue: [...get().queue, ...createQueueItems(tracks)] });
         },
 
         removeFromQueue(queueId) {
@@ -210,6 +221,10 @@ export const usePlayerStore = create<PlayerStore>()(
           set({ repeat: NEXT_REPEAT_MODE[get().repeat] });
         },
 
+        toggleRadio() {
+          set({ radio: !get().radio });
+        },
+
         handleEnded() {
           const { queue, currentIndex, repeat } = get();
           if (repeat === "one") {
@@ -242,7 +257,7 @@ export const usePlayerStore = create<PlayerStore>()(
         const item = state?.queue[state.currentIndex];
         if (item) useProgressStore.getState().reset(item.track.durationSeconds);
       },
-      partialize: ({ queue, currentIndex, unshuffledQueue, volume, muted, shuffle, repeat }) => ({
+      partialize: ({
         queue,
         currentIndex,
         unshuffledQueue,
@@ -250,7 +265,8 @@ export const usePlayerStore = create<PlayerStore>()(
         muted,
         shuffle,
         repeat,
-      }),
+        radio,
+      }) => ({ queue, currentIndex, unshuffledQueue, volume, muted, shuffle, repeat, radio }),
     },
   ),
 );

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { siteConfig } from "@/config/site";
 import { buildPageMetadata, truncateDescription } from "./metadata";
 
 describe("truncateDescription", () => {
@@ -22,12 +23,17 @@ describe("buildPageMetadata", () => {
       url: "/track/D7KyD",
       images: [{ url: "https://cdn.example/1000.jpg", alt: "Night Drive" }],
     });
-    expect(metadata.twitter).toMatchObject({ card: "summary_large_image" });
+    // Pochette carrée : carte simple, pour ne pas la recadrer.
+    expect(metadata.twitter).toMatchObject({ card: "summary" });
   });
 
-  it("utilise une carte simple sans image", () => {
+  it("retombe sur l'image de partage par défaut sans visuel propre", () => {
     const metadata = buildPageMetadata({ title: "T", description: "D", path: "/" });
 
-    expect(metadata.twitter).toMatchObject({ card: "summary" });
+    expect(metadata.openGraph).toMatchObject({ images: [siteConfig.ogImage] });
+    expect(metadata.twitter).toMatchObject({
+      card: "summary_large_image",
+      images: [siteConfig.ogImage.url],
+    });
   });
 });

@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
 import { RichText } from "@/components/ui/rich-text";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
+import { ShareButton } from "@/features/share/components/share-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { formatTotalDuration } from "@/lib/format/duration";
 import { formatCompactNumber } from "@/lib/format/number";
@@ -70,7 +71,10 @@ export default async function PlaylistPage({ params }: PlaylistPageProps) {
         {playlist.description ? (
           <RichText text={playlist.description} className="max-w-2xl" />
         ) : null}
-        <PlayTracksButton tracks={tracks} />
+        <div className="flex items-center gap-3">
+          <PlayTracksButton tracks={tracks} />
+          <ShareButton title={playlist.name} path={routes.playlist(playlist.id)} />
+        </div>
       </MediaHero>
 
       <section aria-labelledby="titres" className="flex flex-col gap-4">

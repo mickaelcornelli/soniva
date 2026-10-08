@@ -5,7 +5,13 @@ import { formatCompactNumber } from "@/lib/format/number";
 import { pluralize } from "@/lib/format/plural";
 import type { ArtistProfile } from "@/types/music";
 
-export function ArtistHero({ artist }: { artist: ArtistProfile }) {
+interface ArtistHeroProps {
+  artist: ArtistProfile;
+  /** Actions affichées sous les informations (partage, suivi…). */
+  actions?: React.ReactNode;
+}
+
+export function ArtistHero({ artist, actions }: ArtistHeroProps) {
   return (
     <header className="flex flex-col">
       {/* Bannière décorative : l'avatar et le nom portent l'information. */}
@@ -45,6 +51,7 @@ export function ArtistHero({ artist }: { artist: ArtistProfile }) {
               </li>
             ) : null}
           </ul>
+          {actions ? <div className="flex items-center gap-3">{actions}</div> : null}
         </div>
       </div>
     </header>

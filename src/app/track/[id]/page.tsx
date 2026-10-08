@@ -12,6 +12,7 @@ import { RichText } from "@/components/ui/rich-text";
 import { FavoriteButton } from "@/features/library/components/favorite-button";
 import { AddToPlaylistButton } from "@/features/playlists/components/add-to-playlist-button";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
+import { ShareButton } from "@/features/share/components/share-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
 import { routes } from "@/lib/routes";
@@ -69,6 +70,10 @@ export default async function TrackPage({ params }: TrackPageProps) {
           <PlayTracksButton tracks={[track, ...moreTracks]} />
           <FavoriteButton track={track} size="md" />
           <AddToPlaylistButton track={track} size="md" />
+          <ShareButton
+            title={`${track.title} — ${track.artist.name}`}
+            path={routes.track(track.id)}
+          />
         </div>
       </MediaHero>
 

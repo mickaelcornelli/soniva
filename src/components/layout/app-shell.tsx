@@ -1,5 +1,6 @@
 import { AudioEngine } from "@/features/player/engine/audio-engine";
 import { PlayerBar } from "@/features/player/components/player-bar";
+import { RadioEngine } from "@/features/radio/components/radio-engine";
 import { MainNav } from "./main-nav";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -18,6 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
       <PlayerBar />
       <AudioEngine />
+      <RadioEngine />
     </div>
   );
 }

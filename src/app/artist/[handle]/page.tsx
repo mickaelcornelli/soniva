@@ -9,6 +9,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { RichText } from "@/components/ui/rich-text";
 import { ArtistHero } from "@/features/artist/components/artist-hero";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
+import { ShareButton } from "@/features/share/components/share-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
 import { routes } from "@/lib/routes";
@@ -53,7 +54,10 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
   return (
     <PageContainer>
       <JsonLd data={artistStructuredData(artist, topTracks)} />
-      <ArtistHero artist={artist} />
+      <ArtistHero
+        artist={artist}
+        actions={<ShareButton title={artist.name} path={routes.artist(artist.handle)} />}
+      />
 
       {artist.bio ? (
         <section aria-labelledby="bio" className="flex max-w-2xl flex-col gap-3">

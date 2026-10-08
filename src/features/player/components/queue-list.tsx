@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Radio, X } from "lucide-react";
 import { ArtworkImage } from "@/components/ui/artwork-image";
 import { IconButton } from "@/components/ui/icon-button";
 import { formatDuration } from "@/lib/format/duration";
@@ -11,18 +11,40 @@ export function QueueList() {
   const queue = usePlayerStore((s) => s.queue);
   const currentIndex = usePlayerStore((s) => s.currentIndex);
   const isPlaying = usePlayerStore((s) => s.isPlaying);
-  const { playQueueItem, removeFromQueue } = usePlayerStore.getState();
+  const radio = usePlayerStore((s) => s.radio);
+  const { playQueueItem, removeFromQueue, toggleRadio } = usePlayerStore.getState();
 
   const upcoming = queue.length - currentIndex - 1;
 
   return (
     <section aria-labelledby="file-attente" className="flex min-h-0 flex-col gap-3">
-      <h2 id="file-attente" className="font-display text-lg font-semibold">
-        File d&apos;attente
-        <span className="ml-2 font-sans text-sm font-normal text-muted">
-          {upcoming > 0 ? `${upcoming} à suivre` : "Rien à suivre"}
-        </span>
-      </h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 id="file-attente" className="font-display text-lg font-semibold">
+          File d&apos;attente
+          <span className="ml-2 font-sans text-sm font-normal text-muted">
+            {upcoming > 0 ? `${upcoming} à suivre` : "Rien à suivre"}
+          </span>
+        </h2>
+        <button
+          type="button"
+          onClick={toggleRadio}
+          aria-pressed={radio}
+          title="Enchaîner des morceaux proches à la fin de la file"
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
+            radio
+              ? "border-accent/40 bg-accent/10 text-accent"
+              : "border-line text-muted hover:text-foreground"
+          }`}
+        >
+          <Radio aria-hidden="true" className="size-3.5" />
+          Radio
+        </button>
+      </div>
+      <p className="-mt-2 text-xs text-muted">
+        {radio
+          ? "La radio prolonge la file avec des morceaux proches."
+          : "La lecture s'arrête à la fin de la file."}
+      </p>
       <ol aria-labelledby="file-attente" className="-mx-2 flex flex-col overflow-y-auto">
         {queue.map(({ queueId, track }, index) => {
           const isCurrent = index === currentIndex;

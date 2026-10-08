@@ -26,7 +26,8 @@ export function buildPageMetadata({
   image,
 }: PageMetadataInput): Metadata {
   const text = truncateDescription(description);
-  const images = image ? [{ url: image, alt: title }] : undefined;
+  // Un `openGraph` de page remplace celui du layout : l'image par défaut doit être redonnée ici.
+  const images = image ? [{ url: image, alt: title }] : [siteConfig.ogImage];
 
   return {
     title,
@@ -42,10 +43,11 @@ export function buildPageMetadata({
       images,
     },
     twitter: {
-      card: image ? "summary_large_image" : "summary",
+      // Pochettes carrées : « summary » les affiche entières au lieu de les recadrer en 2:1.
+      card: image ? "summary" : "summary_large_image",
       title,
       description: text,
-      images: image ? [image] : undefined,
+      images: [image ?? siteConfig.ogImage.url],
     },
   };
 }

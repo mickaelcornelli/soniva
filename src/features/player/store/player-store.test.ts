@@ -117,6 +117,15 @@ describe("file d'attente", () => {
     expect(currentId()).toBe("c");
   });
 
+  it("prolonge la file sans changer de morceau", () => {
+    store().playTracks(tracks, 2);
+
+    store().extendQueue([makeTrack({ id: "x" }), makeTrack({ id: "y" })]);
+
+    expect(store().queue.map((i) => i.track.id)).toEqual(["a", "b", "c", "x", "y"]);
+    expect(currentId()).toBe("c");
+  });
+
   it("ne retire pas le morceau en cours", () => {
     store().playTracks(tracks, 1);
 
@@ -146,6 +155,12 @@ describe("réglages", () => {
     expect(store().repeat).toBe("one");
     store().cycleRepeat();
     expect(store().repeat).toBe("off");
+  });
+
+  it("active et coupe la radio", () => {
+    expect(store().radio).toBe(true);
+    store().toggleRadio();
+    expect(store().radio).toBe(false);
   });
 
   it("borne le volume et coupe le son à zéro", () => {
