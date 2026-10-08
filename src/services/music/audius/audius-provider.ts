@@ -88,6 +88,13 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
       return parseTrack(await getItem(`/tracks/${encode(id)}`, CACHE.detail));
     },
 
+    async getTracks(ids) {
+      if (ids.length === 0) return [];
+      const tracks = parseTracks(await getList("/tracks", { id: ids }, CACHE.detail));
+      const byId = new Map(tracks.map((track) => [track.id, track]));
+      return ids.flatMap((id) => byId.get(id) ?? []);
+    },
+
     async getArtistByHandle(handle) {
       return parseArtistProfile(await getItem(`/users/handle/${encode(handle)}`, CACHE.detail));
     },

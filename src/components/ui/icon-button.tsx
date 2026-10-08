@@ -8,6 +8,8 @@ interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 
   /** Pour les boutons bascule (aléatoire, répétition) : allumé en ambre. */
   active?: boolean;
   size?: "sm" | "md";
+  /** Icône pleine (cœur d'un favori, par exemple). */
+  filled?: boolean;
 }
 
 const SIZES = {
@@ -20,6 +22,7 @@ export function IconButton({
   label,
   active,
   size = "md",
+  filled = false,
   className = "",
   type = "button",
   ...props
@@ -34,7 +37,11 @@ export function IconButton({
       } ${SIZES[size].button} ${className}`}
       {...props}
     >
-      <Icon aria-hidden="true" className={SIZES[size].icon} />
+      <Icon
+        aria-hidden="true"
+        className={SIZES[size].icon}
+        fill={filled ? "currentColor" : "none"}
+      />
     </button>
   );
 }

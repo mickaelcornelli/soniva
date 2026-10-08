@@ -23,6 +23,12 @@ describe("buildAudiusUrl", () => {
     });
   });
 
+  it("répète le paramètre pour un tableau", () => {
+    const url = buildAudiusUrl(baseConfig, "/tracks", { id: ["a", "b"] });
+
+    expect(url.searchParams.getAll("id")).toEqual(["a", "b"]);
+  });
+
   it("n'envoie pas api_key quand aucune clé n'est configurée", () => {
     const url = buildAudiusUrl(baseConfig, "/tracks/trending");
 

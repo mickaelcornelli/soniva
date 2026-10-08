@@ -82,6 +82,30 @@ describe("AudiusProvider.getTrack", () => {
   });
 });
 
+describe("AudiusProvider.getTracks", () => {
+  it("renvoie les morceaux dans l'ordre demandé et ignore les introuvables", async () => {
+    const client = makeClient({
+      data: [makeAudiusTrack({ id: "b" }), makeAudiusTrack({ id: "a" })],
+    });
+
+    const tracks = await createAudiusProvider(client).getTracks(["a", "missing", "b"]);
+
+    expect(tracks.map((t) => t.id)).toEqual(["a", "b"]);
+    expect(client.get).toHaveBeenCalledWith(
+      "/tracks",
+      { id: ["a", "missing", "b"] },
+      expect.anything(),
+    );
+  });
+
+  it("n'appelle pas Audius sans identifiant", async () => {
+    const client = makeClient({ data: [] });
+
+    await expect(createAudiusProvider(client).getTracks([])).resolves.toEqual([]);
+    expect(client.get).not.toHaveBeenCalled();
+  });
+});
+
 describe("AudiusProvider.getArtistByHandle / getArtistTopTracks", () => {
   it("récupère l'artiste par son handle", async () => {
     const client = makeClient({ data: makeAudiusUserProfile() });

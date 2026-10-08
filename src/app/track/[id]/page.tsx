@@ -9,6 +9,7 @@ import { TrackList } from "@/components/music/track-list";
 import { TrackStats } from "@/components/music/track-stats";
 import { JsonLd } from "@/components/seo/json-ld";
 import { RichText } from "@/components/ui/rich-text";
+import { FavoriteButton } from "@/features/library/components/favorite-button";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
@@ -63,7 +64,10 @@ export default async function TrackPage({ params }: TrackPageProps) {
         <ArtistLink artist={track.artist} className="text-lg" />
         <TrackStats track={track} detailed />
         <TagList tags={track.tags} />
-        <PlayTracksButton tracks={[track, ...moreTracks]} />
+        <div className="flex items-center gap-3">
+          <PlayTracksButton tracks={[track, ...moreTracks]} />
+          <FavoriteButton track={track} size="md" />
+        </div>
       </MediaHero>
 
       {track.description ? (

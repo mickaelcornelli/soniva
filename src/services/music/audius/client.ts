@@ -11,7 +11,8 @@ export interface AudiusClientConfig {
   fetch?: typeof fetch;
 }
 
-export type QueryParams = Record<string, string | number | undefined>;
+/** Un tableau produit un paramètre répété (`id=a&id=b`), comme l'attend Audius. */
+export type QueryParams = Record<string, string | number | readonly string[] | undefined>;
 
 export interface RequestOptions {
   /** Durée de cache côté Next.js, en secondes. */
@@ -28,7 +29,11 @@ export function buildAudiusUrl(config: AudiusClientConfig, path: string, params:
   const url = new URL(`${config.baseUrl.replace(/\/+$/, "")}${path}`);
 
   for (const [key, value] of Object.entries(params)) {
-    if (value !== undefined && value !== "") url.searchParams.set(key, String(value));
+    if (Array.isArray(value)) {
+      for (const item of value) url.searchParams.append(key, item);
+    } else if (value !== undefined && value !== "") {
+      url.searchParams.set(key, String(value));
+    }
   }
   // Identifiants attendus par Audius sur chaque requête (cf. SDK officiel).
   url.searchParams.set("app_name", config.appName);

@@ -13,4 +13,6 @@ export const routes = {
   stream: (trackId: string) => `/api/stream/${encodeURIComponent(trackId)}`,
   /** Recherche JSON utilisée par la recherche instantanée. */
   searchApi: (query: string) => `/api/search?q=${encodeURIComponent(query)}`,
+  /** Métadonnées de plusieurs morceaux, pour la bibliothèque. */
+  tracksApi: (ids: readonly string[]) => `/api/tracks?ids=${ids.map(encodeURIComponent).join(",")}`,
 } as const;

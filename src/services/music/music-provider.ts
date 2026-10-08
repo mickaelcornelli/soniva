@@ -30,6 +30,8 @@ export interface MusicProvider {
   getTrendingTracks(query?: TrendingTracksQuery): Promise<Track[]>;
   getTrendingPlaylists(query?: TrendingQuery): Promise<Playlist[]>;
   getTrack(id: string): Promise<Track | null>;
+  /** Plusieurs morceaux d'un coup, dans l'ordre des ids ; les ids introuvables sont ignorés. */
+  getTracks(ids: readonly string[]): Promise<Track[]>;
   getArtistByHandle(handle: string): Promise<ArtistProfile | null>;
   /** Morceaux les plus écoutés de l'artiste. */
   getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;

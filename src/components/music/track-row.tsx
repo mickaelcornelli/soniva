@@ -3,6 +3,7 @@
 import { Pause, Play } from "lucide-react";
 import Link from "next/link";
 import { ArtworkImage } from "@/components/ui/artwork-image";
+import { FavoriteButton } from "@/features/library/components/favorite-button";
 import { Equalizer } from "@/features/player/components/equalizer";
 import { useTrackPlayback } from "@/features/player/hooks/use-player";
 import { usePlayerStore } from "@/features/player/store/player-store";
@@ -73,6 +74,7 @@ export function TrackRow({ track, position, onPlay }: TrackRowProps) {
           badgeClassName="size-3.5"
         />
       </div>
+      <FavoriteButton track={track} revealOnHover className="relative z-10" />
       <span className="hidden shrink-0 text-sm text-muted sm:block">{track.genre}</span>
       <span className="w-12 shrink-0 text-right text-sm text-muted tabular-nums">
         {formatDuration(track.durationSeconds)}

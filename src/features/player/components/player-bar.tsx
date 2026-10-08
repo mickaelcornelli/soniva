@@ -3,6 +3,7 @@
 import { ListMusic, SkipForward } from "lucide-react";
 import { useState } from "react";
 import { IconButton } from "@/components/ui/icon-button";
+import { FavoriteButton } from "@/features/library/components/favorite-button";
 import { useCurrentTrack } from "../hooks/use-player";
 import { usePlayerStore } from "../store/player-store";
 import { useProgressStore } from "../store/progress-store";
@@ -52,6 +53,7 @@ export function PlayerBar() {
             >
               <NowPlaying track={track} linked={false} />
             </button>
+            <FavoriteButton track={track} />
             <PlayPauseButton
               isPlaying={isPlaying}
               isBuffering={isBuffering}
@@ -64,7 +66,10 @@ export function PlayerBar() {
 
           {/* Desktop */}
           <div className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_minmax(0,1fr)] items-center gap-6 py-2 pr-6 pl-2 md:grid">
-            <NowPlaying track={track} />
+            <div className="flex min-w-0 items-center gap-2">
+              <NowPlaying track={track} />
+              <FavoriteButton track={track} />
+            </div>
             <div className="flex flex-col gap-1">
               <TransportControls />
               <ProgressSlider />

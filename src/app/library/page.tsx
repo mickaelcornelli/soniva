@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageContainer } from "@/components/layout/page-container";
 import { PageHeader } from "@/components/ui/page-header";
-import { LibraryGate } from "@/features/auth/components/library-gate";
+import { LibraryView } from "@/features/library/components/library-view";
 
 export const metadata: Metadata = {
   title: "Bibliothèque",
@@ -13,7 +13,7 @@ export default function LibraryPage() {
   return (
     <PageContainer>
       <PageHeader title="Bibliothèque" />
-      <LibraryGate />
+      <LibraryView />
     </PageContainer>
   );
 }
