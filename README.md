@@ -13,7 +13,7 @@ Application web de découverte et de streaming musical **100 % gratuite**, const
 | Données musicales   | Audius API                                       |
 | Données utilisateur | Supabase (plan gratuit) — à venir                |
 | État du lecteur     | Zustand                                          |
-| Données distantes   | TanStack Query — à venir                         |
+| Données distantes   | TanStack Query (recherche instantanée)           |
 | Validation          | Zod                                              |
 | Icônes              | Lucide                                           |
 | Tests               | Vitest · Testing Library · Playwright (à venir)  |

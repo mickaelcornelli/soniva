@@ -54,4 +54,11 @@ export interface Playlist {
   playCount: number;
 }
 
+/** Résultats d'une recherche, regroupés par type de contenu. */
+export interface SearchResults {
+  tracks: Track[];
+  artists: ArtistProfile[];
+  playlists: Playlist[];
+}
+
 export type TrendingPeriod = "week" | "month" | "year" | "allTime";

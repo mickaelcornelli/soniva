@@ -8,6 +8,7 @@ import { MediaHero } from "@/components/music/media-hero";
 import { TrackList } from "@/components/music/track-list";
 import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
+import { RichText } from "@/components/ui/rich-text";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { formatTotalDuration } from "@/lib/format/duration";
@@ -67,7 +68,7 @@ export default async function PlaylistPage({ params }: PlaylistPageProps) {
           <li>{formatCompactNumber(playlist.playCount)} écoutes</li>
         </ul>
         {playlist.description ? (
-          <p className="max-w-2xl whitespace-pre-line text-muted">{playlist.description}</p>
+          <RichText text={playlist.description} className="max-w-2xl" />
         ) : null}
         <PlayTracksButton tracks={tracks} />
       </MediaHero>

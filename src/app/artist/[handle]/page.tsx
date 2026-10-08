@@ -6,6 +6,7 @@ import { PageContainer } from "@/components/layout/page-container";
 import { TrackList } from "@/components/music/track-list";
 import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
+import { RichText } from "@/components/ui/rich-text";
 import { ArtistHero } from "@/features/artist/components/artist-hero";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
@@ -59,7 +60,7 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
           <h2 id="bio" className="font-display text-xl font-semibold">
             Biographie
           </h2>
-          <p className="whitespace-pre-line text-muted">{artist.bio}</p>
+          <RichText text={artist.bio} />
         </section>
       ) : null}
 

@@ -120,3 +120,7 @@ export function parseArtistProfile(item: unknown): ArtistProfile | null {
   const result = audiusUserProfileSchema.safeParse(item);
   return result.success ? mapArtistProfile(result.data) : null;
 }
+
+export function parseArtistProfiles(items: readonly unknown[]): ArtistProfile[] {
+  return items.flatMap((item) => parseArtistProfile(item) ?? []);
+}

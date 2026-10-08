@@ -1,4 +1,4 @@
-import type { ArtistProfile, Playlist, Track, TrendingPeriod } from "@/types/music";
+import type { ArtistProfile, Playlist, SearchResults, Track, TrendingPeriod } from "@/types/music";
 
 export interface TrendingQuery {
   period?: TrendingPeriod;
@@ -10,6 +10,11 @@ export interface TrendingTracksQuery extends TrendingQuery {
 }
 
 export interface ArtistTracksQuery {
+  limit?: number;
+}
+
+export interface SearchQuery {
+  /** Nombre maximum de résultats par type de contenu. */
   limit?: number;
 }
 
@@ -30,6 +35,8 @@ export interface MusicProvider {
   getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
   getPlaylist(id: string): Promise<Playlist | null>;
   getPlaylistTracks(id: string): Promise<Track[]>;
+  /** Recherche de morceaux, d'artistes et de playlists. */
+  search(query: string, options?: SearchQuery): Promise<SearchResults>;
   /** URL du flux audio d'un morceau, lisible directement par un élément <audio>. */
   getStreamUrl(trackId: string): string;
 }

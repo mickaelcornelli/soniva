@@ -3,6 +3,7 @@ import { Figtree, Unbounded } from "next/font/google";
 import { AppShell } from "@/components/layout/app-shell";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
 const unbounded = Unbounded({
@@ -37,7 +38,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="fr" className={`${figtree.variable} ${unbounded.variable}`}>
       <body>
-        <AppShell>{children}</AppShell>
+        <Providers>
+          <AppShell>{children}</AppShell>
+        </Providers>
       </body>
     </html>
   );

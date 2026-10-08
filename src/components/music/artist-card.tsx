@@ -1,0 +1,34 @@
+import Link from "next/link";
+import { ArtworkImage } from "@/components/ui/artwork-image";
+import { VerifiedBadge } from "@/components/ui/verified-badge";
+import { formatCompactNumber } from "@/lib/format/number";
+import { routes } from "@/lib/routes";
+import type { ArtistProfile } from "@/types/music";
+
+export function ArtistCard({ artist }: { artist: ArtistProfile }) {
+  return (
+    <article className="group relative flex flex-col items-center gap-3 text-center">
+      <ArtworkImage
+        artwork={artist.avatar}
+        size="medium"
+        alt=""
+        className="aspect-square w-full max-w-36 rounded-full transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none"
+      />
+      <div className="flex max-w-full min-w-0 flex-col items-center">
+        <h3 className="flex max-w-full items-center gap-1 font-medium">
+          <Link
+            href={routes.artist(artist.handle)}
+            className="truncate after:absolute after:inset-0"
+          >
+            {artist.name}
+          </Link>
+          {artist.isVerified ? <VerifiedBadge className="size-3.5" /> : null}
+        </h3>
+        <p className="text-sm text-muted">
+          {formatCompactNumber(artist.followerCount)}{" "}
+          {artist.followerCount < 2 ? "abonné" : "abonnés"}
+        </p>
+      </div>
+    </article>
+  );
+}

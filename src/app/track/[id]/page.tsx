@@ -8,6 +8,7 @@ import { TagList } from "@/components/music/tag-list";
 import { TrackList } from "@/components/music/track-list";
 import { TrackStats } from "@/components/music/track-stats";
 import { JsonLd } from "@/components/seo/json-ld";
+import { RichText } from "@/components/ui/rich-text";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
@@ -70,7 +71,7 @@ export default async function TrackPage({ params }: TrackPageProps) {
           <h2 id="a-propos" className="font-display text-xl font-semibold">
             À propos
           </h2>
-          <p className="whitespace-pre-line text-muted">{track.description}</p>
+          <RichText text={track.description} />
         </section>
       ) : null}
 

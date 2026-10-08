@@ -2,6 +2,7 @@ import { type MusicProvider, MusicProviderError } from "../music-provider";
 import type { AudiusClient, QueryParams } from "./client";
 import {
   parseArtistProfile,
+  parseArtistProfiles,
   parsePlaylist,
   parsePlaylists,
   parseTrack,
@@ -12,6 +13,7 @@ import { audiusItemResponseSchema, audiusListResponseSchema } from "./schemas";
 const DEFAULT_TRENDING_LIMIT = 20;
 const DEFAULT_TRENDING_PLAYLISTS_LIMIT = 10;
 const DEFAULT_ARTIST_TRACKS_LIMIT = 10;
+const DEFAULT_SEARCH_LIMIT = 10;
 
 /*
  * Durées de cache (secondes). Les classements bougent peu à l'échelle de quelques minutes
@@ -22,6 +24,7 @@ const CACHE = {
   trending: 600,
   detail: 3600,
   list: 900,
+  search: 300,
 } as const;
 
 /** Audius répond 404 pour un id inconnu et 400 pour un id mal formé : dans les deux cas, la ressource n'existe pas. */
@@ -112,6 +115,20 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
         if (isNotFound(error)) return [];
         throw error;
       }
+    },
+
+    async search(query, { limit = DEFAULT_SEARCH_LIMIT } = {}) {
+      const params = { query: query.trim(), limit };
+      const [tracks, artists, playlists] = await Promise.all([
+        getList("/tracks/search", params, CACHE.search),
+        getList("/users/search", params, CACHE.search),
+        getList("/playlists/search", params, CACHE.search),
+      ]);
+      return {
+        tracks: parseTracks(tracks),
+        artists: parseArtistProfiles(artists),
+        playlists: parsePlaylists(playlists),
+      };
     },
 
     getStreamUrl(trackId) {

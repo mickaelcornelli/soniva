@@ -140,6 +140,28 @@ describe("AudiusProvider playlists", () => {
   });
 });
 
+describe("AudiusProvider.search", () => {
+  it("interroge morceaux, artistes et playlists en parallèle", async () => {
+    const responses: Record<string, unknown[]> = {
+      "/tracks/search": [makeAudiusTrack()],
+      "/users/search": [makeAudiusUserProfile()],
+      "/playlists/search": [makeAudiusPlaylist()],
+    };
+    const get = vi.fn((path: string) => Promise.resolve({ data: responses[path] ?? [] }));
+
+    const results = await createAudiusProvider({ get, url }).search("  night  ", { limit: 4 });
+
+    expect(results.tracks).toHaveLength(1);
+    expect(results.artists[0]?.handle).toBe("lunerouge");
+    expect(results.playlists).toHaveLength(1);
+    expect(get).toHaveBeenCalledWith(
+      "/tracks/search",
+      { query: "night", limit: 4 },
+      expect.anything(),
+    );
+  });
+});
+
 describe("AudiusProvider.getStreamUrl", () => {
   it("pointe vers le flux du morceau, identifiants compris", () => {
     expect(createAudiusProvider(makeClient(null)).getStreamUrl("D7KyD")).toBe(
