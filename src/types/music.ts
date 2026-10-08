@@ -16,16 +16,42 @@ export interface Artist {
   avatar: Artwork;
 }
 
+/** Fiche complète d'un artiste, pour sa page publique. */
+export interface ArtistProfile extends Artist {
+  bio: string | null;
+  location: string | null;
+  cover: Artwork;
+  followerCount: number;
+  trackCount: number;
+  playlistCount: number;
+}
+
 export interface Track {
   id: string;
   title: string;
   durationSeconds: number;
   genre: string | null;
   mood: string | null;
+  description: string | null;
+  tags: string[];
+  /** Date ISO (AAAA-MM-JJ…) ou null si inconnue. */
+  releaseDate: string | null;
   playCount: number;
   favoriteCount: number;
   artwork: Artwork;
   artist: Artist;
+}
+
+export interface Playlist {
+  id: string;
+  name: string;
+  description: string | null;
+  isAlbum: boolean;
+  artwork: Artwork;
+  owner: Artist;
+  trackCount: number;
+  favoriteCount: number;
+  playCount: number;
 }
 
 export type TrendingPeriod = "week" | "month" | "year" | "allTime";

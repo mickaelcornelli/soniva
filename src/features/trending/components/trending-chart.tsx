@@ -1,6 +1,6 @@
+import { TrackList } from "@/components/music/track-list";
 import type { Track } from "@/types/music";
 import { TrendingLeader } from "./trending-leader";
-import { TrendingRow } from "./trending-row";
 
 interface TrendingChartProps {
   tracks: readonly Track[];
@@ -20,17 +20,7 @@ export function TrendingChart({ tracks }: TrendingChartProps) {
           <h2 id="suite-classement" className="font-display text-xl font-semibold">
             La suite du classement
           </h2>
-          <ol
-            start={2}
-            aria-labelledby="suite-classement"
-            className="grid gap-x-8 gap-y-1 lg:grid-cols-2"
-          >
-            {others.map((track, index) => (
-              <li key={track.id}>
-                <TrendingRow track={track} rank={index + 2} />
-              </li>
-            ))}
-          </ol>
+          <TrackList tracks={others} startAt={2} columns={2} labelledBy="suite-classement" />
         </section>
       ) : null}
     </div>

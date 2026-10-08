@@ -1,30 +1,16 @@
 import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import type { Track } from "@/types/music";
+import { makeTrack } from "@/test/factories";
 import { TrendingChart } from "./trending-chart";
-
-function makeTrack(id: string, title: string): Track {
-  return {
-    id,
-    title,
-    durationSeconds: 200,
-    genre: "Electronic",
-    mood: null,
-    playCount: 1_000,
-    favoriteCount: 10,
-    artwork: {},
-    artist: { id: `a-${id}`, name: `Artiste ${id}`, handle: id, isVerified: false, avatar: {} },
-  };
-}
 
 describe("TrendingChart", () => {
   it("met le premier morceau en vedette et numérote la suite à partir de 2", () => {
     render(
       <TrendingChart
         tracks={[
-          makeTrack("1", "Premier"),
-          makeTrack("2", "Deuxième"),
-          makeTrack("3", "Troisième"),
+          makeTrack({ id: "1", title: "Premier" }),
+          makeTrack({ id: "2", title: "Deuxième" }),
+          makeTrack({ id: "3", title: "Troisième" }),
         ]}
       />,
     );
@@ -38,6 +24,14 @@ describe("TrendingChart", () => {
         .getAllByRole("listitem")
         .map((li) => li.textContent),
     ).toEqual([expect.stringContaining("Deuxième"), expect.stringContaining("Troisième")]);
+  });
+
+  it("relie chaque morceau à sa page", () => {
+    render(
+      <TrendingChart tracks={[makeTrack({ id: "1" }), makeTrack({ id: "abc", title: "B" })]} />,
+    );
+
+    expect(screen.getByRole("link", { name: "B" })).toHaveAttribute("href", "/track/abc");
   });
 
   it("n'affiche rien sans morceau", () => {

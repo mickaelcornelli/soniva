@@ -1,4 +1,5 @@
 import { House, Library, type LucideIcon, Search } from "lucide-react";
+import { routes } from "@/lib/routes";
 
 export interface NavItem {
   href: string;
@@ -7,9 +8,9 @@ export interface NavItem {
 }
 
 export const mainNavigation: readonly NavItem[] = [
-  { href: "/", label: "Accueil", icon: House },
-  { href: "/search", label: "Rechercher", icon: Search },
-  { href: "/library", label: "Bibliothèque", icon: Library },
+  { href: routes.home, label: "Accueil", icon: House },
+  { href: routes.search, label: "Rechercher", icon: Search },
+  { href: routes.library, label: "Bibliothèque", icon: Library },
 ];
 
 export function isNavItemActive(href: string, pathname: string): boolean {

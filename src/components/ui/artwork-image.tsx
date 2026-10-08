@@ -1,3 +1,4 @@
+import { pickArtworkUrl } from "@/lib/artwork";
 import type { Artwork, ArtworkSize } from "@/types/music";
 
 interface ArtworkImageProps {
@@ -7,16 +8,6 @@ interface ArtworkImageProps {
   alt: string;
   className?: string;
   priority?: boolean;
-}
-
-const FALLBACK_ORDER: Record<ArtworkSize, readonly ArtworkSize[]> = {
-  small: ["small", "medium", "large"],
-  medium: ["medium", "large", "small"],
-  large: ["large", "medium", "small"],
-};
-
-export function pickArtworkUrl(artwork: Artwork, size: ArtworkSize): string | undefined {
-  return FALLBACK_ORDER[size].map((candidate) => artwork[candidate]).find(Boolean);
 }
 
 export function ArtworkImage({ artwork, size, alt, className = "", priority }: ArtworkImageProps) {

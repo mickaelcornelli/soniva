@@ -1,33 +1,117 @@
 import { type MusicProvider, MusicProviderError } from "../music-provider";
-import type { AudiusClient } from "./client";
-import { parseTracks } from "./mappers";
-import { audiusListResponseSchema } from "./schemas";
+import type { AudiusClient, QueryParams } from "./client";
+import {
+  parseArtistProfile,
+  parsePlaylist,
+  parsePlaylists,
+  parseTrack,
+  parseTracks,
+} from "./mappers";
+import { audiusItemResponseSchema, audiusListResponseSchema } from "./schemas";
 
 const DEFAULT_TRENDING_LIMIT = 20;
-// Le classement Audius bouge peu à l'échelle de quelques minutes : un cache de 10 min
-// limite fortement les appels (quota gratuit) sans fraîcheur perceptible en moins.
-const TRENDING_REVALIDATE_SECONDS = 600;
+const DEFAULT_TRENDING_PLAYLISTS_LIMIT = 10;
+const DEFAULT_ARTIST_TRACKS_LIMIT = 10;
 
-function readList(json: unknown, path: string): unknown[] {
-  const result = audiusListResponseSchema.safeParse(json);
-  if (!result.success) {
-    throw new MusicProviderError(`Format de réponse inattendu sur ${path}.`, {
-      cause: result.error,
-    });
-  }
-  return result.data.data;
+/*
+ * Durées de cache (secondes). Les classements bougent peu à l'échelle de quelques minutes
+ * et les fiches (morceau, artiste) presque jamais : des caches longs ménagent le quota
+ * gratuit d'Audius sans fraîcheur perceptible en moins.
+ */
+const CACHE = {
+  trending: 600,
+  detail: 3600,
+  list: 900,
+} as const;
+
+/** Audius répond 404 pour un id inconnu et 400 pour un id mal formé : dans les deux cas, la ressource n'existe pas. */
+const NOT_FOUND_STATUSES = new Set([400, 404]);
+
+function isNotFound(error: unknown): boolean {
+  return error instanceof MusicProviderError && NOT_FOUND_STATUSES.has(error.status ?? 0);
 }
 
 export function createAudiusProvider(client: AudiusClient): MusicProvider {
+  async function getList(path: string, params: QueryParams, revalidate: number) {
+    const json = await client.get(path, params, { revalidate });
+    const result = audiusListResponseSchema.safeParse(json);
+    if (!result.success) {
+      throw new MusicProviderError(`Format de réponse inattendu sur ${path}.`, {
+        cause: result.error,
+      });
+    }
+    return result.data.data;
+  }
+
+  /** Renvoie `undefined` quand la ressource n'existe pas. */
+  async function getItem(path: string, revalidate: number): Promise<unknown> {
+    try {
+      const json = await client.get(path, {}, { revalidate });
+      const result = audiusItemResponseSchema.safeParse(json);
+      if (!result.success) {
+        throw new MusicProviderError(`Format de réponse inattendu sur ${path}.`, {
+          cause: result.error,
+        });
+      }
+      return result.data.data;
+    } catch (error) {
+      if (isNotFound(error)) return undefined;
+      throw error;
+    }
+  }
+
+  const encode = encodeURIComponent;
+
   return {
     async getTrendingTracks({ period = "week", genre, limit = DEFAULT_TRENDING_LIMIT } = {}) {
-      const path = "/tracks/trending";
-      const json = await client.get(
-        path,
+      const items = await getList(
+        "/tracks/trending",
         { time: period, genre, limit },
-        { revalidate: TRENDING_REVALIDATE_SECONDS },
+        CACHE.trending,
       );
-      return parseTracks(readList(json, path));
+      return parseTracks(items);
+    },
+
+    async getTrendingPlaylists({ period = "week", limit = DEFAULT_TRENDING_PLAYLISTS_LIMIT } = {}) {
+      const items = await getList(
+        "/playlists/trending",
+        { time: period, limit, type: "playlist", omit_tracks: "true" },
+        CACHE.trending,
+      );
+      return parsePlaylists(items);
+    },
+
+    async getTrack(id) {
+      return parseTrack(await getItem(`/tracks/${encode(id)}`, CACHE.detail));
+    },
+
+    async getArtistByHandle(handle) {
+      return parseArtistProfile(await getItem(`/users/handle/${encode(handle)}`, CACHE.detail));
+    },
+
+    async getArtistTopTracks(artistId, { limit = DEFAULT_ARTIST_TRACKS_LIMIT } = {}) {
+      const items = await getList(
+        `/users/${encode(artistId)}/tracks`,
+        { sort: "plays", limit },
+        CACHE.list,
+      );
+      return parseTracks(items);
+    },
+
+    async getPlaylist(id) {
+      // Audius renvoie une playlist unitaire dans un tableau : `{ data: [playlist] }`.
+      const data = await getItem(`/playlists/${encode(id)}`, CACHE.detail);
+      return parsePlaylist(Array.isArray(data) ? data[0] : data);
+    },
+
+    async getPlaylistTracks(id) {
+      try {
+        return parseTracks(await getList(`/playlists/${encode(id)}/tracks`, {}, CACHE.list));
+      } catch (error) {
+        // Playlist inexistante : la page affichera son 404 via getPlaylist.
+        if (isNotFound(error)) return [];
+        throw error;
+      }
     },
   };
 }

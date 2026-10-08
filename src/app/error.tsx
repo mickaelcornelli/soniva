@@ -2,6 +2,7 @@
 
 import { RotateCw, WifiOff } from "lucide-react";
 import { useEffect } from "react";
+import { PageContainer } from "@/components/layout/page-container";
 import { EmptyState } from "@/components/ui/empty-state";
 
 interface ErrorPageProps {
@@ -15,7 +16,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
   }, [error]);
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-8">
+    <PageContainer>
       <EmptyState
         icon={WifiOff}
         title="Le contenu n'a pas pu être chargé"
@@ -31,6 +32,6 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
           </button>
         }
       />
-    </div>
+    </PageContainer>
   );
 }

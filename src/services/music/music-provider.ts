@@ -1,8 +1,15 @@
-import type { Track, TrendingPeriod } from "@/types/music";
+import type { ArtistProfile, Playlist, Track, TrendingPeriod } from "@/types/music";
 
-export interface TrendingTracksQuery {
+export interface TrendingQuery {
   period?: TrendingPeriod;
+  limit?: number;
+}
+
+export interface TrendingTracksQuery extends TrendingQuery {
   genre?: string;
+}
+
+export interface ArtistTracksQuery {
   limit?: number;
 }
 
@@ -10,9 +17,19 @@ export interface TrendingTracksQuery {
  * Contrat que tout provider musical doit respecter.
  * L'application ne dépend que de cette interface : remplacer Audius revient
  * à fournir une autre implémentation.
+ *
+ * Les méthodes de lecture unitaire renvoient `null` quand la ressource n'existe pas,
+ * pour que les pages puissent afficher un 404 plutôt qu'une erreur.
  */
 export interface MusicProvider {
   getTrendingTracks(query?: TrendingTracksQuery): Promise<Track[]>;
+  getTrendingPlaylists(query?: TrendingQuery): Promise<Playlist[]>;
+  getTrack(id: string): Promise<Track | null>;
+  getArtistByHandle(handle: string): Promise<ArtistProfile | null>;
+  /** Morceaux les plus écoutés de l'artiste. */
+  getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
+  getPlaylist(id: string): Promise<Playlist | null>;
+  getPlaylistTracks(id: string): Promise<Track[]>;
 }
 
 export class MusicProviderError extends Error {

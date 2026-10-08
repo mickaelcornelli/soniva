@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatDuration } from "./duration";
+import { formatDuration, formatTotalDuration } from "./duration";
 
 describe("formatDuration", () => {
   it.each([
@@ -15,5 +15,16 @@ describe("formatDuration", () => {
 
   it.each([-1, Number.NaN, Number.POSITIVE_INFINITY])("renvoie 0:00 pour %s", (input) => {
     expect(formatDuration(input)).toBe("0:00");
+  });
+});
+
+describe("formatTotalDuration", () => {
+  it.each([
+    [0, "0 min"],
+    [2_520, "42 min"],
+    [3_900, "1 h 05 min"],
+    [-5, "0 min"],
+  ])("formate %s s en %s", (input, expected) => {
+    expect(formatTotalDuration(input)).toBe(expected);
   });
 });

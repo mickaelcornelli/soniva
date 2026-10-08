@@ -1,0 +1,10 @@
+import { describe, expect, it } from "vitest";
+import { routes } from "./routes";
+
+describe("routes", () => {
+  it("construit les chemins des pages publiques en encodant les segments", () => {
+    expect(routes.track("D7KyD")).toBe("/track/D7KyD");
+    expect(routes.artist("dj é")).toBe("/artist/dj%20%C3%A9");
+    expect(routes.playlist("a/b")).toBe("/playlist/a%2Fb");
+  });
+});
