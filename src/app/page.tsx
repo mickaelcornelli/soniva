@@ -2,6 +2,7 @@ import { Disc3 } from "lucide-react";
 import { PageContainer } from "@/components/layout/page-container";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageHeader } from "@/components/ui/page-header";
+import { ForYouSection } from "@/features/discover/components/for-you-section";
 import { TrendingChart } from "@/features/trending/components/trending-chart";
 import { TrendingPlaylists } from "@/features/trending/components/trending-playlists";
 import { loadOptional } from "@/lib/load-optional";
@@ -29,6 +30,8 @@ export default async function HomePage() {
           description="Audius n'a renvoyé aucune tendance lisible pour cette semaine. Reviens dans quelques minutes."
         />
       )}
+      {/* Rendu côté client : dépend de la bibliothèque locale, et l'accueil reste statique. */}
+      <ForYouSection excludeTrackIds={tracks.map((track) => track.id)} />
       <TrendingPlaylists playlists={playlists} />
     </PageContainer>
   );

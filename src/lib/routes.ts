@@ -1,3 +1,8 @@
+export interface DiscoverApiQuery {
+  genres: readonly string[];
+  artistId?: string | undefined;
+}
+
 /** Chemins des pages publiques : un seul endroit à modifier si les URL changent. */
 export const routes = {
   home: "/",
@@ -17,4 +22,10 @@ export const routes = {
   searchApi: (query: string) => `/api/search?q=${encodeURIComponent(query)}`,
   /** Métadonnées de plusieurs morceaux, pour la bibliothèque. */
   tracksApi: (ids: readonly string[]) => `/api/tracks?ids=${ids.map(encodeURIComponent).join(",")}`,
+  /** Recommandations à partir de quelques genres et d'un artiste de référence. */
+  discoverApi: ({ genres, artistId }: DiscoverApiQuery) => {
+    const params = new URLSearchParams({ genres: genres.join(",") });
+    if (artistId) params.set("artist", artistId);
+    return `/api/discover?${params.toString()}`;
+  },
 } as const;

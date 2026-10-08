@@ -1,4 +1,4 @@
-import type { Artist, Playlist, Track } from "@/types/music";
+import type { Artist, ArtistProfile, Playlist, Track } from "@/types/music";
 
 /** Fabriques d'objets du domaine pour les tests de composants et d'utilitaires. */
 
@@ -9,6 +9,19 @@ export function makeArtist(overrides: Partial<Artist> = {}): Artist {
     handle: "lunerouge",
     isVerified: false,
     avatar: {},
+    ...overrides,
+  };
+}
+
+export function makeArtistProfile(overrides: Partial<ArtistProfile> = {}): ArtistProfile {
+  return {
+    ...makeArtist(),
+    bio: null,
+    location: null,
+    cover: {},
+    followerCount: 5_200,
+    trackCount: 12,
+    playlistCount: 2,
     ...overrides,
   };
 }

@@ -129,6 +129,21 @@ describe("AudiusProvider.getArtistByHandle / getArtistTopTracks", () => {
   });
 });
 
+describe("AudiusProvider.getRelatedArtists", () => {
+  it("interroge les artistes proches", async () => {
+    const client = makeClient({ data: [makeAudiusUserProfile({ id: "r1", handle: "proche" })] });
+
+    const artists = await createAudiusProvider(client).getRelatedArtists("nlGNe", { limit: 4 });
+
+    expect(artists.map((a) => a.handle)).toEqual(["proche"]);
+    expect(client.get).toHaveBeenCalledWith(
+      "/users/nlGNe/related",
+      { limit: 4 },
+      expect.anything(),
+    );
+  });
+});
+
 describe("AudiusProvider playlists", () => {
   it("déballe la playlist renvoyée dans un tableau", async () => {
     const client = makeClient({ data: [makeAudiusPlaylist()] });

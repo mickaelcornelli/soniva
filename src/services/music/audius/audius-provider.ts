@@ -14,6 +14,7 @@ const DEFAULT_TRENDING_LIMIT = 20;
 const DEFAULT_TRENDING_PLAYLISTS_LIMIT = 10;
 const DEFAULT_ARTIST_TRACKS_LIMIT = 10;
 const DEFAULT_SEARCH_LIMIT = 10;
+const DEFAULT_RELATED_ARTISTS_LIMIT = 6;
 
 /*
  * Durées de cache (secondes). Les classements bougent peu à l'échelle de quelques minutes
@@ -106,6 +107,11 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
         CACHE.list,
       );
       return parseTracks(items);
+    },
+
+    async getRelatedArtists(artistId, { limit = DEFAULT_RELATED_ARTISTS_LIMIT } = {}) {
+      const items = await getList(`/users/${encode(artistId)}/related`, { limit }, CACHE.detail);
+      return parseArtistProfiles(items);
     },
 
     async getPlaylist(id) {

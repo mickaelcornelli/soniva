@@ -35,6 +35,8 @@ export interface MusicProvider {
   getArtistByHandle(handle: string): Promise<ArtistProfile | null>;
   /** Morceaux les plus écoutés de l'artiste. */
   getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
+  /** Artistes au style proche (calculé par le provider). */
+  getRelatedArtists(artistId: string, query?: ArtistTracksQuery): Promise<ArtistProfile[]>;
   getPlaylist(id: string): Promise<Playlist | null>;
   getPlaylistTracks(id: string): Promise<Track[]>;
   /** Recherche de morceaux, d'artistes et de playlists. */
