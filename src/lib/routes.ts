@@ -4,6 +4,8 @@ export const routes = {
   search: "/search",
   searchFor: (query: string) => `/search?q=${encodeURIComponent(query)}`,
   library: "/library",
+  login: "/login",
+  authCallback: "/auth/callback",
   track: (id: string) => `/track/${encodeURIComponent(id)}`,
   artist: (handle: string) => `/artist/${encodeURIComponent(handle)}`,
   playlist: (id: string) => `/playlist/${encodeURIComponent(id)}`,

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LogoMark } from "@/components/brand/logo-mark";
+import { AccountMenu } from "@/features/auth/components/account-menu";
 import { isNavItemActive, mainNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 
@@ -39,6 +40,10 @@ export function MainNav() {
             </Link>
           );
         })}
+
+        <div className="mt-auto hidden md:block">
+          <AccountMenu />
+        </div>
       </div>
     </nav>
   );
