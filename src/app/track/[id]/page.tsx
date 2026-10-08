@@ -10,6 +10,7 @@ import { TrackStats } from "@/components/music/track-stats";
 import { JsonLd } from "@/components/seo/json-ld";
 import { RichText } from "@/components/ui/rich-text";
 import { FavoriteButton } from "@/features/library/components/favorite-button";
+import { AddToPlaylistButton } from "@/features/playlists/components/add-to-playlist-button";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
@@ -67,6 +68,7 @@ export default async function TrackPage({ params }: TrackPageProps) {
         <div className="flex items-center gap-3">
           <PlayTracksButton tracks={[track, ...moreTracks]} />
           <FavoriteButton track={track} size="md" />
+          <AddToPlaylistButton track={track} size="md" />
         </div>
       </MediaHero>
 

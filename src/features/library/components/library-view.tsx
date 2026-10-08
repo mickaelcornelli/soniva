@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/features/auth/auth-provider";
 import { AccountCard } from "@/features/auth/components/account-card";
+import { UserPlaylistsSection } from "@/features/playlists/components/user-playlists-section";
 import { pluralize } from "@/lib/format/plural";
 import { routes } from "@/lib/routes";
 import { useLibraryStore } from "../store/library-store";
@@ -47,6 +48,8 @@ export function LibraryView() {
           />
         )}
       </section>
+
+      <UserPlaylistsSection />
 
       <section aria-labelledby="recents" className="flex flex-col gap-4">
         <h2 id="recents" className={SECTION_TITLE}>

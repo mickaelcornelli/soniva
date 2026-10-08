@@ -2,14 +2,23 @@ interface LogoMarkProps {
   className?: string;
 }
 
-/** Monogramme Soniva : trois barres de niveau, comme un vumètre au repos. */
+/**
+ * Monogramme Soniva : un S tracé comme une piste de console, qui émet un point
+ * (le signal qui part). Même dessin que la favicon (`app/icon.svg`).
+ */
 export function LogoMark({ className }: LogoMarkProps) {
   return (
-    <svg viewBox="0 0 32 32" aria-hidden="true" className={className}>
-      <rect width="32" height="32" rx="9" className="fill-accent" />
-      <rect x="8" y="13" width="4" height="11" rx="2" className="fill-accent-foreground" />
-      <rect x="14" y="7" width="4" height="17" rx="2" className="fill-accent-foreground" />
-      <rect x="20" y="16" width="4" height="8" rx="2" className="fill-accent-foreground" />
+    <svg viewBox="0 0 64 64" aria-hidden="true" className={className}>
+      <rect width="64" height="64" rx="18" className="fill-accent" />
+      <path
+        d="M38 18H29a7.5 7.5 0 0 0 0 15h6a7.5 7.5 0 0 1 0 15H20"
+        fill="none"
+        strokeWidth="7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="stroke-accent-foreground"
+      />
+      <circle cx="46.5" cy="18" r="3.8" className="fill-accent-foreground" />
     </svg>
   );
 }

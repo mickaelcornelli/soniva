@@ -4,6 +4,7 @@ import { Pause, Play } from "lucide-react";
 import Link from "next/link";
 import { ArtworkImage } from "@/components/ui/artwork-image";
 import { FavoriteButton } from "@/features/library/components/favorite-button";
+import { AddToPlaylistButton } from "@/features/playlists/components/add-to-playlist-button";
 import { Equalizer } from "@/features/player/components/equalizer";
 import { useTrackPlayback } from "@/features/player/hooks/use-player";
 import { usePlayerStore } from "@/features/player/store/player-store";
@@ -18,9 +19,11 @@ interface TrackRowProps {
   position: number;
   /** Lance la lecture de ce morceau (avec sa liste en file d'attente). */
   onPlay: () => void;
+  /** Actions supplémentaires propres au contexte de la liste. */
+  actions?: React.ReactNode;
 }
 
-export function TrackRow({ track, position, onPlay }: TrackRowProps) {
+export function TrackRow({ track, position, onPlay, actions }: TrackRowProps) {
   const playback = useTrackPlayback(track.id);
   const isPlaying = playback?.isPlaying ?? false;
 
@@ -74,7 +77,11 @@ export function TrackRow({ track, position, onPlay }: TrackRowProps) {
           badgeClassName="size-3.5"
         />
       </div>
-      <FavoriteButton track={track} revealOnHover className="relative z-10" />
+      <span className="relative z-10 flex shrink-0 items-center">
+        <AddToPlaylistButton track={track} revealOnHover />
+        <FavoriteButton track={track} revealOnHover />
+        {actions}
+      </span>
       <span className="hidden shrink-0 text-sm text-muted sm:block">{track.genre}</span>
       <span className="w-12 shrink-0 text-right text-sm text-muted tabular-nums">
         {formatDuration(track.durationSeconds)}

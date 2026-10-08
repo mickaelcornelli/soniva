@@ -11,10 +11,18 @@ interface TrackListProps {
   /** Numéro du premier morceau (2 pour la suite d'un classement, par exemple). */
   startAt?: number;
   columns?: 1 | 2;
+  /** Actions propres au contexte, affichées sur chaque ligne (ex. « retirer de la playlist »). */
+  renderActions?: (track: Track) => React.ReactNode;
 }
 
 /** Liste numérotée de morceaux ; lire un morceau met toute la liste en file d'attente. */
-export function TrackList({ tracks, labelledBy, startAt = 1, columns = 1 }: TrackListProps) {
+export function TrackList({
+  tracks,
+  labelledBy,
+  startAt = 1,
+  columns = 1,
+  renderActions,
+}: TrackListProps) {
   return (
     <ol
       start={startAt}
@@ -27,6 +35,7 @@ export function TrackList({ tracks, labelledBy, startAt = 1, columns = 1 }: Trac
             track={track}
             position={startAt + index}
             onPlay={() => usePlayerStore.getState().playTracks(tracks, index)}
+            actions={renderActions?.(track)}
           />
         </li>
       ))}
