@@ -1,12 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Inter } from "next/font/google";
+import { Figtree, Unbounded } from "next/font/google";
+import { AppShell } from "@/components/layout/app-shell";
 import { siteConfig } from "@/config/site";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
-const bricolage = Bricolage_Grotesque({
+const figtree = Figtree({ subsets: ["latin"], variable: "--font-figtree", display: "swap" });
+const unbounded = Unbounded({
   subsets: ["latin"],
-  variable: "--font-bricolage",
+  variable: "--font-unbounded",
   display: "swap",
 });
 
@@ -28,14 +29,16 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0a0a0f",
+  themeColor: "#110f1e",
   colorScheme: "dark",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="fr" className={`${inter.variable} ${bricolage.variable}`}>
-      <body>{children}</body>
+    <html lang="fr" className={`${figtree.variable} ${unbounded.variable}`}>
+      <body>
+        <AppShell>{children}</AppShell>
+      </body>
     </html>
   );
 }

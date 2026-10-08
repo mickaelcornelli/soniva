@@ -1,22 +1,26 @@
 @import "tailwindcss";
 
 /*
- * Design tokens Soniva — thème sombre par défaut.
- * Toutes les couleurs de l'UI passent par ces variables (bg-surface, text-muted, etc.).
+ * Identité Soniva : un fond indigo profond (la nuit, l'écoute) et un seul accent
+ * ambre, la couleur des vumètres analogiques. L'ambre est réservé à ce qui « joue »
+ * ou à ce qui est actif ; le reste de l'interface reste en retrait.
  */
 @theme {
-  --color-ink: #0a0a0f;
-  --color-surface: #13131b;
-  --color-surface-raised: #1c1c27;
-  --color-border: #2a2a38;
-  --color-foreground: #f2f1f7;
-  --color-muted: #9a98ad;
-  --color-accent: #ff6b4a;
-  --color-accent-soft: #ff6b4a26;
-  --color-wave: #8b7bff;
+  --color-night: #110f1e;
+  --color-surface: #191629;
+  --color-raised: #221e38;
+  --color-line: #322d52;
+  --color-foreground: #eeebf8;
+  --color-muted: #a29dbf;
+  --color-accent: #ffb23f;
+  --color-accent-foreground: #1d1305;
 
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bricolage), var(--font-inter), ui-sans-serif, sans-serif;
+  --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-unbounded), var(--font-figtree), ui-sans-serif, sans-serif;
+
+  /* Hauteur de la barre de navigation mobile, réutilisée pour décaler le contenu. */
+  --spacing-mobile-nav: 4rem;
+  --spacing-rail: 5rem;
 }
 
 @layer base {
@@ -25,10 +29,10 @@
   }
 
   body {
-    @apply bg-ink text-foreground font-sans antialiased;
+    @apply bg-night font-sans text-foreground antialiased;
   }
 
   :focus-visible {
-    @apply outline-accent outline-2 outline-offset-2;
+    @apply rounded-sm outline-2 outline-offset-2 outline-accent;
   }
 }

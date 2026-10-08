@@ -6,17 +6,18 @@ Application web de découverte et de streaming musical **100 % gratuite**, const
 
 ## Stack
 
-| Domaine            | Outil                                    |
-| ------------------ | ---------------------------------------- |
-| Framework          | Next.js (App Router) · React · TypeScript strict |
-| Styles             | Tailwind CSS v4                          |
-| Données musicales  | Audius API                               |
-| Données utilisateur| Supabase (plan gratuit) — à venir        |
-| État du lecteur    | Zustand — à venir                        |
-| Données distantes  | TanStack Query — à venir                 |
-| Validation         | Zod — à venir                            |
-| Tests              | Vitest · Testing Library · Playwright (à venir) |
-| Qualité            | ESLint · Prettier · GitHub Actions       |
+| Domaine             | Outil                                            |
+| ------------------- | ------------------------------------------------ |
+| Framework           | Next.js (App Router) · React · TypeScript strict |
+| Styles              | Tailwind CSS v4                                  |
+| Données musicales   | Audius API                                       |
+| Données utilisateur | Supabase (plan gratuit) — à venir                |
+| État du lecteur     | Zustand — à venir                                |
+| Données distantes   | TanStack Query — à venir                         |
+| Validation          | Zod                                              |
+| Icônes              | Lucide                                           |
+| Tests               | Vitest · Testing Library · Playwright (à venir)  |
+| Qualité             | ESLint · Prettier · GitHub Actions               |
 
 Les dépendances sont ajoutées au moment où une fonctionnalité en a besoin, pas avant.
 
@@ -26,23 +27,25 @@ Prérequis : Node.js ≥ 20.9 et pnpm.
 
 ```bash
 pnpm install
-cp .env.example .env.local
+cp .env.example .env.local   # puis renseigner AUDIUS_API_KEY
 pnpm dev
 ```
+
+La clé Audius est gratuite (plan Free : 10 req/s, 500 000 req/mois) : https://api.audius.co/plans
 
 Ouvre http://localhost:3000.
 
 ## Scripts
 
-| Commande          | Rôle                                              |
-| ----------------- | ------------------------------------------------- |
-| `pnpm dev`        | Serveur de développement                          |
-| `pnpm build`      | Build de production                               |
-| `pnpm lint`       | ESLint                                            |
-| `pnpm format`     | Formate tout le code avec Prettier                |
-| `pnpm typecheck`  | Vérification TypeScript                           |
-| `pnpm test`       | Tests unitaires (Vitest)                          |
-| `pnpm check`      | Lint + format + types + tests (comme la CI)       |
+| Commande         | Rôle                                        |
+| ---------------- | ------------------------------------------- |
+| `pnpm dev`       | Serveur de développement                    |
+| `pnpm build`     | Build de production                         |
+| `pnpm lint`      | ESLint                                      |
+| `pnpm format`    | Formate tout le code avec Prettier          |
+| `pnpm typecheck` | Vérification TypeScript                     |
+| `pnpm test`      | Tests unitaires (Vitest)                    |
+| `pnpm check`     | Lint + format + types + tests (comme la CI) |
 
 ## Architecture
 
