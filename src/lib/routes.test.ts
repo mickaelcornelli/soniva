@@ -10,5 +10,7 @@ describe("routes", () => {
     expect(routes.searchFor("lo fi")).toBe("/search?q=lo%20fi");
     expect(routes.searchApi("a&b")).toBe("/api/search?q=a%26b");
     expect(routes.tracksApi(["a", "b"])).toBe("/api/tracks?ids=a,b");
+    expect(routes.genre("deep-house")).toBe("/genres/deep-house");
+    expect(routes.genre("deep-house", "month")).toBe("/genres/deep-house?period=month");
   });
 });

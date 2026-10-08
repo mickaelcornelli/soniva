@@ -1,6 +1,7 @@
 "use client";
 
-import { SearchX, Search, WifiOff, X } from "lucide-react";
+import { ArrowRight, SearchX, Search, WifiOff, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { TrackListSkeleton } from "@/components/music/track-list-skeleton";
 import { EmptyState } from "@/components/ui/empty-state";
@@ -150,6 +151,13 @@ function SearchPrompt({
           </li>
         ))}
       </ul>
+      <Link
+        href={routes.genres}
+        className="inline-flex w-fit items-center gap-1.5 text-sm font-medium text-accent hover:underline"
+      >
+        Parcourir tous les genres
+        <ArrowRight aria-hidden="true" className="size-4" />
+      </Link>
     </div>
   );
 }

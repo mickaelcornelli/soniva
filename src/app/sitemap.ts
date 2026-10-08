@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { GENRES } from "@/lib/genres";
 import { absoluteUrl } from "@/lib/seo/absolute-url";
 import { loadOptional } from "@/lib/load-optional";
 import { routes } from "@/lib/routes";
@@ -19,6 +20,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     { url: absoluteUrl(routes.home), changeFrequency: "daily", priority: 1 },
     { url: absoluteUrl(routes.search), changeFrequency: "monthly", priority: 0.3 },
+    { url: absoluteUrl(routes.genres), changeFrequency: "monthly", priority: 0.6 },
+    ...GENRES.map((genre) => ({
+      url: absoluteUrl(routes.genre(genre.slug)),
+      changeFrequency: "daily" as const,
+      priority: 0.7,
+    })),
     ...tracks.map((track) => ({
       url: absoluteUrl(routes.track(track.id)),
       changeFrequency: "weekly" as const,

@@ -59,3 +59,22 @@ export function playlistStructuredData(playlist: Playlist, tracks: readonly Trac
     track: tracks.map(musicRecording),
   };
 }
+
+/** Classement d'un genre : une liste ordonnée de morceaux. */
+export function genreChartStructuredData(
+  { name, path }: { name: string; path: string },
+  tracks: readonly Track[],
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name,
+    url: absoluteUrl(path),
+    numberOfItems: tracks.length,
+    itemListElement: tracks.map((track, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      item: musicRecording(track),
+    })),
+  };
+}

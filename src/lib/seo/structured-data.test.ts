@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { makeTrack } from "@/test/factories";
-import { toIsoDuration, trackStructuredData } from "./structured-data";
+import { genreChartStructuredData, toIsoDuration, trackStructuredData } from "./structured-data";
 
 const track = makeTrack({
   id: "D7KyD",
@@ -29,6 +29,21 @@ describe("trackStructuredData", () => {
       image: "https://cdn.example/1000.jpg",
       keywords: "synthwave, night",
       byArtist: { "@type": "MusicGroup", name: "Lune Rouge" },
+    });
+  });
+});
+
+describe("genreChartStructuredData", () => {
+  it("numérote les morceaux du classement", () => {
+    const data = genreChartStructuredData({ name: "House", path: "/genres/house" }, [
+      makeTrack({ id: "a" }),
+      makeTrack({ id: "b" }),
+    ]);
+
+    expect(data).toMatchObject({ "@type": "ItemList", numberOfItems: 2 });
+    expect(data.itemListElement[1]).toMatchObject({
+      position: 2,
+      item: { "@type": "MusicRecording" },
     });
   });
 });

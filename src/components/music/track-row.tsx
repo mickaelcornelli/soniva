@@ -9,6 +9,7 @@ import { Equalizer } from "@/features/player/components/equalizer";
 import { useTrackPlayback } from "@/features/player/hooks/use-player";
 import { usePlayerStore } from "@/features/player/store/player-store";
 import { formatDuration } from "@/lib/format/duration";
+import { genreLabel } from "@/lib/genres";
 import { routes } from "@/lib/routes";
 import type { Track } from "@/types/music";
 import { ArtistLink } from "./artist-link";
@@ -82,7 +83,9 @@ export function TrackRow({ track, position, onPlay, actions }: TrackRowProps) {
         <FavoriteButton track={track} revealOnHover />
         {actions}
       </span>
-      <span className="hidden shrink-0 text-sm text-muted sm:block">{track.genre}</span>
+      <span className="hidden shrink-0 text-sm text-muted sm:block">
+        {track.genre ? genreLabel(track.genre) : null}
+      </span>
       <span className="w-12 shrink-0 text-right text-sm text-muted tabular-nums">
         {formatDuration(track.durationSeconds)}
       </span>

@@ -1,10 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useId } from "react";
 import { ArtistCard } from "@/components/music/artist-card";
 import { TrackList } from "@/components/music/track-list";
 import { TrackListSkeleton } from "@/components/music/track-list-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
+import { findGenreByName, genreLabel } from "@/lib/genres";
+import { routes } from "@/lib/routes";
 import { useRecommendations } from "../hooks/use-recommendations";
 import { isEmptyRecommendation } from "../lib/select-recommendations";
 import type { GenreRecommendation, Recommendations } from "../types";
@@ -66,11 +69,22 @@ export function ForYouSection({ excludeTrackIds }: ForYouSectionProps) {
 
 function GenreBlock({ genre, tracks }: GenreRecommendation) {
   const titleId = useId();
+  const genrePage = findGenreByName(genre);
   return (
     <section aria-labelledby={titleId} className="flex flex-col gap-3">
-      <h3 id={titleId} className={SUBSECTION_TITLE}>
-        Parce que tu écoutes <span className="text-accent">{genre}</span>
-      </h3>
+      <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+        <h3 id={titleId} className={SUBSECTION_TITLE}>
+          Parce que tu écoutes <span className="text-accent">{genreLabel(genre)}</span>
+        </h3>
+        {genrePage ? (
+          <Link
+            href={routes.genre(genrePage.slug)}
+            className="text-sm text-muted hover:text-foreground hover:underline"
+          >
+            Tout le genre {genrePage.label}
+          </Link>
+        ) : null}
+      </div>
       <TrackList tracks={tracks} columns={2} labelledBy={titleId} />
     </section>
   );

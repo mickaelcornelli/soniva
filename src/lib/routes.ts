@@ -1,3 +1,6 @@
+import { DEFAULT_TRENDING_PERIOD } from "@/lib/trending-period";
+import type { TrendingPeriod } from "@/types/music";
+
 export interface DiscoverApiQuery {
   genres: readonly string[];
   artistId?: string | undefined;
@@ -16,6 +19,12 @@ export const routes = {
   track: (id: string) => `/track/${encodeURIComponent(id)}`,
   artist: (handle: string) => `/artist/${encodeURIComponent(handle)}`,
   playlist: (id: string) => `/playlist/${encodeURIComponent(id)}`,
+  genres: "/genres",
+  /** Page d'un genre ; la période par défaut (semaine) n'apparaît pas dans l'URL. */
+  genre: (slug: string, period: TrendingPeriod = DEFAULT_TRENDING_PERIOD) =>
+    period === DEFAULT_TRENDING_PERIOD
+      ? `/genres/${encodeURIComponent(slug)}`
+      : `/genres/${encodeURIComponent(slug)}?period=${period}`,
   /** Flux audio servi par notre API (qui redirige vers le provider). */
   stream: (trackId: string) => `/api/stream/${encodeURIComponent(trackId)}`,
   /** Recherche JSON utilisée par la recherche instantanée. */
