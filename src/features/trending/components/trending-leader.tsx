@@ -2,11 +2,18 @@ import Link from "next/link";
 import { ArtistLink } from "@/components/music/artist-link";
 import { TrackStats } from "@/components/music/track-stats";
 import { ArtworkImage } from "@/components/ui/artwork-image";
+import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { routes } from "@/lib/routes";
 import type { Track } from "@/types/music";
 
 /** Le n°1 du classement, mis en scène comme la pochette d'un single. */
-export function TrendingLeader({ track }: { track: Track }) {
+interface TrendingLeaderProps {
+  track: Track;
+  /** Classement complet, mis en file d'attente quand on lance la lecture. */
+  chart: readonly Track[];
+}
+
+export function TrendingLeader({ track, chart }: TrendingLeaderProps) {
   return (
     <article className="relative grid items-end gap-6 sm:grid-cols-[minmax(0,18rem)_1fr] sm:gap-10">
       <Link href={routes.track(track.id)} tabIndex={-1} aria-hidden="true">
@@ -36,6 +43,7 @@ export function TrendingLeader({ track }: { track: Track }) {
 
         <ArtistLink artist={track.artist} className="text-lg" />
         <TrackStats track={track} />
+        <PlayTracksButton tracks={chart} label="Écouter le classement" />
       </div>
     </article>
   );

@@ -13,7 +13,7 @@ export function TrendingChart({ tracks }: TrendingChartProps) {
 
   return (
     <div className="flex flex-col gap-12">
-      <TrendingLeader track={leader} />
+      <TrendingLeader track={leader} chart={tracks} />
 
       {others.length > 0 ? (
         <section aria-labelledby="suite-classement" className="flex flex-col gap-4">

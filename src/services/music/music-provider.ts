@@ -30,6 +30,8 @@ export interface MusicProvider {
   getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
   getPlaylist(id: string): Promise<Playlist | null>;
   getPlaylistTracks(id: string): Promise<Track[]>;
+  /** URL du flux audio d'un morceau, lisible directement par un élément <audio>. */
+  getStreamUrl(trackId: string): string;
 }
 
 export class MusicProviderError extends Error {

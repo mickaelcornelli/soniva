@@ -20,6 +20,8 @@ export interface RequestOptions {
 
 export interface AudiusClient {
   get(path: string, params?: QueryParams, options?: RequestOptions): Promise<unknown>;
+  /** URL complète (identifiants inclus) d'une ressource lue directement par le navigateur. */
+  url(path: string, params?: QueryParams): URL;
 }
 
 export function buildAudiusUrl(config: AudiusClientConfig, path: string, params: QueryParams = {}) {
@@ -39,6 +41,10 @@ export function createAudiusClient(config: AudiusClientConfig): AudiusClient {
   const fetchImpl = config.fetch ?? fetch;
 
   return {
+    url(path, params) {
+      return buildAudiusUrl(config, path, params);
+    },
+
     async get(path, params, options = {}) {
       const url = buildAudiusUrl(config, path, params);
       const headers: Record<string, string> = { Accept: "application/json" };

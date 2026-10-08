@@ -7,6 +7,7 @@ import { TrackList } from "@/components/music/track-list";
 import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ArtistHero } from "@/features/artist/components/artist-hero";
+import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { loadOptional } from "@/lib/load-optional";
 import { routes } from "@/lib/routes";
@@ -63,9 +64,12 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       ) : null}
 
       <section aria-labelledby="populaires" className="flex flex-col gap-4">
-        <h2 id="populaires" className="font-display text-xl font-semibold">
-          Titres populaires
-        </h2>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <h2 id="populaires" className="font-display text-xl font-semibold">
+            Titres populaires
+          </h2>
+          <PlayTracksButton tracks={topTracks} />
+        </div>
         {topTracks.length > 0 ? (
           <TrackList tracks={topTracks} labelledBy="populaires" />
         ) : (

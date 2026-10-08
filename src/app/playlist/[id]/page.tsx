@@ -8,6 +8,7 @@ import { MediaHero } from "@/components/music/media-hero";
 import { TrackList } from "@/components/music/track-list";
 import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
+import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { pickArtworkUrl } from "@/lib/artwork";
 import { formatTotalDuration } from "@/lib/format/duration";
 import { formatCompactNumber } from "@/lib/format/number";
@@ -68,6 +69,7 @@ export default async function PlaylistPage({ params }: PlaylistPageProps) {
         {playlist.description ? (
           <p className="max-w-2xl whitespace-pre-line text-muted">{playlist.description}</p>
         ) : null}
+        <PlayTracksButton tracks={tracks} />
       </MediaHero>
 
       <section aria-labelledby="titres" className="flex flex-col gap-4">

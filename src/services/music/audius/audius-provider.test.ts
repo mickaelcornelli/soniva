@@ -4,12 +4,14 @@ import { createAudiusProvider } from "./audius-provider";
 import type { AudiusClient } from "./client";
 import { makeAudiusPlaylist, makeAudiusTrack, makeAudiusUserProfile } from "./fixtures";
 
+const url = (path: string) => new URL(`https://api.example${path}?app_name=Soniva`);
+
 function makeClient(response: unknown): AudiusClient {
-  return { get: vi.fn().mockResolvedValue(response) };
+  return { get: vi.fn().mockResolvedValue(response), url };
 }
 
 function makeFailingClient(status: number): AudiusClient {
-  return { get: vi.fn().mockRejectedValue(new MusicProviderError("échec", { status })) };
+  return { get: vi.fn().mockRejectedValue(new MusicProviderError("échec", { status })), url };
 }
 
 describe("AudiusProvider.getTrendingTracks", () => {
@@ -135,5 +137,13 @@ describe("AudiusProvider playlists", () => {
     await expect(
       createAudiusProvider(makeFailingClient(404)).getPlaylistTracks("nope"),
     ).resolves.toEqual([]);
+  });
+});
+
+describe("AudiusProvider.getStreamUrl", () => {
+  it("pointe vers le flux du morceau, identifiants compris", () => {
+    expect(createAudiusProvider(makeClient(null)).getStreamUrl("D7KyD")).toBe(
+      "https://api.example/tracks/D7KyD/stream?app_name=Soniva",
+    );
   });
 });

@@ -36,3 +36,19 @@
     @apply rounded-sm outline-2 outline-offset-2 outline-accent;
   }
 }
+
+/* Égaliseur du morceau en cours : trois barres qui « jouent » tant que la lecture continue. */
+@keyframes equalize {
+  0%,
+  100% {
+    transform: scaleY(0.3);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+@utility animate-equalize {
+  animation: equalize 0.9s ease-in-out infinite;
+  transform-origin: bottom;
+}

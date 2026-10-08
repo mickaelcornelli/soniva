@@ -12,7 +12,7 @@ Application web de découverte et de streaming musical **100 % gratuite**, const
 | Styles              | Tailwind CSS v4                                  |
 | Données musicales   | Audius API                                       |
 | Données utilisateur | Supabase (plan gratuit) — à venir                |
-| État du lecteur     | Zustand — à venir                                |
+| État du lecteur     | Zustand                                          |
 | Données distantes   | TanStack Query — à venir                         |
 | Validation          | Zod                                              |
 | Icônes              | Lucide                                           |

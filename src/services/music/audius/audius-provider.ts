@@ -113,5 +113,10 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
         throw error;
       }
     },
+
+    getStreamUrl(trackId) {
+      // Audius répond par une redirection vers le nœud de stockage qui sert l'audio.
+      return client.url(`/tracks/${encode(trackId)}/stream`).toString();
+    },
   };
 }

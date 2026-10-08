@@ -1,3 +1,6 @@
+"use client";
+
+import { usePlayerStore } from "@/features/player/store/player-store";
 import type { Track } from "@/types/music";
 import { TrackRow } from "./track-row";
 
@@ -10,6 +13,7 @@ interface TrackListProps {
   columns?: 1 | 2;
 }
 
+/** Liste numérotée de morceaux ; lire un morceau met toute la liste en file d'attente. */
 export function TrackList({ tracks, labelledBy, startAt = 1, columns = 1 }: TrackListProps) {
   return (
     <ol
@@ -19,7 +23,11 @@ export function TrackList({ tracks, labelledBy, startAt = 1, columns = 1 }: Trac
     >
       {tracks.map((track, index) => (
         <li key={track.id}>
-          <TrackRow track={track} position={startAt + index} />
+          <TrackRow
+            track={track}
+            position={startAt + index}
+            onPlay={() => usePlayerStore.getState().playTracks(tracks, index)}
+          />
         </li>
       ))}
     </ol>
