@@ -77,7 +77,7 @@ export function DeleteAccountPanel() {
           autoComplete="off"
           spellCheck={false}
           disabled={step === "working"}
-          className="w-full max-w-xs rounded-xl border border-line bg-night px-3 py-2 text-foreground"
+          className="w-full max-w-xs rounded-xl border border-field bg-night px-3 py-2 text-foreground"
         />
       </div>
       {step === "error" ? (

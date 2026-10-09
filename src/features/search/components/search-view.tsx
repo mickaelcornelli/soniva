@@ -65,7 +65,7 @@ export function SearchView({ initialQuery, initialResults }: SearchViewProps) {
           autoComplete="off"
           enterKeyHint="search"
           autoFocus={initialQuery === ""}
-          className="h-14 w-full rounded-full border border-line bg-surface pr-14 pl-13 text-lg placeholder:text-muted focus:border-accent focus:outline-none [&::-webkit-search-cancel-button]:hidden"
+          className="h-14 w-full rounded-full border border-field bg-surface pr-14 pl-13 text-lg placeholder:text-muted focus:border-accent focus:outline-none [&::-webkit-search-cancel-button]:hidden"
         />
         {input ? (
           <IconButton

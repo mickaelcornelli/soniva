@@ -9,7 +9,13 @@ interface DataTableProps {
 /** Tableau de référence des pages éditoriales, défilable horizontalement sur mobile. */
 export function DataTable({ caption, columns, rows }: DataTableProps) {
   return (
-    <div className="overflow-x-auto rounded-2xl border border-line">
+    // Défilant sur mobile : focusable pour pouvoir le faire défiler au clavier (WCAG 2.1.1).
+    <div
+      role="region"
+      aria-label={caption}
+      tabIndex={0}
+      className="overflow-x-auto rounded-2xl border border-line"
+    >
       <table className="w-full min-w-[34rem] text-left text-sm">
         <caption className="sr-only">{caption}</caption>
         <thead className="bg-surface text-muted">

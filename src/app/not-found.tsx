@@ -9,6 +9,7 @@ export default function NotFound() {
     <PageContainer>
       <EmptyState
         icon={Compass}
+        headingLevel={1}
         title="Cette page n'existe pas"
         description="Le lien est peut-être incomplet, ou le contenu a été retiré."
         action={

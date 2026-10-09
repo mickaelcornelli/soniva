@@ -27,10 +27,11 @@ function rowsOf<T>(
 }
 
 export function createAccountRepository(
-  client: SupabaseClient<Database> = getSupabaseBrowserClient(),
+  getClient: () => Promise<SupabaseClient<Database>> = getSupabaseBrowserClient,
 ): AccountRepository {
   /** Les statistiques peuvent dépasser une page : lues par tranches jusqu'à la dernière. */
   async function listAllStats() {
+    const client = await getClient();
     const rows = [];
     for (let from = 0; ; from += PAGE_SIZE) {
       const page = rowsOf(
@@ -49,6 +50,7 @@ export function createAccountRepository(
 
   return {
     async exportData() {
+      const client = await getClient();
       const { data, error } = await client.auth.getUser();
       if (error) fail("lecture du compte", error);
       const { user } = data;
@@ -123,6 +125,7 @@ export function createAccountRepository(
     },
 
     async deleteAccount() {
+      const client = await getClient();
       const { error } = await client.rpc("delete_my_account");
       if (error) fail("suppression du compte", error);
     },

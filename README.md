@@ -11,12 +11,12 @@ Application web de découverte et de streaming musical **100 % gratuite**, const
 | Framework           | Next.js (App Router) · React · TypeScript strict |
 | Styles              | Tailwind CSS v4                                  |
 | Données musicales   | Audius API                                       |
-| Données utilisateur | Supabase (plan gratuit) — à venir                |
+| Données utilisateur | Supabase (plan gratuit)                          |
 | État du lecteur     | Zustand                                          |
 | Données distantes   | TanStack Query (recherche instantanée)           |
 | Validation          | Zod                                              |
 | Icônes              | Lucide                                           |
-| Tests               | Vitest · Testing Library · Playwright (à venir)  |
+| Tests               | Vitest · Testing Library · Playwright · axe-core |
 | Qualité             | ESLint · Prettier · GitHub Actions               |
 
 Les dépendances sont ajoutées au moment où une fonctionnalité en a besoin, pas avant.
@@ -46,6 +46,7 @@ Ouvre http://localhost:3000.
 | `pnpm typecheck` | Vérification TypeScript                     |
 | `pnpm test`      | Tests unitaires (Vitest)                    |
 | `pnpm check`     | Lint + format + types + tests (comme la CI) |
+| `pnpm test:e2e`  | Tests de bout en bout (après `pnpm build`)  |
 
 ## Architecture
 
@@ -55,10 +56,21 @@ src/
 ├── components/   # Composants UI réutilisables, sans logique métier
 ├── features/     # Modules métier (player, search, library…) : composants + hooks + logique
 ├── services/     # Accès aux APIs externes (provider musical interchangeable, Supabase)
-├── stores/       # État global (Zustand)
 ├── lib/          # Utilitaires purs et testés
+├── content/      # Textes statiques (FAQ, pages légales, contenus de démonstration)
 ├── types/        # Types partagés du domaine
 └── config/       # Configuration du site
+e2e/              # Tests Playwright : parcours clés et audit d'accessibilité (axe)
 ```
+
+## Tests de bout en bout
+
+```bash
+pnpm exec playwright install chromium   # une seule fois
+pnpm build
+pnpm test:e2e
+```
+
+Les tests visent la version de production sur le port 3100, en desktop et en mobile. Ils interrogent Audius en direct : `AUDIUS_API_KEY` doit être renseignée dans `.env.local`.
 
 Principes : séparation UI / logique / services / état, provider musical derrière une interface pour pouvoir remplacer Audius, aucune donnée musicale stockée côté Soniva.

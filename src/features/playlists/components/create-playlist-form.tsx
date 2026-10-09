@@ -51,7 +51,7 @@ export function CreatePlaylistForm({
           maxLength={PLAYLIST_NAME_MAX_LENGTH}
           autoFocus={autoFocus}
           autoComplete="off"
-          className="h-10 min-w-0 flex-1 rounded-full border border-line bg-night px-4 text-sm placeholder:text-muted focus:border-accent focus:outline-none"
+          className="h-10 min-w-0 flex-1 rounded-full border border-field bg-night px-4 text-sm placeholder:text-muted focus:border-accent focus:outline-none"
         />
         <button
           type="submit"

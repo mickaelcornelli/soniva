@@ -240,7 +240,7 @@ function RenameForm({ initialName, pending, onSave, onCancel }: RenameFormProps)
         onChange={(event) => setName(event.target.value)}
         maxLength={PLAYLIST_NAME_MAX_LENGTH}
         autoFocus
-        className="h-12 min-w-0 flex-1 rounded-xl border border-line bg-night px-4 font-display text-xl focus:border-accent focus:outline-none"
+        className="h-12 min-w-0 flex-1 rounded-xl border border-field bg-night px-4 font-display text-xl focus:border-accent focus:outline-none"
       />
       <button
         type="submit"

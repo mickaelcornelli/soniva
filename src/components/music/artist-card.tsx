@@ -14,6 +14,7 @@ export function ArtistCard({ artist }: { artist: ArtistCardData }) {
       <ArtworkImage
         artwork={artist.avatar}
         size="medium"
+        sizes="9rem"
         alt=""
         className="aspect-square w-full max-w-36 rounded-full transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none"
       />

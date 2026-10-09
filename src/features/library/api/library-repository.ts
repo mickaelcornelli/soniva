@@ -27,10 +27,11 @@ function fail(context: string, error: { message: string }): never {
 
 export function createLibraryRepository(
   userId: string,
-  client: SupabaseClient<Database> = getSupabaseBrowserClient(),
+  getClient: () => Promise<SupabaseClient<Database>> = getSupabaseBrowserClient,
 ): LibraryRepository {
   return {
     async listFavorites() {
+      const client = await getClient();
       const { data, error } = await client
         .from("favorites")
         .select("track_id, created_at")
@@ -40,6 +41,7 @@ export function createLibraryRepository(
     },
 
     async addFavorites(favorites) {
+      const client = await getClient();
       if (favorites.length === 0) return;
       const { error } = await client.from("favorites").upsert(
         favorites.map(({ trackId, addedAt }) => ({
@@ -54,11 +56,13 @@ export function createLibraryRepository(
     },
 
     async removeFavorite(trackId) {
+      const client = await getClient();
       const { error } = await client.from("favorites").delete().eq("track_id", trackId);
       if (error) fail("retrait d'un favori", error);
     },
 
     async listPlays() {
+      const client = await getClient();
       // Le journal peut contenir plusieurs écoutes d'un même morceau : on en lit davantage
       // que la taille de l'historique affiché pour qu'il reste plein après dédoublonnage.
       const { data, error } = await client
@@ -71,6 +75,7 @@ export function createLibraryRepository(
     },
 
     async addPlays(plays) {
+      const client = await getClient();
       if (plays.length === 0) return;
       const { error } = await client.from("listening_history").insert(
         plays.map(({ trackId, playedAt }) => ({
@@ -83,6 +88,7 @@ export function createLibraryRepository(
     },
 
     async listFollows() {
+      const client = await getClient();
       const { data, error } = await client
         .from("followed_artists")
         .select("artist_id, created_at")
@@ -92,6 +98,7 @@ export function createLibraryRepository(
     },
 
     async addFollows(follows) {
+      const client = await getClient();
       if (follows.length === 0) return;
       const { error } = await client.from("followed_artists").upsert(
         follows.map(({ artistId, followedAt }) => ({
@@ -105,6 +112,7 @@ export function createLibraryRepository(
     },
 
     async removeFollow(artistId) {
+      const client = await getClient();
       const { error } = await client.from("followed_artists").delete().eq("artist_id", artistId);
       if (error) fail("arrêt du suivi d'un artiste", error);
     },

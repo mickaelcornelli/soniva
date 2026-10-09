@@ -29,6 +29,7 @@ export function NowPlaying({
       <ArtworkImage
         artwork={track.artwork}
         size={large ? "large" : "small"}
+        sizes={large ? "20rem" : undefined}
         alt=""
         className={
           large

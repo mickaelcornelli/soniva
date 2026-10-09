@@ -27,7 +27,9 @@ export function TrackList({
     <ol
       start={startAt}
       aria-labelledby={labelledBy}
-      className={`grid gap-x-8 gap-y-1 ${columns === 2 ? "lg:grid-cols-2" : ""}`}
+      // grid-cols-1 (minmax(0, 1fr)) : sans colonne explicite, la grille s'élargirait jusqu'au
+      // titre le plus long, que `truncate` empêche de couper, et la page déborderait sur mobile.
+      className={`grid grid-cols-1 gap-x-8 gap-y-1 ${columns === 2 ? "lg:grid-cols-2" : ""}`}
     >
       {tracks.map((track, index) => (
         <li key={track.id}>

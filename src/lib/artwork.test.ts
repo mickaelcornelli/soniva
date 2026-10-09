@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pickArtworkUrl } from "./artwork";
+import { buildSquareSrcSet, pickArtworkUrl } from "./artwork";
 
 describe("pickArtworkUrl", () => {
   it("prend la taille demandée si elle existe", () => {
@@ -13,5 +13,17 @@ describe("pickArtworkUrl", () => {
 
   it("renvoie undefined sans aucune image", () => {
     expect(pickArtworkUrl({}, "large")).toBeUndefined();
+  });
+});
+
+describe("buildSquareSrcSet", () => {
+  it("décrit chaque taille disponible par sa largeur", () => {
+    expect(buildSquareSrcSet({ small: "s.jpg", medium: "m.jpg", large: "l.jpg" })).toBe(
+      "s.jpg 150w, m.jpg 480w, l.jpg 1000w",
+    );
+  });
+
+  it("n'en produit pas avec une seule taille", () => {
+    expect(buildSquareSrcSet({ large: "l.jpg" })).toBeUndefined();
   });
 });

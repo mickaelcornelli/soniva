@@ -9,12 +9,13 @@ interface ArtistLinkProps {
   badgeClassName?: string;
 }
 
+/** Lien vers un artiste ; `py-0.5` porte la zone cliquable à 24 px de haut (WCAG 2.5.8). */
 export function ArtistLink({ artist, className = "", badgeClassName }: ArtistLinkProps) {
   return (
     <span className={`flex min-w-0 items-center gap-1.5 ${className}`}>
       <Link
         href={routes.artist(artist.handle)}
-        className="truncate underline-offset-4 hover:text-foreground hover:underline"
+        className="truncate py-0.5 underline-offset-4 hover:text-foreground hover:underline"
       >
         {artist.name}
       </Link>

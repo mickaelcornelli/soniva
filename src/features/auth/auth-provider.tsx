@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { isSupabaseConfigured } from "@/config/public-env";
 import { routes } from "@/lib/routes";
-import { getSupabaseBrowserClient } from "@/services/supabase/browser-client";
+import { getSupabaseBrowserClient, hasStoredSession } from "@/services/supabase/browser-client";
 import { type AppUser, toAppUser } from "./lib/app-user";
 import type { AuthProviderId } from "./lib/providers";
 
@@ -35,17 +35,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.warn("[auth] Supabase n'est pas configuré : connexion indisponible.");
       return;
     }
-    const supabase = getSupabaseBrowserClient();
+    // Visiteur sans session : Supabase n'est chargé qu'au moment de se connecter.
+    if (!hasStoredSession()) {
+      setState({ status: "signed-out", user: null });
+      return;
+    }
 
-    // Déclenché immédiatement avec la session existante (INITIAL_SESSION), puis à chaque changement.
-    const { data } = supabase.auth.onAuthStateChange((_event, session) => {
-      setState(
-        session
-          ? { status: "signed-in", user: toAppUser(session.user) }
-          : { status: "signed-out", user: null },
-      );
-    });
-    return () => data.subscription.unsubscribe();
+    let cancelled = false;
+    let unsubscribe: (() => void) | undefined;
+    getSupabaseBrowserClient()
+      .then((supabase) => {
+        if (cancelled) return;
+        // Déclenché aussitôt avec la session existante (INITIAL_SESSION), puis à chaque changement.
+        const { data } = supabase.auth.onAuthStateChange((_event, session) => {
+          setState(
+            session
+              ? { status: "signed-in", user: toAppUser(session.user) }
+              : { status: "signed-out", user: null },
+          );
+        });
+        unsubscribe = () => data.subscription.unsubscribe();
+      })
+      .catch((error: unknown) => {
+        console.error("[auth] chargement de Supabase impossible", error);
+        if (!cancelled) setState({ status: "signed-out", user: null });
+      });
+
+    return () => {
+      cancelled = true;
+      unsubscribe?.();
+    };
   }, [configured]);
 
   const value: AuthContextValue = {
@@ -53,14 +72,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     async signIn(provider, next = window.location.pathname) {
       const callback = new URL(routes.authCallback, window.location.origin);
       callback.searchParams.set("next", next);
-      const { error } = await getSupabaseBrowserClient().auth.signInWithOAuth({
+      const supabase = await getSupabaseBrowserClient();
+      const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: { redirectTo: callback.toString() },
       });
       if (error) throw error;
     },
     async signOut() {
-      await getSupabaseBrowserClient().auth.signOut();
+      const supabase = await getSupabaseBrowserClient();
+      await supabase.auth.signOut();
     },
   };
 

@@ -29,10 +29,11 @@ function fail(context: string, error: { message: string }): never {
 
 export function createPlaylistsRepository(
   userId: string,
-  client: SupabaseClient<Database> = getSupabaseBrowserClient(),
+  getClient: () => Promise<SupabaseClient<Database>> = getSupabaseBrowserClient,
 ): PlaylistsRepository {
   return {
     async list() {
+      const client = await getClient();
       const { data, error } = await client
         .from("playlists")
         .select("id, name, description, updated_at, playlist_tracks(count)")
@@ -48,6 +49,7 @@ export function createPlaylistsRepository(
     },
 
     async get(id) {
+      const client = await getClient();
       const { data, error } = await client
         .from("playlists")
         .select("id, name, description, updated_at, playlist_tracks(track_id, position)")
@@ -67,6 +69,7 @@ export function createPlaylistsRepository(
     },
 
     async create(name) {
+      const client = await getClient();
       const { data, error } = await client
         .from("playlists")
         .insert({ user_id: userId, name })
@@ -83,16 +86,19 @@ export function createPlaylistsRepository(
     },
 
     async update(id, changes) {
+      const client = await getClient();
       const { error } = await client.from("playlists").update(changes).eq("id", id);
       if (error) fail("modification d'une playlist", error);
     },
 
     async remove(id) {
+      const client = await getClient();
       const { error } = await client.from("playlists").delete().eq("id", id);
       if (error) fail("suppression d'une playlist", error);
     },
 
     async addTrack(playlistId, trackId) {
+      const client = await getClient();
       // Nouveau morceau en fin de playlist : position = dernière position + 1.
       const { data: last, error: readError } = await client
         .from("playlist_tracks")
@@ -120,6 +126,7 @@ export function createPlaylistsRepository(
     },
 
     async removeTrack(playlistId, trackId) {
+      const client = await getClient();
       const { error } = await client
         .from("playlist_tracks")
         .delete()

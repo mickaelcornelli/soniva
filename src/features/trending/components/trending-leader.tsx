@@ -22,6 +22,7 @@ export function TrendingLeader({ track, chart }: TrendingLeaderProps) {
           size="large"
           alt=""
           priority
+          sizes="18rem"
           className="aspect-square w-full max-w-72 rounded-2xl shadow-[0_30px_80px_-30px] shadow-black"
         />
       </Link>

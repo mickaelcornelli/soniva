@@ -17,10 +17,11 @@ function fail(context: string, error: { message: string }): never {
 }
 
 export function createListeningRepository(
-  client: SupabaseClient<Database> = getSupabaseBrowserClient(),
+  getClient: () => Promise<SupabaseClient<Database>> = getSupabaseBrowserClient,
 ): ListeningRepository {
   return {
     async record(entries) {
+      const client = await getClient();
       if (entries.length === 0) return;
       const { error } = await client.rpc("record_listening", {
         entries: entries.map((entry) => ({
@@ -36,6 +37,7 @@ export function createListeningRepository(
     },
 
     async listMonth(month) {
+      const client = await getClient();
       const { data, error } = await client
         .from("listening_stats")
         .select("track_id, artist_id, genre, plays, seconds")

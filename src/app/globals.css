@@ -10,6 +10,8 @@
   --color-surface: #191629;
   --color-raised: #221e38;
   --color-line: #322d52;
+  /* Bordure des champs de saisie : contraste ≥ 3:1 sur tous les fonds (WCAG 1.4.11). */
+  --color-field: #716a9c;
   --color-foreground: #eeebf8;
   --color-muted: #a29dbf;
   --color-accent: #ffb23f;
@@ -50,6 +52,21 @@
     input:is([type="checkbox"], [type="radio"], [type="range"])
   ):not(:disabled, [aria-disabled="true"]) {
     cursor: pointer;
+  }
+}
+
+/*
+ * « Réduire les animations » (réglage système) : transitions et animations quasi
+ * instantanées partout, sans devoir ajouter `motion-reduce:` sur chaque composant.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
 

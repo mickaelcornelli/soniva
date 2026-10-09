@@ -9,6 +9,7 @@ export function PlaylistCard({ playlist }: { playlist: Playlist }) {
       <ArtworkImage
         artwork={playlist.artwork}
         size="medium"
+        sizes="(min-width: 1024px) 12rem, (min-width: 640px) 30vw, 45vw"
         alt=""
         className="aspect-square w-full rounded-2xl transition-transform duration-300 group-hover:-translate-y-1 motion-reduce:transition-none"
       />
