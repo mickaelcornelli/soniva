@@ -2,6 +2,7 @@ import { AudioEngine } from "@/features/player/engine/audio-engine";
 import { PlayerBar } from "@/features/player/components/player-bar";
 import { RadioEngine } from "@/features/radio/components/radio-engine";
 import { MainNav } from "./main-nav";
+import { SiteFooter } from "./site-footer";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
@@ -13,10 +14,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         Aller au contenu
       </a>
       <MainNav />
-      {/* Le padding bas réserve la place de la barre mobile et du lecteur flottant. */}
-      <main id="contenu" className="pb-[calc(var(--spacing-mobile-nav)+6rem)] md:pb-32">
-        {children}
-      </main>
+      <main id="contenu">{children}</main>
+      <SiteFooter />
       <PlayerBar />
       <AudioEngine />
       <RadioEngine />

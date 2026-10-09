@@ -21,6 +21,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl(routes.home), changeFrequency: "daily", priority: 1 },
     { url: absoluteUrl(routes.search), changeFrequency: "monthly", priority: 0.3 },
     { url: absoluteUrl(routes.genres), changeFrequency: "monthly", priority: 0.6 },
+    // Offres d'emploi et avis fictifs sont exclus : ces pages sont en `noindex`.
+    ...[
+      routes.about,
+      routes.forArtists,
+      routes.help,
+      routes.contact,
+      routes.credits,
+      routes.siteMap,
+    ].map((path) => ({
+      url: absoluteUrl(path),
+      changeFrequency: "yearly" as const,
+      priority: 0.3,
+    })),
     ...GENRES.map((genre) => ({
       url: absoluteUrl(routes.genre(genre.slug)),
       changeFrequency: "daily" as const,

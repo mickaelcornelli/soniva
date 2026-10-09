@@ -42,14 +42,49 @@
    * désactivés gardent le curseur normal pour ne pas promettre une action impossible.
    */
   :is(
-      button,
-      [role="button"],
-      summary,
-      label[for],
-      select,
-      input:is([type="checkbox"], [type="radio"], [type="range"])
-    ):not(:disabled, [aria-disabled="true"]) {
+    button,
+    [role="button"],
+    summary,
+    label[for],
+    select,
+    input:is([type="checkbox"], [type="radio"], [type="range"])
+  ):not(:disabled, [aria-disabled="true"]) {
     cursor: pointer;
+  }
+}
+
+/*
+ * Texte long des pages institutionnelles (à propos, aide, crédits, légal) : un rythme de
+ * lecture commun, sans ajouter de plugin de typographie. `:where` garde une spécificité
+ * nulle pour que les classes utilitaires posées sur un élément restent prioritaires.
+ */
+@layer components {
+  .editorial {
+    @apply leading-relaxed text-foreground/90;
+  }
+
+  .editorial :where(p, ul, ol, dl) {
+    max-width: 70ch;
+  }
+
+  .editorial :where(h3) {
+    @apply font-semibold text-foreground;
+  }
+
+  .editorial :where(ul) {
+    @apply list-disc space-y-2 pl-5 marker:text-muted;
+  }
+
+  .editorial :where(ol) {
+    @apply list-decimal space-y-2 pl-5 marker:text-muted;
+  }
+
+  .editorial :where(strong) {
+    @apply font-semibold text-foreground;
+  }
+
+  .editorial :where(a:not([class])) {
+    @apply font-medium text-foreground underline decoration-line underline-offset-4 transition-colors hover:decoration-accent;
   }
 }
 

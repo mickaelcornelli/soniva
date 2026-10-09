@@ -12,4 +12,16 @@ export const siteConfig = {
     height: 630,
     alt: "Soniva — Découvre la musique autrement.",
   },
+  /** Adresse unique pour l'aide, les signalements et les demandes liées aux données. */
+  contactEmail: "mickaelcornelli.dev@gmail.com",
+  /**
+   * Soniva n'a pas encore de comptes sociaux : ces liens mènent aux plateformes
+   * elles-mêmes, plutôt qu'à un compte homonyme qui appartiendrait à quelqu'un d'autre.
+   * Le jour venu, il suffit de les remplacer ici.
+   */
+  social: {
+    facebook: "https://www.facebook.com/",
+    instagram: "https://www.instagram.com/",
+    x: "https://x.com/",
+  },
 } as const;

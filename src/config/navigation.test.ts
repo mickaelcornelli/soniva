@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { isNavItemActive } from "./navigation";
+import { footerNavigation, isNavItemActive } from "./navigation";
+
+describe("footerNavigation", () => {
+  it("ne contient que des chemins internes, sans doublon", () => {
+    const hrefs = footerNavigation.flatMap((column) => column.links.map((link) => link.href));
+
+    expect(hrefs.every((href) => href.startsWith("/"))).toBe(true);
+    expect(new Set(hrefs).size).toBe(hrefs.length);
+  });
+});
 
 describe("isNavItemActive", () => {
   it("n'active l'accueil que sur la racine", () => {

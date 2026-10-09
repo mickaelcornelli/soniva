@@ -18,6 +18,16 @@ export const routes = {
   /** Playlist personnelle (privée, hors SEO). */
   userPlaylist: (id: string) => `/library/playlists/${encodeURIComponent(id)}`,
   login: "/login",
+  about: "/about",
+  jobs: "/jobs",
+  reviews: "/reviews",
+  help: "/help",
+  contact: "/contact",
+  /** Page d'information destinée aux artistes (≠ `artist`, la page d'un artiste). */
+  forArtists: "/artists",
+  credits: "/credits",
+  /** Plan du site lisible ; `/sitemap` est évité pour ne pas se confondre avec `sitemap.xml`. */
+  siteMap: "/plan-du-site",
   authCallback: "/auth/callback",
   track: (id: string) => `/track/${encodeURIComponent(id)}`,
   artist: (handle: string) => `/artist/${encodeURIComponent(handle)}`,
