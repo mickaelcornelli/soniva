@@ -5,7 +5,6 @@ interface RichTextProps {
   className?: string;
 }
 
-/** Texte libre d'un artiste (description, bio) : sauts de ligne conservés, URL cliquables. */
 export function RichText({ text, className = "" }: RichTextProps) {
   return (
     <p className={`whitespace-pre-line text-muted ${className}`}>
@@ -15,7 +14,7 @@ export function RichText({ text, className = "" }: RichTextProps) {
             key={index}
             href={part.value}
             target="_blank"
-            // Contenu fourni par des tiers : pas de transmission de crédit SEO ni d'accès à la page.
+            // Third-party content: pass no SEO credit and no window access.
             rel="noopener noreferrer nofollow ugc"
             className="break-all text-foreground underline underline-offset-4 hover:text-accent"
           >

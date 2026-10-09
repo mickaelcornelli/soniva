@@ -6,7 +6,7 @@ import { useLibraryStore } from "@/features/library/store/library-store";
 import { createPlaylistsRepository } from "../api/playlists-repository";
 import type { UserPlaylistWithTracks } from "../types";
 
-/** Compte connecté (fixé par la synchronisation de la bibliothèque), ou null pour un visiteur. */
+/** Set by the library sync; null for a visitor. */
 export function useAccountId(): string | null {
   return useLibraryStore((state) => state.ownerId);
 }
@@ -30,7 +30,6 @@ export function useUserPlaylists() {
   });
 }
 
-/** Une playlist et ses morceaux (métadonnées récupérées chez le provider musical). */
 export function useUserPlaylist(id: string) {
   const userId = useAccountId();
   return useQuery({
@@ -45,7 +44,7 @@ export function useUserPlaylist(id: string) {
   });
 }
 
-/** Toutes les modifications invalident la liste et les détails du compte. */
+/** Every mutation invalidates the account's list and details. */
 export function usePlaylistMutations() {
   const userId = useAccountId();
   const queryClient = useQueryClient();

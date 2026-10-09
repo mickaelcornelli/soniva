@@ -1,7 +1,6 @@
 const BAR_DELAYS = ["0ms", "-300ms", "-600ms"];
 
 interface EqualizerProps {
-  /** Animé pendant la lecture, figé en pause. */
   playing: boolean;
   className?: string;
 }

@@ -15,7 +15,6 @@ interface Stat {
 
 interface TrackStatsProps {
   track: Track;
-  /** Ajoute favoris, ambiance et date de sortie (page du morceau). */
   detailed?: boolean;
 }
 

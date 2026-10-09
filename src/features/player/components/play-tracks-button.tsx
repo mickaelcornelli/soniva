@@ -6,16 +6,12 @@ import { useTrackPlayback } from "../hooks/use-player";
 import { usePlayerStore } from "../store/player-store";
 
 interface PlayTracksButtonProps {
-  /** Morceaux mis en file d'attente au clic. */
   tracks: readonly Track[];
   startIndex?: number;
   label?: string;
 }
 
-/**
- * Bouton « Lire » d'une page (morceau, artiste, playlist). Si le morceau de départ
- * est déjà en cours, il bascule lecture/pause au lieu de relancer la file.
- */
+/** If the first track is already current, toggles play/pause instead of restarting the queue. */
 export function PlayTracksButton({
   tracks,
   startIndex = 0,

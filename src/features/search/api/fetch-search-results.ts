@@ -1,7 +1,6 @@
 import { routes } from "@/lib/routes";
 import type { SearchResults } from "@/types/music";
 
-/** Appelle notre API de recherche (déjà validée côté serveur par le provider). */
 export async function fetchSearchResults(
   query: string,
   signal?: AbortSignal,

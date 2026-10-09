@@ -11,13 +11,11 @@ import { flushListening } from "../lib/flush-listening";
 import { listenedBetween } from "../lib/listening-meter";
 import { useListeningStore } from "../store/listening-store";
 
-/** Le temps écouté est enregistré au plus tard toutes les 30 secondes de lecture. */
 const SAVE_EVERY_SECONDS = 30;
 
 /**
- * Mesure le temps réellement écouté (les sauts ne comptent pas) et le nombre d'écoutes,
- * puis les enregistre dans le journal du mois. Les écritures sont groupées : à chaque
- * changement de morceau, pause, mise en arrière-plan de la page ou toutes les 30 s.
+ * Measures time actually listened (seeks don't count) and play count.
+ * Writes are batched: on track change, pause, page hide or every 30 s.
  */
 export function useListeningTracker() {
   useEffect(() => {
@@ -30,7 +28,7 @@ export function useListeningTracker() {
     function save() {
       if (!current || (plays === 0 && seconds < 1)) return;
       useListeningStore.getState().record(current.track, { plays, seconds: Math.floor(seconds) });
-      // La fraction de seconde restante est gardée pour le prochain enregistrement.
+      // The leftover fraction of a second is kept for the next write.
       seconds -= Math.floor(seconds);
       plays = 0;
 
@@ -55,7 +53,7 @@ export function useListeningTracker() {
         return;
       }
 
-      // Retour au début après une écoute complète (répétition du morceau) : nouvelle écoute.
+      // Back to the start after a full play (repeat one): counts as a new play.
       if (currentTime < 1 && lastTime >= PLAY_THRESHOLD_SECONDS) playCounted = false;
 
       seconds += listenedBetween(lastTime, currentTime);

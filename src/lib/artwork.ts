@@ -6,14 +6,14 @@ const FALLBACK_ORDER: Record<ArtworkSize, readonly ArtworkSize[]> = {
   large: ["large", "medium", "small"],
 };
 
-/** URL de la taille demandée, ou de la plus proche disponible. */
+/** Falls back to the closest available size. */
 export function pickArtworkUrl(artwork: Artwork, size: ArtworkSize): string | undefined {
   return FALLBACK_ORDER[size].map((candidate) => artwork[candidate]).find(Boolean);
 }
 
 /**
- * Largeur nominale, en pixels, de chaque taille d'une image carrée (pochette, avatar).
- * Les mappers des providers s'y conforment (Audius : 150, 480 et 1000 px).
+ * Nominal width in pixels of each square image size.
+ * Provider mappers follow it (Audius: 150, 480, 1000).
  */
 export const SQUARE_ARTWORK_WIDTHS: Record<ArtworkSize, number> = {
   small: 150,
@@ -23,10 +23,7 @@ export const SQUARE_ARTWORK_WIDTHS: Record<ArtworkSize, number> = {
 
 const SIZES_BY_WIDTH = Object.keys(SQUARE_ARTWORK_WIDTHS) as ArtworkSize[];
 
-/**
- * `srcset` des tailles disponibles d'une image carrée : le navigateur télécharge la plus
- * petite qui reste nette à l'écran. Inutile (undefined) avec une seule taille.
- */
+/** Lets the browser download the smallest size that stays sharp. Undefined with a single size. */
 export function buildSquareSrcSet(artwork: Artwork): string | undefined {
   const candidates = SIZES_BY_WIDTH.flatMap((size) => {
     const url = artwork[size];

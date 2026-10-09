@@ -16,17 +16,16 @@ interface SyncDependencies {
 }
 
 /**
- * Fusionne la bibliothèque de l'appareil avec celle du compte, à la connexion :
- * 1. envoie les favoris et écoutes faits sans compte (ou hors ligne) ;
- * 2. relit l'état du compte, qui devient la référence ;
- * 3. complète les métadonnées manquantes (ajouts faits depuis un autre appareil).
+ * Merges the device library with the account on sign-in: 1. upload what was
+ * done signed out or offline; 2. re-read the account, which becomes the source
+ * of truth; 3. fetch missing metadata (changes made on another device).
  */
 export async function syncLibrary(
   userId: string,
   { repository, fetchTracks, fetchArtists }: SyncDependencies,
 ) {
   const store = useLibraryStore.getState();
-  // Données d'un autre compte sur cet appareil : on ne les mélange jamais.
+  // Another account's data on this device is never merged.
   const local = store.ownerId === null || store.ownerId === userId ? store : null;
   const localFavorites = local?.favorites ?? [];
   const localHistory = local?.history ?? [];

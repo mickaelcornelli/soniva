@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 
-/** Longueur au-delà de laquelle Google tronque la description dans ses résultats. */
+/** Google truncates descriptions beyond this length. */
 const MAX_DESCRIPTION_LENGTH = 160;
 
 export function truncateDescription(text: string, max = MAX_DESCRIPTION_LENGTH): string {
@@ -13,12 +13,10 @@ export function truncateDescription(text: string, max = MAX_DESCRIPTION_LENGTH):
 interface PageMetadataInput {
   title: string;
   description: string;
-  /** Chemin canonique de la page (ex. `/track/abc`). */
   path: string;
   image?: string | undefined;
 }
 
-/** Métadonnées SEO cohérentes pour toutes les pages publiques. */
 export function buildPageMetadata({
   title,
   description,
@@ -26,7 +24,7 @@ export function buildPageMetadata({
   image,
 }: PageMetadataInput): Metadata {
   const text = truncateDescription(description);
-  // Un `openGraph` de page remplace celui du layout : l'image par défaut doit être redonnée ici.
+  // A page-level `openGraph` replaces the layout's, so the default image must be set again.
   const images = image ? [{ url: image, alt: title }] : [siteConfig.ogImage];
 
   return {
@@ -43,7 +41,7 @@ export function buildPageMetadata({
       images,
     },
     twitter: {
-      // Pochettes carrées : « summary » les affiche entières au lieu de les recadrer en 2:1.
+      // Square covers: "summary" shows them whole instead of cropping to 2:1.
       card: image ? "summary" : "summary_large_image",
       title,
       description: text,

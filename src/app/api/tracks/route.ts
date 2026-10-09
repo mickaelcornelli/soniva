@@ -2,13 +2,9 @@ import { NextResponse } from "next/server";
 import { musicProvider } from "@/services/music";
 
 const MAX_IDS = 100;
-// Identifiants Audius : courts et alphanumériques. Tout le reste est refusé avant d'appeler l'API.
 const TRACK_ID_PATTERN = /^[A-Za-z0-9]{1,32}$/;
 
-/**
- * Métadonnées de plusieurs morceaux (`/api/tracks?ids=a,b,c`). Sert à afficher la bibliothèque
- * d'un utilisateur, dont la base ne stocke que les identifiants.
- */
+/** Resolves the user's library, whose track IDs are the only thing stored in the database. */
 export async function GET(request: Request) {
   const raw = new URL(request.url).searchParams.get("ids") ?? "";
   const ids = [...new Set(raw.split(",").filter(Boolean))];

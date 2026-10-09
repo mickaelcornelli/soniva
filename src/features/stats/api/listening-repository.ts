@@ -5,9 +5,8 @@ import { monthStartDate } from "../lib/month";
 import type { ListeningRow } from "../lib/summarize-month";
 import type { PendingListening } from "../store/listening-store";
 
-/** Accès aux statistiques d'écoute du compte connecté (règles RLS côté base). */
 export interface ListeningRepository {
-  /** Ajoute des écoutes : la base incrémente les compteurs existants. */
+  /** The database increments existing counters. */
   record(entries: readonly PendingListening[]): Promise<void>;
   listMonth(month: string): Promise<ListeningRow[]>;
 }

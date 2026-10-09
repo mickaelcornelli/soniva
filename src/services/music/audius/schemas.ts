@@ -1,9 +1,8 @@
 import { z } from "zod";
 
 /*
- * Schémas volontairement partiels : on ne valide que les champs utilisés par Soniva.
- * Les champs inconnus sont ignorés, ce qui évite de casser l'app quand Audius
- * ajoute ou retire des propriétés dont on ne se sert pas.
+ * Deliberately partial: only fields Soniva uses are validated, so
+ * Audius adding or removing unused properties doesn't break the app.
  */
 
 const audiusArtworkSchema = z
@@ -68,12 +67,10 @@ export const audiusPlaylistSchema = z.object({
   total_play_count: z.number().optional(),
 });
 
-/** Enveloppe des réponses de liste : `{ data: [...] }`. */
 export const audiusListResponseSchema = z.object({
   data: z.array(z.unknown()),
 });
 
-/** Enveloppe des réponses unitaires : `{ data: {...} }`. */
 export const audiusItemResponseSchema = z.object({
   data: z.unknown(),
 });

@@ -3,13 +3,12 @@ import { getSupabaseBrowserClient } from "@/services/supabase/browser-client";
 import type { Database } from "@/services/supabase/database.types";
 import type { UserPlaylist } from "../types";
 
-/** Code Postgres d'une violation d'unicité : le morceau est déjà dans la playlist. */
+/** Postgres unique violation: the track is already in the playlist. */
 const UNIQUE_VIOLATION = "23505";
 
 export type AddTrackResult = "added" | "duplicate";
 
 export interface PlaylistDetailRow extends UserPlaylist {
-  /** Identifiants des morceaux, dans l'ordre de la playlist. */
   trackIds: string[];
 }
 
@@ -99,7 +98,6 @@ export function createPlaylistsRepository(
 
     async addTrack(playlistId, trackId) {
       const client = await getClient();
-      // Nouveau morceau en fin de playlist : position = dernière position + 1.
       const { data: last, error: readError } = await client
         .from("playlist_tracks")
         .select("position")
@@ -117,7 +115,7 @@ export function createPlaylistsRepository(
       if (error?.code === UNIQUE_VIOLATION) return "duplicate";
       if (error) fail("ajout d'un morceau", error);
 
-      // L'ordre de la bibliothèque suit la dernière modification de chaque playlist.
+      // The library orders playlists by last change.
       await client
         .from("playlists")
         .update({ updated_at: new Date().toISOString() })

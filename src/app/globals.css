@@ -1,16 +1,12 @@
 @import "tailwindcss";
 
-/*
- * Identité Soniva : un fond indigo profond (la nuit, l'écoute) et un seul accent
- * ambre, la couleur des vumètres analogiques. L'ambre est réservé à ce qui « joue »
- * ou à ce qui est actif ; le reste de l'interface reste en retrait.
- */
+/* Deep indigo background with a single amber accent, reserved for what is playing or active. */
 @theme {
   --color-night: #110f1e;
   --color-surface: #191629;
   --color-raised: #221e38;
   --color-line: #322d52;
-  /* Bordure des champs de saisie : contraste ≥ 3:1 sur tous les fonds (WCAG 1.4.11). */
+  /* Form field border: at least 3:1 contrast on every surface (WCAG 1.4.11). */
   --color-field: #716a9c;
   --color-foreground: #eeebf8;
   --color-muted: #a29dbf;
@@ -20,7 +16,6 @@
   --font-sans: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-unbounded), var(--font-figtree), ui-sans-serif, sans-serif;
 
-  /* Hauteur de la barre de navigation mobile, réutilisée pour décaler le contenu. */
   --spacing-mobile-nav: 4rem;
   --spacing-rail: 5rem;
 }
@@ -39,9 +34,8 @@
   }
 
   /*
-   * Tailwind 4 a rendu aux boutons le curseur par défaut du navigateur. Une seule règle
-   * ici évite d'ajouter `cursor-pointer` composant par composant ; les éléments
-   * désactivés gardent le curseur normal pour ne pas promettre une action impossible.
+   * Tailwind 4 dropped the pointer cursor on buttons;
+   * restore it globally, except on disabled elements.
    */
   :is(
     button,
@@ -56,8 +50,8 @@
 }
 
 /*
- * « Réduire les animations » (réglage système) : transitions et animations quasi
- * instantanées partout, sans devoir ajouter `motion-reduce:` sur chaque composant.
+ * Honour the OS "reduce motion" setting everywhere
+ * instead of adding `motion-reduce:` per component.
  */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -71,9 +65,8 @@
 }
 
 /*
- * Texte long des pages institutionnelles (à propos, aide, crédits, légal) : un rythme de
- * lecture commun, sans ajouter de plugin de typographie. `:where` garde une spécificité
- * nulle pour que les classes utilitaires posées sur un élément restent prioritaires.
+ * Long-form text for institutional pages. `:where` keeps
+ * specificity at zero so utility classes still win.
  */
 @layer components {
   .editorial {
@@ -105,7 +98,6 @@
   }
 }
 
-/* Égaliseur du morceau en cours : trois barres qui « jouent » tant que la lecture continue. */
 @keyframes equalize {
   0%,
   100% {

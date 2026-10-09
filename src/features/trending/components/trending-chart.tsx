@@ -6,7 +6,6 @@ interface TrendingChartProps {
   tracks: readonly Track[];
 }
 
-/** Classement des tendances : le n°1 en vedette, puis la suite numérotée. */
 export function TrendingChart({ tracks }: TrendingChartProps) {
   const [leader, ...others] = tracks;
   if (!leader) return null;

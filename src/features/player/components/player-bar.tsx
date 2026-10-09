@@ -16,9 +16,8 @@ import { TransportControls } from "./transport-controls";
 import { VolumeControl } from "./volume-control";
 
 /**
- * Lecteur flottant persistant. Desktop : pilule complète (morceau, commandes,
- * progression, volume). Mobile : version compacte au-dessus des onglets ;
- * un appui sur le morceau ouvre le panneau plein écran.
+ * Desktop: full pill. Mobile: compact bar above the
+ * tabs; tapping the track opens the full-screen panel.
  */
 export function PlayerBar() {
   const track = useCurrentTrack();
@@ -44,7 +43,6 @@ export function PlayerBar() {
             </p>
           ) : null}
 
-          {/* Mobile */}
           <div className="relative flex items-center gap-2 p-2 md:hidden">
             <button
               type="button"
@@ -65,7 +63,6 @@ export function PlayerBar() {
             <MobileProgressLine />
           </div>
 
-          {/* Desktop */}
           <div className="hidden grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_minmax(0,1fr)] items-center gap-6 py-2 pr-6 pl-2 md:grid">
             <div className="flex min-w-0 items-center gap-2">
               <NowPlaying track={track} />
@@ -93,7 +90,6 @@ export function PlayerBar() {
   );
 }
 
-/** Fine ligne de progression en bas de la pilule mobile (information visuelle seulement). */
 function MobileProgressLine() {
   const currentTime = useProgressStore((s) => s.currentTime);
   const duration = useProgressStore((s) => s.duration);

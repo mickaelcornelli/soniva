@@ -7,16 +7,15 @@ import { selectCurrentItem, usePlayerStore } from "@/features/player/store/playe
 import { fetchRadioTracks } from "../api/fetch-radio-tracks";
 import { pickRadioTracks, shouldExtendQueue } from "../lib/radio-queue";
 
-/** Morceaux ajoutés à chaque relance. */
 const RADIO_BATCH_SIZE = 10;
-/** Écoutes récentes à ne pas reproposer tout de suite. */
+/** Recent plays not to suggest again right away. */
 const RECENT_PLAYS_EXCLUDED = 30;
-/** Aligné sur le cache CDN de /api/radio. */
+/** Matches the CDN cache of /api/radio. */
 const RADIO_STALE_TIME_MS = 10 * 60 * 1000;
 
 /**
- * Prolonge la file d'attente quand elle touche à sa fin, à partir du morceau en cours.
- * Composant sans rendu, monté une fois à côté du moteur audio.
+ * Extends the queue as it runs out, based on the current
+ * track. Renderless, mounted once next to the audio engine.
  */
 export function RadioEngine() {
   const queryClient = useQueryClient();
@@ -26,13 +25,13 @@ export function RadioEngine() {
   const repeat = usePlayerStore((s) => s.repeat);
   const queueLength = usePlayerStore((s) => s.queue.length);
   const currentIndex = usePlayerStore((s) => s.currentIndex);
-  // Une seule relance par entrée de file : évite de redemander si rien de neuf n'est trouvé.
+  // One refill per queue entry, so we don't ask again when nothing new was found.
   const lastSeedRef = useRef<string | null>(null);
 
   useEffect(() => {
-    // Radio coupée puis rallumée : le morceau en cours doit pouvoir relancer la recherche.
+    // Radio turned off then on: the current track must be able to trigger a new search.
     if (!radio) lastSeedRef.current = null;
-    // Rien à faire tant que rien ne joue (ex. file restaurée au chargement de la page).
+    // Nothing to do until something plays (e.g. queue restored on page load).
     if (!current || !isPlaying) return;
     if (!shouldExtendQueue({ radio, repeat, queueLength, currentIndex })) return;
     if (lastSeedRef.current === current.queueId) return;
@@ -47,7 +46,7 @@ export function RadioEngine() {
       })
       .then((candidates) => {
         const player = usePlayerStore.getState();
-        // L'utilisateur a pu couper la radio pendant la requête.
+        // The user may have turned the radio off during the request.
         if (!player.radio) return;
         const recentPlays = useLibraryStore
           .getState()

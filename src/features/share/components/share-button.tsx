@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { IconButton } from "@/components/ui/icon-button";
 import { type ShareOutcome, shareLink } from "../lib/share-link";
 
-/** Durée d'affichage de la confirmation « lien copié ». */
 const FEEDBACK_DURATION_MS = 2_500;
 
 const FEEDBACK: Partial<Record<ShareOutcome, string>> = {
@@ -14,9 +13,7 @@ const FEEDBACK: Partial<Record<ShareOutcome, string>> = {
 };
 
 interface ShareButtonProps {
-  /** Titre proposé au partage (ex. « Night Drive — Lune Rouge »). */
   title: string;
-  /** Chemin de la page à partager (ex. `/track/abc`). */
   path: string;
   size?: "sm" | "md";
 }
@@ -31,7 +28,7 @@ export function ShareButton({ title, path, size = "md" }: ShareButtonProps) {
   }, [outcome]);
 
   async function handleClick() {
-    // L'origine réelle (et non la configuration) : le lien reste juste en préproduction.
+    // Real origin rather than config, so links stay correct on preview deployments.
     const url = new URL(path, window.location.origin).toString();
     setOutcome(await shareLink({ title, url }));
   }

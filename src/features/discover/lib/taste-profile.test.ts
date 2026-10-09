@@ -9,7 +9,7 @@ const jazz = (id: string, artistId = "a2") =>
 
 describe("buildTasteProfile", () => {
   it("pondère les favoris plus fortement que les écoutes", () => {
-    // 1 favori House (3 points) contre 2 écoutes Jazz (2 points).
+    // 1 House favourite (3 points) vs 2 Jazz plays (2 points).
     const profile = buildTasteProfile([house("f1")], [jazz("h1"), jazz("h2")]);
 
     expect(profile.genres).toEqual(["House", "Jazz"]);

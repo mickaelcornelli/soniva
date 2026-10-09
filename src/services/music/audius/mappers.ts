@@ -23,7 +23,7 @@ function mapCoverPhoto(cover: AudiusCoverPhoto): Artwork {
   return { medium: cover?.["640x"], large: cover?.["2000x"] };
 }
 
-/** Audius stocke les tags en une seule chaîne séparée par des virgules. */
+/** Audius stores tags as one comma-separated string. */
 export function parseTags(tags: string | null | undefined): string[] {
   if (!tags) return [];
   const unique = new Set(
@@ -88,20 +88,18 @@ export function mapPlaylist(playlist: AudiusPlaylist): Playlist {
   };
 }
 
-/** Un morceau payant/réservé ou non diffusable ne peut pas être lu gratuitement. */
+/** Gated or non-streamable tracks can't be played for free. */
 function isFreelyPlayable(track: AudiusTrack): boolean {
   return track.is_streamable !== false && track.is_stream_gated !== true;
 }
 
-/** Valide un morceau isolé ; `null` s'il est invalide ou non lisible gratuitement. */
 export function parseTrack(item: unknown): Track | null {
   const result = audiusTrackSchema.safeParse(item);
   return result.success && isFreelyPlayable(result.data) ? mapTrack(result.data) : null;
 }
 
 /**
- * Valide chaque élément séparément : un morceau mal formé est écarté
- * au lieu de faire échouer toute la liste.
+ * Validates each item separately: a malformed track is dropped instead of failing the whole list.
  */
 export function parseTracks(items: readonly unknown[]): Track[] {
   return items.flatMap((item) => parseTrack(item) ?? []);

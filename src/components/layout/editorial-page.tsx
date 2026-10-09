@@ -3,7 +3,6 @@ import { formatLongDate } from "@/lib/format/date";
 import { PageContainer } from "./page-container";
 
 export interface EditorialSection {
-  /** Ancre de la section, utilisée par le sommaire. */
   id: string;
   title: string;
   content: React.ReactNode;
@@ -12,19 +11,14 @@ export interface EditorialSection {
 interface EditorialPageProps {
   title: string;
   description?: string;
-  /** Date ISO de dernière mise à jour du texte. */
   updatedAt?: string;
-  /** Encadré affiché avant le contenu (offres ou avis fictifs, par exemple). */
   notice?: React.ReactNode;
   sections?: readonly EditorialSection[];
-  /** Contenu libre affiché après les sections (cartes, listes…). */
   children?: React.ReactNode;
 }
 
-/** En dessous de ce nombre de sections, un sommaire n'apporte rien. */
 const MIN_SECTIONS_FOR_TOC = 4;
 
-/** Mise en page commune des pages institutionnelles : titre, date, sommaire, texte long. */
 export function EditorialPage({
   title,
   description,

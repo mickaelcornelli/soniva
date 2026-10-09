@@ -5,7 +5,6 @@ import { formatCompactNumber } from "@/lib/format/number";
 import { routes } from "@/lib/routes";
 import type { Artist, ArtistProfile } from "@/types/music";
 
-/** Accepte une fiche complète ou un simple artiste (le nombre d'abonnés est alors omis). */
 type ArtistCardData = Artist & Partial<Pick<ArtistProfile, "followerCount">>;
 
 export function ArtistCard({ artist }: { artist: ArtistCardData }) {

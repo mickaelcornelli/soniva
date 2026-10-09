@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { formatCompactNumber } from "./number";
 
-// Intl insère une espace insécable fine entre le nombre et l'unité : on normalise.
+// Intl inserts a narrow no-break space before the unit; normalise it.
 const normalize = (value: string) => value.replace(/\s/gu, " ");
 
 describe("formatCompactNumber", () => {

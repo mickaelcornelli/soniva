@@ -5,7 +5,6 @@ import { normalizePlaylistName, PLAYLIST_NAME_MAX_LENGTH } from "../lib/playlist
 
 interface CreatePlaylistFormProps {
   onCreate: (name: string) => Promise<void>;
-  /** Libellé du bouton (« Créer », « Créer et ajouter »…). */
   submitLabel?: string;
   autoFocus?: boolean;
 }

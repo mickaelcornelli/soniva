@@ -20,7 +20,6 @@ import { TopArtistsList } from "./top-artists-list";
 const SECTION_TITLE = "font-display text-xl font-semibold";
 
 export function MonthlyStatsView({ period }: { period: StatsPeriod }) {
-  // Le mois est celui de l'utilisateur (son fuseau), d'où un calcul côté navigateur.
   const month = useMemo(() => {
     const current = toMonthKey(new Date());
     return period === "previous" ? previousMonthKey(current) : current;
@@ -40,7 +39,7 @@ export function MonthlyStatsView({ period }: { period: StatsPeriod }) {
           <h1 className="font-display text-4xl font-bold tracking-tight text-balance sm:text-5xl">
             Ton mois en musique
           </h1>
-          {/* Le mois dépend du fuseau de l'utilisateur : il peut différer de celui du serveur. */}
+          {/* The month follows the user's time zone, which may differ from the server's. */}
           <p suppressHydrationWarning className="text-lg text-muted first-letter:uppercase">
             {label}
           </p>

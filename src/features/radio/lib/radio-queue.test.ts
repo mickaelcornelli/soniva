@@ -23,7 +23,7 @@ describe("shouldExtendQueue", () => {
 
 describe("pickRadioTracks", () => {
   const candidates = ["a", "b", "a", "c", "d"].map((id) => makeTrack({ id }));
-  // Toujours 0 : le mélange de Fisher-Yates devient déterministe.
+  // Always 0 makes the Fisher-Yates shuffle deterministic.
   const noRandom = () => 0;
 
   it("écarte les morceaux exclus et les doublons", () => {

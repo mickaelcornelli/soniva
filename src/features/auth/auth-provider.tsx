@@ -20,10 +20,7 @@ interface AuthContextValue {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-/**
- * Session de l'utilisateur côté navigateur. Les pages publiques restent statiques :
- * seul le client sait qui est connecté, et la base protège les données par RLS.
- */
+/** Public pages stay static: only the client knows who is signed in, and RLS protects the data. */
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [configured] = useState(isSupabaseConfigured);
   const [state, setState] = useState<AuthState>(
@@ -37,8 +34,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
-    // Visiteur sans session : Supabase n'est pas chargé, il le sera au moment de se connecter.
-    // Les deux cas passent par une promesse pour que l'état ne change que dans un rappel.
+    // No stored session: don't load Supabase until the user signs in. Both
+    // branches go through a promise so state only changes inside a callback.
     const client = hasStoredSession() ? getSupabaseBrowserClient() : Promise.resolve(null);
     client
       .then((supabase) => {
@@ -47,7 +44,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setState({ status: "signed-out", user: null });
           return;
         }
-        // Déclenché aussitôt avec la session existante (INITIAL_SESSION), puis à chaque changement.
         const { data } = supabase.auth.onAuthStateChange((_event, session) => {
           setState(
             session

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Genre } from "@/lib/genres";
 import { routes } from "@/lib/routes";
 
-/** Teinte stable par genre : chaque tuile a sa couleur sans palette à maintenir. */
+/** Stable hue per genre: each tile gets its colour without a palette to maintain. */
 function hueOf(slug: string): number {
   let hash = 0;
   for (const char of slug) hash = (hash * 31 + char.charCodeAt(0)) % 360;
@@ -28,7 +28,6 @@ export function GenreGrid({
             style={{ "--hue": hueOf(genre.slug) } as React.CSSProperties}
             className="group relative flex h-24 items-end overflow-hidden rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-accent/60 focus-visible:border-accent sm:h-28"
           >
-            {/* Halo coloré décoratif, propre à chaque genre. */}
             <span
               aria-hidden="true"
               className="absolute -top-10 -right-10 size-32 rounded-full opacity-60 blur-2xl transition-opacity group-hover:opacity-90 motion-reduce:transition-none"

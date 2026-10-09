@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { pluralize } from "./plural";
 
-// Intl sépare les milliers par une espace insécable fine : on normalise.
+// Intl groups thousands with a narrow no-break space; normalise it.
 const normalize = (value: string) => value.replace(/\s/gu, " ");
 
 describe("pluralize", () => {

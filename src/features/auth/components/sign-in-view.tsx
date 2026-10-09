@@ -8,7 +8,6 @@ import { SignInButtons } from "./sign-in-buttons";
 
 interface SignInViewProps {
   next: string;
-  /** Le retour du fournisseur a échoué (code expiré, accès refusé…). */
   failed: boolean;
 }
 

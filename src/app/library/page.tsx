@@ -5,7 +5,6 @@ import { LibraryView } from "@/features/library/components/library-view";
 
 export const metadata: Metadata = {
   title: "Bibliothèque",
-  // Page personnelle : rien à indexer.
   robots: { index: false },
 };
 

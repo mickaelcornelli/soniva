@@ -6,10 +6,9 @@ import { useProgressStore } from "@/features/player/store/progress-store";
 import { createLibraryRepository } from "../api/library-repository";
 import { useLibraryStore } from "../store/library-store";
 
-/** Une écoute ne compte qu'après ce temps : un morceau zappé n'encombre pas l'historique. */
+/** A play only counts after this delay, so skipped tracks don't clutter the history. */
 export const PLAY_THRESHOLD_SECONDS = 15;
 
-/** Ajoute à l'historique chaque morceau écouté au-delà du seuil, une fois par entrée de file. */
 export function usePlayHistoryRecorder() {
   useEffect(() => {
     let recordedQueueId: string | null = null;
@@ -24,7 +23,7 @@ export function usePlayHistoryRecorder() {
       const play = library.recordPlay(item.track);
       if (!library.ownerId) return;
 
-      // Échec réseau : l'écoute reste marquée non synchronisée et partira à la prochaine connexion.
+      // Network failure: the play stays unsynced and is sent on the next sign-in.
       createLibraryRepository(library.ownerId)
         .addPlays([{ trackId: play.track.id, playedAt: play.playedAt }])
         .then(() => useLibraryStore.getState().markPlaysSynced([play.id]))

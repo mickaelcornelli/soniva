@@ -4,11 +4,7 @@ import type { Database } from "./database.types";
 
 let clientPromise: Promise<SupabaseClient<Database>> | undefined;
 
-/**
- * Client Supabase du navigateur (session en cookies), créé une seule fois. Chargé à la
- * demande : la bibliothèque pèse près de 100 Ko et n'est utile qu'aux fonctions de compte,
- * pas à l'affichage des pages.
- */
+/** Loaded on demand: the library weighs about 100 KB and only account features need it. */
 export function getSupabaseBrowserClient(): Promise<SupabaseClient<Database>> {
   clientPromise ??= import("@supabase/ssr")
     .then(({ createBrowserClient }) => {
@@ -16,7 +12,7 @@ export function getSupabaseBrowserClient(): Promise<SupabaseClient<Database>> {
       return createBrowserClient<Database>(url, publishableKey);
     })
     .catch((error: unknown) => {
-      // Échec réseau du chargement : la prochaine demande retentera.
+      // Network failure while loading: the next call retries.
       clientPromise = undefined;
       throw error;
     });
@@ -24,8 +20,8 @@ export function getSupabaseBrowserClient(): Promise<SupabaseClient<Database>> {
 }
 
 /**
- * Vrai si ce navigateur garde un cookie de session Supabase (`sb-…-auth-token`, parfois
- * découpé en `.0`, `.1`…). Sans lui, inutile de charger Supabase pour savoir qui est connecté.
+ * Session cookie `sb-…-auth-token`, sometimes split into
+ * `.0`, `.1`… Without it there's no need to load Supabase.
  */
 export function hasStoredSession(cookies: string = document.cookie): boolean {
   return cookies.split(";").some((cookie) => /^sb-[^=]+-auth-token(\.\d+)?=/.test(cookie.trim()));

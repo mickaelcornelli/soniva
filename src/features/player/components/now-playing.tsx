@@ -7,10 +7,9 @@ import type { Track } from "@/types/music";
 
 interface NowPlayingProps {
   track: Track;
-  /** Appelé quand un lien est suivi (pour fermer un panneau, par exemple). */
   onNavigate?: () => void;
   layout?: "compact" | "large";
-  /** Faux quand le bloc est déjà dans un bouton (un lien ne peut pas y être imbriqué). */
+  /** False when already inside a button (links can't be nested there). */
   linked?: boolean;
 }
 
@@ -21,8 +20,7 @@ export function NowPlaying({
   linked = true,
 }: NowPlayingProps) {
   const large = layout === "large";
-  // En format compact, les deux liens empilés sont rehaussés à 24 px de haut chacun :
-  // c'est la taille minimale d'une cible tactile (WCAG 2.5.8).
+  // Compact layout: both stacked links get a 24px hit area (WCAG 2.5.8).
   const titleClass = `truncate font-medium ${large ? "font-display text-xl" : "py-0.5 text-sm"}`;
   const artistClass = `truncate text-muted ${large ? "" : "py-1 text-xs"}`;
 

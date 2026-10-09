@@ -1,10 +1,10 @@
 export type TextPart = { type: "text"; value: string } | { type: "link"; value: string };
 
-// URL http(s) jusqu'au prochain espace ; la ponctuation finale (point, virgule, parenthèse
-// fermante…) est exclue pour ne pas casser « voir https://exemple.com. »
+// http(s) URL up to the next space; trailing punctuation
+// is excluded so "see https://example.com." doesn't break.
 const URL_PATTERN = /https?:\/\/[^\s<>"]+[^\s<>".,;:!?)\]}'»]/g;
 
-/** Découpe un texte libre en segments texte / lien, sans HTML (aucun risque d'injection). */
+/** Text/link segments without HTML, so no injection risk. */
 export function splitLinks(text: string): TextPart[] {
   const parts: TextPart[] = [];
   let cursor = 0;

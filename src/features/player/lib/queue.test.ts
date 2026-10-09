@@ -12,7 +12,7 @@ import {
 const items = createQueueItems(["a", "b", "c", "d", "e"].map((id) => makeTrack({ id })));
 const ids = (queue: { track: { id: string } }[]) => queue.map((item) => item.track.id);
 
-// Générateur pseudo-aléatoire déterministe pour des tests stables.
+// Deterministic PRNG for stable tests.
 function seeded(seed: number) {
   return () => {
     seed = (seed * 16807) % 2147483647;

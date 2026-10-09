@@ -4,7 +4,6 @@ import { LogOut } from "lucide-react";
 import { useAuth } from "../auth-provider";
 import { UserAvatar } from "./user-avatar";
 
-/** Bloc « compte » de la bibliothèque : seul accès à la déconnexion sur mobile. */
 export function AccountCard() {
   const { state, signOut } = useAuth();
   if (state.status !== "signed-in") return null;

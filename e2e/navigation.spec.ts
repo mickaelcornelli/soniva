@@ -12,7 +12,7 @@ test.describe("Navigation et pages publiques", () => {
   });
 
   test("chaque lien du pied de page mène à une page existante", async ({ page }) => {
-    // Une quinzaine de pages visitées l'une après l'autre.
+    // About fifteen pages visited one after another.
     test.setTimeout(120_000);
     await page.goto("/");
     const footer = page.getByRole("contentinfo");

@@ -6,22 +6,21 @@ export interface AudiusClientConfig {
   baseUrl: string;
   appName: string;
   apiKey?: string | undefined;
-  /** Secret : à n'utiliser que côté serveur. */
+  /** Secret: server-side only. */
   bearerToken?: string | undefined;
   fetch?: typeof fetch;
 }
 
-/** Un tableau produit un paramètre répété (`id=a&id=b`), comme l'attend Audius. */
+/** Arrays become repeated parameters (`id=a&id=b`), as Audius expects. */
 export type QueryParams = Record<string, string | number | readonly string[] | undefined>;
 
 export interface RequestOptions {
-  /** Durée de cache côté Next.js, en secondes. */
   revalidate?: number;
 }
 
 export interface AudiusClient {
   get(path: string, params?: QueryParams, options?: RequestOptions): Promise<unknown>;
-  /** URL complète (identifiants inclus) d'une ressource lue directement par le navigateur. */
+  /** Full URL (credentials included) for a resource fetched directly by the browser. */
   url(path: string, params?: QueryParams): URL;
 }
 
@@ -35,7 +34,7 @@ export function buildAudiusUrl(config: AudiusClientConfig, path: string, params:
       url.searchParams.set(key, String(value));
     }
   }
-  // Identifiants attendus par Audius sur chaque requête (cf. SDK officiel).
+  // Identifiers Audius expects on every request (see the official SDK).
   url.searchParams.set("app_name", config.appName);
   if (config.apiKey) url.searchParams.set("api_key", config.apiKey);
 

@@ -16,9 +16,8 @@ interface PlayerPanelProps {
 }
 
 /**
- * Panneau « en cours de lecture » : plein écran sur mobile (avec toutes les commandes),
- * tiroir latéral sur desktop (la barre affiche déjà les commandes, on y montre la file).
- * Le <dialog> natif gère le piège du focus et la touche Échap.
+ * Full screen on mobile, side drawer on desktop. The
+ * native <dialog> handles focus trapping and Escape.
  */
 export function PlayerPanel({ track, open, onClose }: PlayerPanelProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -35,7 +34,6 @@ export function PlayerPanel({ track, open, onClose }: PlayerPanelProps) {
       ref={dialogRef}
       aria-label="Lecture en cours"
       onClose={onClose}
-      // Un clic sur le fond (hors du contenu) ferme le panneau.
       onClick={(event) => event.target === event.currentTarget && onClose()}
       className="m-0 h-dvh max-h-none w-full max-w-none bg-night text-foreground backdrop:bg-black/60 backdrop:backdrop-blur-sm md:ml-auto md:w-[26rem] md:border-l md:border-line"
     >

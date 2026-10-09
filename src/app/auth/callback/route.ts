@@ -3,10 +3,7 @@ import { routes } from "@/lib/routes";
 import { safeRedirectPath } from "@/lib/safe-redirect";
 import { createSupabaseServerClient } from "@/services/supabase/server-client";
 
-/**
- * Retour du fournisseur OAuth (Google, GitHub) : échange le code contre une session,
- * écrit les cookies, puis renvoie l'utilisateur là où il était.
- */
+/** OAuth return: exchanges the code for a session, sets the cookies and redirects back. */
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");

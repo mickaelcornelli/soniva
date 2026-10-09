@@ -14,7 +14,7 @@ test.describe("Lecteur global", () => {
     await player.getByRole("button", { name: "Morceau suivant" }).click();
     await expect(player).not.toContainText(leaderTitle);
 
-    // Le lecteur appartient au layout : il reste en place d'une page à l'autre.
+    // The player lives in the layout, so it persists across pages.
     await page
       .getByRole("navigation", { name: "Navigation principale" })
       .getByRole("link", { name: "Genres" })

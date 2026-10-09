@@ -23,7 +23,7 @@ describe("buildPageMetadata", () => {
       url: "/track/D7KyD",
       images: [{ url: "https://cdn.example/1000.jpg", alt: "Night Drive" }],
     });
-    // Pochette carrée : carte simple, pour ne pas la recadrer.
+    // Square cover: plain card so it isn't cropped.
     expect(metadata.twitter).toMatchObject({ card: "summary" });
   });
 

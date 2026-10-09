@@ -4,7 +4,7 @@ import { createAudiusProvider } from "./audius/audius-provider";
 import { createAudiusClient } from "./audius/client";
 import type { MusicProvider } from "./music-provider";
 
-/** Provider musical de l'application. Changer de provider se fait ici uniquement. */
+/** The app's music provider: switching providers happens here only. */
 export const musicProvider: MusicProvider = createAudiusProvider(
   createAudiusClient({
     baseUrl: serverEnv.AUDIUS_API_BASE_URL,

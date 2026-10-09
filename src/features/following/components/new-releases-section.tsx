@@ -8,8 +8,8 @@ import { useLatestReleases } from "../hooks/use-latest-releases";
 const DISPLAYED_RELEASES = 10;
 
 /**
- * « Nouveautés de tes artistes » : derniers morceaux des artistes suivis. Section
- * secondaire, invisible sans artiste suivi et masquée plutôt qu'affichée en erreur.
+ * Secondary section: hidden without followed artists,
+ * and hidden rather than shown in an error state.
  */
 export function NewReleasesSection() {
   const headingId = useId();

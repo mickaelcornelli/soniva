@@ -7,14 +7,12 @@ import type { ArtistProfile } from "@/types/music";
 
 interface ArtistHeroProps {
   artist: ArtistProfile;
-  /** Actions affichées sous les informations (partage, suivi…). */
   actions?: React.ReactNode;
 }
 
 export function ArtistHero({ artist, actions }: ArtistHeroProps) {
   return (
     <header className="flex flex-col">
-      {/* Bannière décorative : l'avatar et le nom portent l'information. */}
       <ArtworkImage
         artwork={artist.cover}
         size="large"

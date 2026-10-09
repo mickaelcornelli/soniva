@@ -2,10 +2,7 @@ interface LogoMarkProps {
   className?: string;
 }
 
-/**
- * Monogramme Soniva : un S tracé comme une piste de console, qui émet un point
- * (le signal qui part). Même dessin que la favicon (`app/icon.svg`).
- */
+/** Same drawing as the favicon (`app/icon.svg`). */
 export function LogoMark({ className }: LogoMarkProps) {
   return (
     <svg viewBox="0 0 64 64" aria-hidden="true" className={className}>

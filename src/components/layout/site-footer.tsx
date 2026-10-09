@@ -7,7 +7,7 @@ import { SocialLinks } from "./social-links";
 
 export function SiteFooter() {
   return (
-    // Le padding bas réserve la place de la barre mobile et du lecteur flottant.
+    // Bottom padding leaves room for the mobile tab bar and the floating player.
     <footer className="mt-8 border-t border-line pb-[calc(var(--spacing-mobile-nav)+6rem)] md:pb-32">
       <div className="mx-auto flex max-w-6xl flex-col gap-12 px-4 pt-12 sm:px-8 lg:flex-row lg:justify-between">
         <div className="flex max-w-xs flex-col gap-5">

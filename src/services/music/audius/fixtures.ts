@@ -1,5 +1,3 @@
-/** Réponses Audius minimales mais réalistes, partagées par les tests. */
-
 export function makeAudiusUser(overrides: Record<string, unknown> = {}) {
   return {
     id: "nlGNe",
@@ -31,7 +29,7 @@ export function makeAudiusTrack(overrides: Record<string, unknown> = {}) {
       "1000x1000": "https://cdn.example/1000.jpg",
     },
     user: makeAudiusUser(),
-    // Champ non utilisé : doit être ignoré sans erreur.
+    // Unused field: must be ignored without error.
     route_id: "lunerouge/night-drive",
     ...overrides,
   };

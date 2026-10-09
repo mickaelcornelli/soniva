@@ -3,16 +3,11 @@ import type { Artwork, ArtworkSize } from "@/types/music";
 
 interface ArtworkImageProps {
   artwork: Artwork;
-  /** Taille idéale ; on se rabat sur la plus proche disponible. */
   size: ArtworkSize;
   alt: string;
   className?: string;
   priority?: boolean;
-  /**
-   * Largeur affichée (attribut `sizes`) d'une image carrée. Active le choix de la
-   * résolution par le navigateur : une grande pochette n'est plus téléchargée en 1000 px
-   * quand elle s'affiche en 256 px.
-   */
+  /** Enables srcset so a large cover isn't downloaded at 1000px when shown at 256px. */
   sizes?: string;
 }
 
@@ -38,9 +33,8 @@ export function ArtworkImage({
   }
 
   return (
-    // Les pochettes Audius sont servies par de nombreux nœuds de stockage aux domaines
-    // variables : next/image exigerait de tous les autoriser et consommerait le quota
-    // d'optimisation de l'hébergeur gratuit. Les tailles fournies par Audius suffisent.
+    // Audius serves covers from many storage nodes with changing domains: next/image
+    // would require allowing them all and would eat the free host's optimisation quota.
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={src}

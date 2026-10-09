@@ -1,7 +1,4 @@
-/*
- * Logos des réseaux sociaux, dessinés en SVG inline : Lucide ne fournit plus les
- * logos de marques, et une dépendance d'icônes pour trois pictogrammes serait de trop.
- */
+/* Lucide no longer ships brand logos, and a whole icon package for three glyphs isn't worth it. */
 
 interface SocialIconProps {
   className?: string;

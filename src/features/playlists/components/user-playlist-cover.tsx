@@ -3,12 +3,10 @@ import type { Artwork } from "@/types/music";
 
 interface UserPlaylistCoverProps {
   name: string;
-  /** Pochette du premier morceau, quand on la connaît. */
   artwork?: Artwork | undefined;
   className?: string;
 }
 
-/** Pochette d'une playlist perso : celle du premier morceau, sinon l'initiale du nom. */
 export function UserPlaylistCover({ name, artwork, className = "" }: UserPlaylistCoverProps) {
   if (artwork && (artwork.small || artwork.medium || artwork.large)) {
     return <ArtworkImage artwork={artwork} size="large" alt="" className={className} />;

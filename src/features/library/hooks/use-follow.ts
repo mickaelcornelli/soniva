@@ -4,10 +4,7 @@ import type { Artist } from "@/types/music";
 import { createLibraryRepository } from "../api/library-repository";
 import { selectIsFollowing, useLibraryStore } from "../store/library-store";
 
-/**
- * Suivi d'un artiste, avec mise à jour optimiste (comme les favoris) : le bouton change
- * tout de suite, puis le compte est mis à jour ; en cas d'échec, l'action est annulée.
- */
+/** Optimistic update, like favourites. */
 export function useFollow(artist: Artist) {
   const isFollowing = useLibraryStore(selectIsFollowing(artist.id));
 

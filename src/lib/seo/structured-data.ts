@@ -3,7 +3,7 @@ import { routes } from "@/lib/routes";
 import type { ArtistProfile, Playlist, Track } from "@/types/music";
 import { absoluteUrl } from "./absolute-url";
 
-/** Durée ISO 8601 attendue par schema.org : 214 s → « PT3M34S ». */
+/** 214 s -> "PT3M34S". */
 export function toIsoDuration(totalSeconds: number): string {
   const seconds = Math.max(0, Math.round(totalSeconds));
   const m = Math.floor(seconds / 60);
@@ -60,7 +60,6 @@ export function playlistStructuredData(playlist: Playlist, tracks: readonly Trac
   };
 }
 
-/** Classement d'un genre : une liste ordonnée de morceaux. */
 export function genreChartStructuredData(
   { name, path }: { name: string; path: string },
   tracks: readonly Track[],

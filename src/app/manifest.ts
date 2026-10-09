@@ -1,7 +1,6 @@
 import type { MetadataRoute } from "next";
 import { siteConfig } from "@/config/site";
 
-/** Permet d'installer Soniva sur l'écran d'accueil d'un téléphone. */
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: siteConfig.name,

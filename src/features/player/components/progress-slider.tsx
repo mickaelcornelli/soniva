@@ -6,9 +6,8 @@ import { usePlayerStore } from "../store/player-store";
 import { useProgressStore } from "../store/progress-store";
 
 /**
- * Barre de progression déplaçable. Pendant le glissement, la position affichée
- * suit le curseur sans relancer le chargement audio à chaque pixel : la position
- * n'est envoyée au lecteur qu'au relâchement.
+ * While dragging, the displayed position follows the pointer; the seek
+ * is only sent on release so audio isn't reloaded at every pixel.
  */
 export function ProgressSlider({ className = "" }: { className?: string }) {
   const currentTime = useProgressStore((s) => s.currentTime);

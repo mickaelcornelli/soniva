@@ -30,7 +30,6 @@ function LinkList({ links }: { links: readonly SiteMapLink[] }) {
   );
 }
 
-// Construit à partir des mêmes listes que la navigation : le plan reste à jour tout seul.
 const SECTIONS: readonly EditorialSection[] = [
   {
     id: "decouvrir",

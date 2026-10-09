@@ -7,10 +7,7 @@ import { AccountMenu } from "@/features/auth/components/account-menu";
 import { isNavItemActive, mainNavigation } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 
-/**
- * Navigation principale : rail vertical sur desktop, barre d'onglets en bas sur mobile.
- * Un seul composant pour les deux formats afin de ne pas dupliquer les liens.
- */
+/** One component for both layouts (desktop rail, mobile tab bar) so links aren't duplicated. */
 export function MainNav() {
   const pathname = usePathname();
 

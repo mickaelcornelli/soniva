@@ -10,7 +10,6 @@ export function hasResults({ tracks, artists, playlists }: SearchResultsData): b
   return tracks.length + artists.length + playlists.length > 0;
 }
 
-/** Résultats groupés par type ; une section vide n'est pas affichée. */
 export function SearchResults({ results }: { results: SearchResultsData }) {
   const { tracks, artists, playlists } = results;
 

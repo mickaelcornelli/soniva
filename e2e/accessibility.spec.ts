@@ -2,7 +2,7 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 import { openLeaderTrack } from "./helpers";
 
-/** Règles WCAG 2.2 niveaux A et AA, la cible de la déclaration d'accessibilité. */
+/** WCAG 2.2 A and AA, the target of the accessibility statement. */
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 const STATIC_PAGES = [
@@ -20,7 +20,7 @@ const STATIC_PAGES = [
   "/plan-du-site",
 ];
 
-/** Lance axe et échoue avec un résumé lisible : règle, gravité, éléments concernés. */
+/** Fails with a readable summary: rule, impact, affected elements. */
 async function expectNoViolations(page: Page, label: string) {
   const { violations } = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
   const summary = violations.map(({ id, impact, help, nodes }) => ({

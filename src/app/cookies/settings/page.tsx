@@ -13,7 +13,6 @@ export const metadata: Metadata = {
     description: `Les catégories de cookies de ${siteConfig.name} et l'effacement des données de cet appareil.`,
     path: routes.cookieSettings,
   }),
-  // Page d'outil, sans contenu à faire apparaître dans les résultats de recherche.
   robots: { index: false, follow: true },
 };
 

@@ -9,7 +9,6 @@ interface FavoriteButtonProps {
   track: Track;
   size?: "sm" | "md";
   className?: string;
-  /** Dans une liste : masqué au repos, sauf s'il est déjà en favori (ou sur écran tactile). */
   revealOnHover?: boolean;
 }
 

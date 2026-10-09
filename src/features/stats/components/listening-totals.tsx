@@ -2,7 +2,6 @@ import type { MonthSummary } from "../lib/summarize-month";
 
 const integerFormatter = new Intl.NumberFormat("fr-FR");
 
-/** Chiffre clé du mois (minutes écoutées) et compteurs secondaires. */
 export function ListeningTotals({ summary }: { summary: MonthSummary }) {
   const minutes = Math.round(summary.totalSeconds / 60);
   const counters = [
@@ -16,7 +15,6 @@ export function ListeningTotals({ summary }: { summary: MonthSummary }) {
       aria-label="Totaux du mois"
       className="relative overflow-hidden rounded-3xl border border-line bg-surface p-6 sm:p-10"
     >
-      {/* Halo décoratif, dans l'esprit d'un vumètre allumé. */}
       <span
         aria-hidden="true"
         className="absolute -top-24 -right-24 size-72 rounded-full bg-accent/15 blur-3xl"

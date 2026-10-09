@@ -1,7 +1,4 @@
-/**
- * Données structurées schema.org. Les `<` sont échappés pour qu'un titre
- * contenant « </script> » ne puisse pas fermer la balise prématurément.
- */
+/** `<` is escaped so a title containing "</script>" cannot close the tag early. */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script

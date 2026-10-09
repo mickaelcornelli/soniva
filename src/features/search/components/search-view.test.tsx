@@ -36,7 +36,7 @@ describe("SearchView", () => {
   });
 
   it("propose des genres quand le champ est vide et les reporte dans le champ", () => {
-    // La recherche part après le délai de frappe : on la laisse en attente.
+    // The search fires after the typing delay; keep it pending.
     vi.stubGlobal(
       "fetch",
       vi.fn(() => new Promise(() => {})),

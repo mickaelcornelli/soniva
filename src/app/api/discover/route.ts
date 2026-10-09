@@ -13,7 +13,6 @@ const querySchema = z.object({
     .default("")
     .transform((raw) => [...new Set(raw.split(",").map((genre) => genre.trim()))].filter(Boolean))
     .pipe(z.array(z.string().max(40)).max(MAX_GENRES)),
-  // Identifiants Audius : courts et alphanumériques.
   artist: z
     .string()
     .regex(/^[A-Za-z0-9]{1,32}$/)
@@ -21,9 +20,8 @@ const querySchema = z.object({
 });
 
 /**
- * Matière première des recommandations (`/api/discover?genres=A,B&artist=ID`).
- * Le profil de goûts est calculé dans le navigateur : le serveur ne reçoit que
- * quelques genres et un artiste, jamais l'historique complet.
+ * The taste profile is computed in the browser: the
+ * server only receives a few genres and one artist.
  */
 export async function GET(request: Request) {
   const params = Object.fromEntries(new URL(request.url).searchParams);

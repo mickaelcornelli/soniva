@@ -1,9 +1,8 @@
 import { create } from "zustand";
 
 /**
- * État de lecture à haute fréquence (plusieurs mises à jour par seconde).
- * Séparé du store principal pour ne pas déclencher sa persistance ni re-rendre
- * les composants qui n'affichent pas la progression.
+ * High-frequency playback state, kept apart from the main store so it doesn't
+ * trigger persistence or re-render components that don't show progress.
  */
 interface ProgressState {
   currentTime: number;

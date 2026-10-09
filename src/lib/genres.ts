@@ -1,8 +1,6 @@
 /**
- * Genres musicaux proposés à l'exploration. `name` est la valeur canonique échangée avec
- * le provider (celle d'Audius aujourd'hui) ; `slug` sert aux URL ; `label` à l'affichage.
- * Les catégories non musicales du provider (podcasts, livres audio…) sont volontairement
- * absentes : elles n'ont pas de page.
+ * `name` is the canonical value exchanged with the provider, `slug` is used in URLs, `label`
+ * for display. Non-music provider categories (podcasts, audiobooks) are deliberately left out.
  */
 export interface Genre {
   slug: string;
@@ -79,17 +77,15 @@ export function findGenreBySlug(slug: string): Genre | undefined {
   return bySlug.get(slug);
 }
 
-/** Retrouve un genre à partir de la valeur renvoyée par le provider (casse ignorée). */
+/** Case-insensitive. */
 export function findGenreByName(name: string | null | undefined): Genre | undefined {
   return name ? byName.get(name.toLowerCase()) : undefined;
 }
 
-/** Libellé affichable d'un genre du provider, même hors catalogue. */
 export function genreLabel(name: string): string {
   return findGenreByName(name)?.label ?? name;
 }
 
-/** Autres genres de la même famille, pour inviter à poursuivre l'exploration. */
 export function relatedGenres(target: Genre, limit: number): Genre[] {
   return GENRES.filter((g) => g.family === target.family && g.slug !== target.slug).slice(0, limit);
 }

@@ -14,25 +14,24 @@ import {
 } from "../lib/queue";
 import { useProgressStore } from "./progress-store";
 
-/** En dessous de ce temps écoulé, « précédent » change de morceau ; au-delà, il revient au début. */
+/** Before this many seconds, "previous" changes track; after, it restarts the current one. */
 const RESTART_THRESHOLD_SECONDS = 3;
 const NO_TRACK = -1;
 
 export interface PlayerState {
   queue: QueueItem[];
   currentIndex: number;
-  /** Ordre d'origine, conservé pendant le mode aléatoire pour pouvoir le restaurer. */
+  /** Original order, kept while shuffled so it can be restored. */
   unshuffledQueue: QueueItem[] | null;
-  /** Intention de lecture ; le moteur audio s'aligne dessus. */
+  /** Playback intent; the audio engine follows it. */
   isPlaying: boolean;
-  /** Position demandée au moteur audio, consommée puis remise à null. */
+  /** Seek request for the audio engine, consumed then reset to null. */
   pendingSeek: number | null;
   error: string | null;
   volume: number;
   muted: boolean;
   shuffle: boolean;
   repeat: RepeatMode;
-  /** Radio : la file se prolonge d'elle-même avec des morceaux proches. */
   radio: boolean;
 }
 
@@ -40,7 +39,6 @@ export interface PlayerActions {
   playTracks: (tracks: readonly Track[], startIndex?: number) => void;
   playQueueItem: (index: number) => void;
   addToQueue: (track: Track) => void;
-  /** Ajoute plusieurs morceaux en fin de file, sans toucher au morceau courant. */
   extendQueue: (tracks: readonly Track[]) => void;
   removeFromQueue: (queueId: string) => void;
   togglePlay: () => void;
@@ -54,9 +52,7 @@ export interface PlayerActions {
   toggleShuffle: () => void;
   cycleRepeat: () => void;
   toggleRadio: () => void;
-  /** Appelé par le moteur audio en fin de morceau. */
   handleEnded: () => void;
-  /** Appelé par le moteur audio quand la lecture échoue. */
   handleError: (message: string) => void;
 }
 
@@ -81,7 +77,6 @@ const initialState: PlayerState = {
 export const usePlayerStore = create<PlayerStore>()(
   persist(
     (set, get) => {
-      /** Passe à l'entrée `index` de la file et lance la lecture. */
       function goTo(index: number) {
         const item = get().queue[index];
         if (!item) return;
@@ -103,7 +98,7 @@ export const usePlayerStore = create<PlayerStore>()(
           if (!start) return;
 
           if (get().shuffle) {
-            // En aléatoire, le morceau choisi joue d'abord, puis le reste dans le désordre.
+            // When shuffled, the chosen track plays first, then the rest in random order.
             const others = items.filter((item) => item !== start);
             set({ queue: [start, ...shuffle(others)], unshuffledQueue: items });
             goTo(0);
@@ -122,7 +117,7 @@ export const usePlayerStore = create<PlayerStore>()(
           if (!item) return;
           const { queue, currentIndex } = get();
           set({ queue: [...queue, item] });
-          // File vide : le morceau ajouté devient le morceau courant, sans démarrer seul.
+          // Empty queue: the added track becomes current without starting playback.
           if (currentIndex === NO_TRACK) {
             useProgressStore.getState().reset(track.durationSeconds);
             set({ currentIndex: 0 });
@@ -137,7 +132,7 @@ export const usePlayerStore = create<PlayerStore>()(
         removeFromQueue(queueId) {
           const { queue, currentIndex } = get();
           const index = queue.findIndex((item) => item.queueId === queueId);
-          // Le morceau en cours ne se retire pas : il faut d'abord passer au suivant.
+          // The current track can't be removed; skip to the next one first.
           if (index === NO_TRACK || index === currentIndex) return;
           set({
             queue: queue.filter((item) => item.queueId !== queueId),
@@ -157,7 +152,7 @@ export const usePlayerStore = create<PlayerStore>()(
 
         next() {
           const { queue, currentIndex, repeat } = get();
-          // « Répéter le morceau » ne s'applique qu'à l'enchaînement automatique.
+          // "Repeat one" only applies to automatic advance.
           const index = getNextIndex(queue.length, currentIndex, repeat === "all" ? "all" : "off");
           if (index !== null) goTo(index);
         },
@@ -194,7 +189,7 @@ export const usePlayerStore = create<PlayerStore>()(
 
         toggleMute() {
           const { muted, volume } = get();
-          // Réactiver le son depuis un volume nul n'aurait aucun effet audible.
+          // Unmuting at zero volume would have no audible effect.
           set(muted && volume === 0 ? { muted: false, volume: 0.5 } : { muted: !muted });
         },
 
@@ -237,7 +232,7 @@ export const usePlayerStore = create<PlayerStore>()(
             goTo(index);
             return;
           }
-          // Fin de la file : on s'arrête et on revient au début du dernier morceau.
+          // End of queue: stop and rewind the last track.
           set({ isPlaying: false });
           restartCurrent();
         },
@@ -251,8 +246,8 @@ export const usePlayerStore = create<PlayerStore>()(
       name: DEVICE_STORAGE_KEYS.player,
       version: 1,
       storage: createJSONStorage(() => localStorage),
-      // Réhydratation manuelle après le montage, pour éviter un écart entre le rendu
-      // serveur (sans lecteur) et le premier rendu client.
+      // Manual rehydration after mount, so the server
+      // render (no player) matches the first client render.
       skipHydration: true,
       onRehydrateStorage: () => (state) => {
         const item = state?.queue[state.currentIndex];

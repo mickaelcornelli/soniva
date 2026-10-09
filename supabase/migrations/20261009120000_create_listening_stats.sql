@@ -1,8 +1,6 @@
--- Statistiques d'écoute agrégées par mois et par morceau, pour « Ton mois en musique ».
--- Une ligne par (utilisateur, mois, morceau) : le volume reste borné quel que soit le
--- nombre d'écoutes, contrairement au journal `listening_history` (plafonné à 200).
--- Appliquée sur le projet zxflwkejcnggyovkcura le 09/10/2026 (en trois migrations :
--- table, fonction, droits).
+-- Monthly listening stats per track, for "Ton mois en musique". One row per
+-- (user, month, track): volume stays bounded regardless of play count, unlike
+-- `listening_history` (capped at 200).
 
 create table public.listening_stats (
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
@@ -28,14 +26,13 @@ create policy "Statistiques : mise à jour des siennes" on public.listening_stat
 create policy "Statistiques : suppression des siennes" on public.listening_stats
   for delete to authenticated using ((select auth.uid()) = user_id);
 
--- Ajoute des écoutes en un seul appel : les compteurs sont incrémentés côté base, ce qui
--- reste juste même si plusieurs appareils envoient leurs écoutes en même temps.
--- `security invoker` : la fonction s'exécute avec les droits (et les règles RLS) de l'appelant.
+-- Adds plays in a single call: counters are incremented in the database,
+-- which stays correct when several devices send plays at the same time.
+-- `security invoker`: runs with the caller's privileges (and RLS policies).
 create function public.record_listening(entries jsonb) returns void
   language sql security invoker set search_path = '' as $$
   insert into public.listening_stats (user_id, month, track_id, artist_id, genre, plays, seconds)
-  -- Regroupement préalable : un même morceau présent deux fois dans l'envoi ferait
-  -- échouer le « on conflict ».
+  -- Group first: the same track twice in one payload would make `on conflict` fail.
   select (select auth.uid()), e.month, e.track_id, max(e.artist_id), max(e.genre),
          least(sum(greatest(e.plays, 0)), 1000), least(sum(greatest(e.seconds, 0)), 86400)
   from jsonb_to_recordset(entries)

@@ -7,7 +7,6 @@ interface PlayPauseButtonProps {
   isBuffering?: boolean;
   onClick: () => void;
   size?: "sm" | "md" | "lg";
-  /** Complète le nom accessible, ex. « Lire Night Drive ». */
   subject?: string;
   className?: string;
 }
@@ -18,7 +17,6 @@ const SIZES = {
   lg: { button: "size-16", icon: "size-7" },
 } as const;
 
-/** Le bouton de lecture ambre : l'élément le plus visible de l'interface. */
 export function PlayPauseButton({
   isPlaying,
   isBuffering = false,

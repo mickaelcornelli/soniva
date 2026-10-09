@@ -3,7 +3,6 @@ interface PageContainerProps {
   className?: string;
 }
 
-/** Largeur et marges communes à toutes les pages. */
 export function PageContainer({ children, className = "" }: PageContainerProps) {
   return (
     <div

@@ -3,10 +3,6 @@ import { pickFreshTracks } from "./taste-profile";
 
 const TRACKS_PER_GENRE = 6;
 
-/**
- * Prépare l'affichage : retire les morceaux déjà connus (ou visibles ailleurs sur la page),
- * évite qu'un même morceau apparaisse sous deux genres et écarte l'artiste de référence.
- */
 export function selectRecommendations(
   data: Recommendations,
   excludedTrackIds: ReadonlySet<string>,

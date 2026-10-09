@@ -17,9 +17,8 @@ const DEFAULT_SEARCH_LIMIT = 10;
 const DEFAULT_RELATED_ARTISTS_LIMIT = 6;
 
 /*
- * Durées de cache (secondes). Les classements bougent peu à l'échelle de quelques minutes
- * et les fiches (morceau, artiste) presque jamais : des caches longs ménagent le quota
- * gratuit d'Audius sans fraîcheur perceptible en moins.
+ * Cache durations (seconds). Charts barely move within minutes and track/artist records
+ * almost never: long caches spare the free Audius quota with no visible staleness.
  */
 const CACHE = {
   trending: 600,
@@ -28,7 +27,10 @@ const CACHE = {
   search: 300,
 } as const;
 
-/** Audius répond 404 pour un id inconnu et 400 pour un id mal formé : dans les deux cas, la ressource n'existe pas. */
+/**
+ * Audius returns 404 for unknown IDs and 400 for
+ * malformed ones: both mean the resource doesn't exist.
+ */
 const NOT_FOUND_STATUSES = new Set([400, 404]);
 
 function isNotFound(error: unknown): boolean {
@@ -47,7 +49,6 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
     return result.data.data;
   }
 
-  /** Renvoie `undefined` quand la ressource n'existe pas. */
   async function getItem(path: string, revalidate: number): Promise<unknown> {
     try {
       const json = await client.get(path, {}, { revalidate });
@@ -131,7 +132,7 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
     },
 
     async getPlaylist(id) {
-      // Audius renvoie une playlist unitaire dans un tableau : `{ data: [playlist] }`.
+      // Audius wraps a single playlist in an array: `{ data: [playlist] }`.
       const data = await getItem(`/playlists/${encode(id)}`, CACHE.detail);
       return parsePlaylist(Array.isArray(data) ? data[0] : data);
     },
@@ -140,7 +141,7 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
       try {
         return parseTracks(await getList(`/playlists/${encode(id)}/tracks`, {}, CACHE.list));
       } catch (error) {
-        // Playlist inexistante : la page affichera son 404 via getPlaylist.
+        // Missing playlist: the page renders its 404 through getPlaylist.
         if (isNotFound(error)) return [];
         throw error;
       }
@@ -161,7 +162,7 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
     },
 
     getStreamUrl(trackId) {
-      // Audius répond par une redirection vers le nœud de stockage qui sert l'audio.
+      // Audius redirects to the storage node serving the audio.
       return client.url(`/tracks/${encode(trackId)}/stream`).toString();
     },
   };

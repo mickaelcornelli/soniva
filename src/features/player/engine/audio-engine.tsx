@@ -7,9 +7,8 @@ import { useProgressStore } from "../store/progress-store";
 import { useMediaSession } from "./use-media-session";
 
 /**
- * Seul composant qui manipule l'élément <audio>. Il aligne le lecteur réel sur
- * l'état du store (morceau, lecture, volume, position) et remonte les événements
- * audio au store. Monté une seule fois, dans le layout, pour survivre aux navigations.
+ * The only component touching the <audio> element: syncs it with the store and
+ * reports audio events back. Mounted once in the layout to survive navigation.
  */
 export function AudioEngine() {
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -29,8 +28,7 @@ export function AudioEngine() {
     void usePlayerStore.persist.rehydrate();
   }, []);
 
-  // Nouveau morceau : on change la source. Dépend de l'entrée de file (queueId)
-  // pour qu'un même morceau présent deux fois soit bien rechargé.
+  // Keyed on the queue entry so the same track queued twice is reloaded.
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -50,9 +48,9 @@ export function AudioEngine() {
       return;
     }
     audio.play().catch((error: unknown) => {
-      // AbortError : la source a changé pendant le chargement, rien d'anormal.
+      // AbortError: the source changed while loading, nothing wrong.
       if (error instanceof DOMException && error.name === "AbortError") return;
-      // NotAllowedError : lecture automatique bloquée tant que l'utilisateur n'a pas interagi.
+      // NotAllowedError: autoplay blocked until the user interacts.
       usePlayerStore.getState().setPlaying(false);
     });
   }, [isPlaying, queueId]);
@@ -73,7 +71,7 @@ export function AudioEngine() {
 
   const progress = useProgressStore.getState;
 
-  // preload="none" : rien n'est téléchargé avant que l'utilisateur lance la lecture.
+  // Nothing is downloaded before the user presses play.
   return (
     <audio
       ref={audioRef}

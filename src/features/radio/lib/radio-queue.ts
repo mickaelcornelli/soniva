@@ -1,7 +1,6 @@
 import { type RepeatMode, shuffle } from "@/features/player/lib/queue";
 import type { Track } from "@/types/music";
 
-/** Nombre de morceaux restants à partir duquel la radio prolonge la file. */
 const REFILL_THRESHOLD = 1;
 
 interface QueuePosition {
@@ -11,10 +10,7 @@ interface QueuePosition {
   currentIndex: number;
 }
 
-/**
- * La radio ne prend le relais qu'en fin de file, et jamais quand une répétition est
- * active : dans ce cas, l'utilisateur a choisi de rester sur ce qu'il écoute.
- */
+/** Never while a repeat mode is on: the user chose to stay on what they're listening to. */
 export function shouldExtendQueue({
   radio,
   repeat,
@@ -25,7 +21,6 @@ export function shouldExtendQueue({
   return queueLength - currentIndex - 1 <= REFILL_THRESHOLD;
 }
 
-/** Sélection mélangée de morceaux inédits (ni dans la file, ni écoutés récemment). */
 export function pickRadioTracks(
   candidates: readonly Track[],
   excludedIds: ReadonlySet<string>,

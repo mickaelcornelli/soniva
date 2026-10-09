@@ -1,7 +1,5 @@
 import type { Artist, ArtistProfile, Playlist, Track } from "@/types/music";
 
-/** Fabriques d'objets du domaine pour les tests de composants et d'utilitaires. */
-
 export function makeArtist(overrides: Partial<Artist> = {}): Artist {
   return {
     id: "a1",

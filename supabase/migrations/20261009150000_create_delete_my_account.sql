@@ -1,9 +1,8 @@
--- Droit à l'effacement (RGPD, art. 17) : un utilisateur connecté supprime son propre compte.
--- Toutes les tables de Soniva référencent auth.users avec « on delete cascade » : supprimer
--- l'utilisateur efface aussi ses favoris, playlists, historique, suivis et statistiques.
--- `security definer` est nécessaire pour écrire dans le schéma auth ; la fonction ne peut
--- viser que l'appelant (auth.uid()), jamais un identifiant passé en paramètre.
--- À exécuter dans l'éditeur SQL de Supabase (l'outil MCP bloque sur les `delete`).
+-- Right to erasure (GDPR art. 17): a signed-in user deletes their own account.
+-- Every table references auth.users with `on delete cascade`, so this also removes
+-- favourites, playlists, history, follows and stats.
+-- `security definer` is required to write to the auth schema; the function only ever
+-- targets the caller (auth.uid()), never an ID passed as a parameter.
 
 create function public.delete_my_account() returns void
   language plpgsql security definer set search_path = '' as $$

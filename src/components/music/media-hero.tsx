@@ -5,12 +5,10 @@ interface MediaHeroProps {
   artwork: Artwork;
   artworkAlt: string;
   title: string;
-  /** Nature du contenu quand elle n'est pas évidente (« Album », « Playlist »). */
   kind?: string;
   children?: React.ReactNode;
 }
 
-/** En-tête des pages morceau et playlist : pochette à gauche, informations à droite. */
 export function MediaHero({ artwork, artworkAlt, title, kind, children }: MediaHeroProps) {
   return (
     <header className="grid items-end gap-6 sm:grid-cols-[minmax(0,16rem)_1fr] sm:gap-10">

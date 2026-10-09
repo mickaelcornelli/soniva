@@ -8,7 +8,7 @@ import {
   type RemotePlay,
 } from "../lib/library-sync-plan";
 
-/** Accès aux tables de la bibliothèque. Les règles RLS limitent tout au compte connecté. */
+/** RLS policies restrict everything to the signed-in account. */
 export interface LibraryRepository {
   listFavorites(): Promise<RemoteFavorite[]>;
   addFavorites(favorites: readonly RemoteFavorite[]): Promise<void>;
@@ -20,7 +20,7 @@ export interface LibraryRepository {
   removeFollow(artistId: string): Promise<void>;
 }
 
-/** Les erreurs Supabase ne sont pas des `Error` : on les convertit pour garder une pile lisible. */
+/** Supabase errors aren't `Error` instances: wrap them to keep a readable stack. */
 function fail(context: string, error: { message: string }): never {
   throw new Error(`[bibliothèque] ${context} : ${error.message}`);
 }
@@ -49,7 +49,7 @@ export function createLibraryRepository(
           track_id: trackId,
           created_at: addedAt,
         })),
-        // Déjà en favori sur un autre appareil : on garde la date d'origine.
+        // Already a favourite on another device: keep the original date.
         { onConflict: "user_id,track_id", ignoreDuplicates: true },
       );
       if (error) fail("ajout de favoris", error);
@@ -63,8 +63,8 @@ export function createLibraryRepository(
 
     async listPlays() {
       const client = await getClient();
-      // Le journal peut contenir plusieurs écoutes d'un même morceau : on en lit davantage
-      // que la taille de l'historique affiché pour qu'il reste plein après dédoublonnage.
+      // The log can hold several plays of the same track: read more than
+      // the displayed history so it stays full after deduplication.
       const { data, error } = await client
         .from("listening_history")
         .select("track_id, played_at")

@@ -4,7 +4,6 @@ import { MonthlyStatsView } from "@/features/stats/components/monthly-stats-view
 
 export const metadata: Metadata = {
   title: "Ton mois en musique",
-  // Contenu personnel : jamais indexé.
   robots: { index: false },
 };
 

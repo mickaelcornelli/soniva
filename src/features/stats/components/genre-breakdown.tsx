@@ -12,11 +12,10 @@ interface GenreBreakdownProps {
 }
 
 /**
- * Part de chaque genre dans le temps d'écoute. Une seule série : barres d'une seule
- * teinte, valeur écrite en clair à côté de chaque barre (jamais portée par la couleur).
+ * Single series: one hue, with the value written next to each bar (never carried by colour alone).
  */
 export function GenreBreakdown({ genres, labelledBy }: GenreBreakdownProps) {
-  // Barres relatives au genre dominant : la plus longue occupe toute la largeur.
+  // Relative to the top genre: the longest bar spans the full width.
   const max = Math.max(...genres.map((genre) => genre.share), 0);
 
   return (

@@ -14,8 +14,8 @@ export function ExportDataButton() {
   const { state } = useAuth();
   const [status, setStatus] = useState<"idle" | "working" | "error">("idle");
 
-  // Tant qu'on ne sait pas si l'utilisateur est connecté, l'export ne saurait pas quoi
-  // inclure : un emplacement réservé plutôt qu'un bouton grisé qui clignoterait.
+  // Until the auth state is known the export wouldn't know what to include:
+  // show a placeholder rather than a disabled button that flickers.
   if (state.status === "loading") return <Skeleton className="h-10 w-56 rounded-full" />;
 
   async function handleExport() {

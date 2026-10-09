@@ -5,11 +5,10 @@ interface UserAvatarProps {
   className?: string;
 }
 
-/** Photo du profil, ou initiale sur fond ambre quand le fournisseur n'en donne pas. */
 export function UserAvatar({ user, className = "size-9" }: UserAvatarProps) {
   if (user.avatarUrl) {
     return (
-      // Photo hébergée par Google/GitHub : pas d'optimisation next/image pour ces domaines.
+      // Hosted by Google/GitHub: no next/image optimisation for these domains.
       // eslint-disable-next-line @next/next/no-img-element
       <img
         src={user.avatarUrl}

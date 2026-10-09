@@ -5,7 +5,6 @@ export interface GenreRecommendation {
   tracks: Track[];
 }
 
-/** Réponse de `/api/discover`. */
 export interface Recommendations {
   genres: GenreRecommendation[];
   relatedArtists: ArtistProfile[];

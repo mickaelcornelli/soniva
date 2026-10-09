@@ -1,7 +1,6 @@
 /*
- * Offres d'emploi FICTIVES : Soniva est un projet portfolio et ne recrute pas.
- * La page qui les affiche le signale, n'est pas indexée et n'expose aucune donnée
- * structurée `JobPosting`, pour qu'aucune offre ne soit prise pour une vraie.
+ * FICTIONAL job offers (portfolio project). The page
+ * says so, is noindex and exposes no `JobPosting` data.
  */
 
 export interface JobOffer {

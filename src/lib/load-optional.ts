@@ -1,6 +1,6 @@
 /**
- * Charge une donnée secondaire d'une page : en cas d'échec, l'erreur est journalisée
- * et la page s'affiche sans cette section plutôt que de basculer en erreur.
+ * Secondary page data: on failure, log and render
+ * the page without that section instead of erroring.
  */
 export async function loadOptional<T>(
   load: () => Promise<T>,

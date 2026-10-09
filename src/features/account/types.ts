@@ -1,11 +1,9 @@
-/** Données du compte telles qu'exportées : uniquement ce que Soniva stocke chez Supabase. */
 export interface AccountData {
   profile: {
     id: string;
     email: string | null;
     name: string;
     avatarUrl: string | null;
-    /** Services de connexion liés au compte (google, github). */
     providers: string[];
     createdAt: string;
     lastSignInAt: string | null;

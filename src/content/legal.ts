@@ -1,12 +1,10 @@
 /*
- * Faits juridiques partagés par les pages légales (mentions, confidentialité, cookies,
- * centre de confiance). Un seul endroit à mettre à jour si un prestataire change.
- * Ces textes sont des modèles sérieux, pas un avis juridique : ils sont à faire relire.
+ * Legal facts shared by the legal pages: one place to update
+ * if a provider changes. Templates, not legal advice.
  */
 import { siteConfig } from "@/config/site";
 import { DEVICE_STORAGE_KEYS } from "@/lib/device-storage";
 
-/** Date de dernière mise à jour commune aux pages légales. */
 export const LEGAL_UPDATED_AT = "2026-10-09";
 
 export const PUBLISHER = {
@@ -15,11 +13,11 @@ export const PUBLISHER = {
   email: siteConfig.contactEmail,
 } as const;
 
-/** Plan Hobby de Vercel : gratuit, sans carte bancaire, réservé à un usage non commercial. */
+/** Hobby plan: free, no credit card, non-commercial use only. */
 export const SITE_HOST = {
   name: "Vercel Inc.",
   address: "440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis",
-  // Vercel ne publie pas de numéro de téléphone : son formulaire de contact en tient lieu.
+  // Vercel publishes no phone number; its contact form stands in.
   contactUrl: "https://vercel.com/contact",
   url: "https://vercel.com",
   domain: "vercel.com",
@@ -41,7 +39,6 @@ export interface ThirdParty {
   policyUrl: string;
 }
 
-/** Services qui reçoivent des données personnelles quand on utilise Soniva. */
 export const THIRD_PARTIES: readonly ThirdParty[] = [
   {
     name: "Supabase",

@@ -8,12 +8,11 @@ import { createAccountRepository } from "../api/account-repository";
 import { wipeDeviceData } from "../lib/wipe-device-data";
 import { DANGER_BUTTON, SECONDARY_BUTTON } from "./styles";
 
-/** Mot à saisir pour confirmer : une suppression ne doit jamais partir d'un clic réflexe. */
+/** Typed confirmation: a deletion must never come from a reflex click. */
 const CONFIRMATION_WORD = "SUPPRIMER";
 
 type Step = "idle" | "confirm" | "working" | "error";
 
-/** Suppression du compte en deux temps : annonce, puis confirmation saisie. */
 export function DeleteAccountPanel() {
   const { signOut } = useAuth();
   const [step, setStep] = useState<Step>("idle");
@@ -34,7 +33,6 @@ export function DeleteAccountPanel() {
       setStep("error");
       return;
     }
-    // Le compte n'existe plus : la session locale est fermée et l'appareil vidé.
     await signOut().catch(() => undefined);
     wipeDeviceData();
     window.location.assign(routes.home);

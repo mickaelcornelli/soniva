@@ -1,8 +1,7 @@
--- Soniva : données propres à l'application. Les métadonnées musicales restent chez le
--- provider (Audius) : on ne stocke que des identifiants de morceaux.
--- Appliquée sur le projet zxflwkejcnggyovkcura le 08/10/2026.
+-- App-specific data only: music metadata stays with
+-- the provider (Audius), only track IDs are stored.
 
--- Favoris ---------------------------------------------------------------------
+-- Favourites ------------------------------------------------------------------
 create table public.favorites (
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
   track_id text not null check (char_length(track_id) between 1 and 64),
@@ -21,7 +20,7 @@ create policy "Favoris : ajout des siens" on public.favorites
 create policy "Favoris : suppression des siens" on public.favorites
   for delete to authenticated using ((select auth.uid()) = user_id);
 
--- Playlists personnelles -------------------------------------------------------
+-- Personal playlists ----------------------------------------------------------
 create table public.playlists (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
@@ -56,7 +55,7 @@ $$;
 create trigger playlists_set_updated_at before update on public.playlists
   for each row execute function public.set_updated_at();
 
--- Morceaux des playlists -------------------------------------------------------
+-- Playlist tracks -------------------------------------------------------------
 create table public.playlist_tracks (
   playlist_id uuid not null references public.playlists (id) on delete cascade,
   track_id text not null check (char_length(track_id) between 1 and 64),
@@ -69,7 +68,7 @@ create index playlist_tracks_order_idx on public.playlist_tracks (playlist_id, p
 
 alter table public.playlist_tracks enable row level security;
 
--- L'accès suit la propriété de la playlist parente.
+-- Access follows ownership of the parent playlist.
 create policy "Titres de playlist : lecture des siens" on public.playlist_tracks
   for select to authenticated using (exists (
     select 1 from public.playlists p
@@ -96,7 +95,7 @@ create policy "Titres de playlist : retrait des siens" on public.playlist_tracks
     where p.id = playlist_id and p.user_id = (select auth.uid())
   ));
 
--- Historique d'écoute ----------------------------------------------------------
+-- Listening history -----------------------------------------------------------
 create table public.listening_history (
   id bigint generated always as identity primary key,
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
@@ -116,7 +115,7 @@ create policy "Historique : ajout au sien" on public.listening_history
 create policy "Historique : effacement du sien" on public.listening_history
   for delete to authenticated using ((select auth.uid()) = user_id);
 
--- Plan gratuit : l'historique est plafonné aux 200 dernières écoutes par utilisateur.
+-- Free plan: history is capped at the 200 most recent plays per user.
 create function public.trim_listening_history() returns trigger
   language plpgsql set search_path = '' as $$
 begin

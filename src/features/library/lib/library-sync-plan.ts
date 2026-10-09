@@ -1,30 +1,26 @@
 import type { Artist, Track } from "@/types/music";
 
-/** Nombre de morceaux gardés dans « Écoutés récemment ». */
 export const HISTORY_SIZE = 50;
 
 export interface FavoriteEntry {
   track: Track;
-  /** Date ISO d'ajout aux favoris. */
   addedAt: string;
 }
 
 export interface HistoryEntry {
-  /** Identifiant local de l'écoute (un même morceau peut être écouté plusieurs fois). */
+  /** A track can be played several times. */
   id: string;
   track: Track;
   playedAt: string;
-  /** Déjà enregistrée côté serveur. */
   synced: boolean;
 }
 
 export interface FollowEntry {
   artist: Artist;
-  /** Date ISO à laquelle l'artiste a été suivi. */
   followedAt: string;
 }
 
-/** Ce que la base stocke : uniquement des identifiants de morceaux et des dates. */
+/** What the database stores: only track IDs and dates. */
 export interface RemoteFavorite {
   trackId: string;
   addedAt: string;
@@ -41,8 +37,8 @@ export interface RemotePlay {
 }
 
 /**
- * Favoris à la connexion : ceux de l'appareil absents du compte sont à envoyer,
- * ceux du compte absents de l'appareil ont besoin de leurs métadonnées.
+ * Device favourites missing from the account must be uploaded;
+ * account favourites missing from the device need their metadata.
  */
 export function planFavoritesSync(
   local: readonly FavoriteEntry[],
@@ -59,7 +55,6 @@ export function planFavoritesSync(
   };
 }
 
-/** Reconstruit les favoris, du plus récent au plus ancien, avec les morceaux connus. */
 export function buildFavorites(
   favorites: readonly RemoteFavorite[],
   tracks: ReadonlyMap<string, Track>,
@@ -72,7 +67,6 @@ export function buildFavorites(
     });
 }
 
-/** Artistes suivis à la connexion : même logique que les favoris. */
 export function planFollowsSync(local: readonly FollowEntry[], remote: readonly RemoteFollow[]) {
   const remoteIds = new Set(remote.map((follow) => follow.artistId));
   const localIds = new Set(local.map((entry) => entry.artist.id));
@@ -85,7 +79,6 @@ export function planFollowsSync(local: readonly FollowEntry[], remote: readonly 
   };
 }
 
-/** Reconstruit les artistes suivis, du plus récent au plus ancien. */
 export function buildFollows(
   follows: readonly RemoteFollow[],
   artists: ReadonlyMap<string, Artist>,
@@ -98,10 +91,7 @@ export function buildFollows(
     });
 }
 
-/**
- * Reconstruit l'historique depuis le journal d'écoutes du compte : un morceau n'y figure
- * qu'une fois, à sa dernière écoute.
- */
+/** A track appears once, at its latest play. */
 export function buildHistory(
   plays: readonly RemotePlay[],
   tracks: ReadonlyMap<string, Track>,

@@ -7,7 +7,6 @@ import { routes } from "@/lib/routes";
 import { wipeDeviceData } from "../lib/wipe-device-data";
 import { DANGER_BUTTON, SECONDARY_BUTTON } from "./styles";
 
-/** Efface lecteur, bibliothèque locale et écoutes de ce navigateur, après confirmation. */
 export function ClearDeviceDataButton() {
   const { state, signOut } = useAuth();
   const [step, setStep] = useState<"idle" | "confirm" | "working">("idle");
@@ -15,7 +14,7 @@ export function ClearDeviceDataButton() {
 
   async function handleClear() {
     setStep("working");
-    // Déconnexion d'abord : sinon la synchronisation remettrait la bibliothèque du compte ici.
+    // Sign out first, otherwise the sync would restore the account library on this device.
     if (signedIn) await signOut().catch(() => undefined);
     wipeDeviceData();
     window.location.assign(routes.home);

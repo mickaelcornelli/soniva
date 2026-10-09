@@ -4,9 +4,8 @@ import { useListeningStore } from "@/features/stats/store/listening-store";
 import { clearDeviceStorage } from "@/lib/device-storage";
 
 /**
- * Efface tout ce que Soniva garde dans ce navigateur. Les stores sont vidés avant le
- * stockage : s'ils écrivaient après coup, ils remettraient leurs anciennes données.
- * L'appelant recharge ensuite la page pour repartir d'un état neuf (lecteur compris).
+ * Stores are cleared before storage: writing afterwards would
+ * restore their old data. The caller then reloads the page.
  */
 export function wipeDeviceData(): void {
   usePlayerStore.getState().setPlaying(false);

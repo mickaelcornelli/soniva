@@ -20,13 +20,12 @@ export interface FooterLink {
 }
 
 export interface FooterColumn {
-  /** Sert aussi d'identifiant au titre de la colonne (`aria-labelledby`). */
   id: string;
   title: string;
   links: readonly FooterLink[];
 }
 
-/** Colonnes du pied de page, reprises telles quelles par le plan du site. */
+/** Reused as-is by the HTML site map. */
 export const footerNavigation: readonly FooterColumn[] = [
   {
     id: "soniva",

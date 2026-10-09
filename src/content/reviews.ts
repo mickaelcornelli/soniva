@@ -1,12 +1,11 @@
 /*
- * Avis FICTIFS, écrits pour illustrer la page. Ils sont signalés comme tels à l'écran,
- * la page n'est pas indexée et aucune note ni donnée structurée `Review` n'en est tirée :
- * ils ne doivent jamais pouvoir passer pour de vrais avis d'utilisateurs.
+ * FICTIONAL reviews. Labelled on screen, noindex, and no
+ * rating or `Review` structured data is derived from them.
  */
 
 export interface SampleReview {
   id: string;
-  /** Pseudonyme inventé ; pas de photo, pour ne pas évoquer une personne réelle. */
+  /** Made-up handle and no photo, so it never suggests a real person. */
   author: string;
   context: string;
   quote: string;

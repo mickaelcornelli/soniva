@@ -7,11 +7,8 @@ export interface SonivaExport {
   format: typeof EXPORT_FORMAT;
   version: typeof EXPORT_VERSION;
   exportedAt: string;
-  /** Explique le contenu à la personne qui ouvre le fichier. */
   notice: string;
-  /** Données du compte ; null pour un visiteur sans compte. */
   account: AccountData | null;
-  /** Stockage local du navigateur (lecteur, bibliothèque, écoutes). */
   device: Record<string, unknown>;
 }
 
@@ -37,7 +34,6 @@ export function buildExport({
   };
 }
 
-/** « soniva-donnees-2026-10-09.json » */
 export function exportFileName(now: Date = new Date()): string {
   return `soniva-donnees-${now.toISOString().slice(0, 10)}.json`;
 }

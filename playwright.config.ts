@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
 
-/** Port dédié : les tests ne gênent pas un `pnpm dev` déjà lancé sur 3000. */
+/** Dedicated port so tests don't clash with a `pnpm dev` already running on 3000. */
 const PORT = 3100;
 const baseURL = `http://localhost:${PORT}`;
 const isCI = Boolean(process.env.CI);
@@ -9,10 +9,9 @@ export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: isCI,
-  // Les données viennent d'Audius en direct : une relance absorbe un réseau capricieux.
+  // Data comes live from Audius: a retry absorbs flaky network.
   retries: isCI ? 2 : 1,
-  // Le rapport JSON garde le résultat de chaque test, lisible après coup. Il est rangé dans
-  // test-results : le rapport HTML vide son propre dossier en fin de lancement.
+  // The JSON report lives in test-results because the HTML reporter wipes its own folder.
   reporter: [
     isCI ? ["github"] : ["list"],
     ["json", { outputFile: "test-results/results.json" }],
@@ -25,14 +24,14 @@ export default defineConfig({
     locale: "fr-FR",
     trace: "on-first-retry",
     launchOptions: { args: ["--mute-audio"] },
-    // Pas d'animation en cours pendant les vérifications (contrastes, clics).
+    // No running animation during checks (contrast, clicks).
     reducedMotion: "reduce",
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
     { name: "mobile", use: { ...devices["Pixel 7"] } },
   ],
-  // Version de production, celle qui sera déployée : `pnpm build` doit avoir été lancé avant.
+  // Tests the production build: run `pnpm build` first.
   webServer: {
     command: `pnpm start --port ${PORT}`,
     url: baseURL,

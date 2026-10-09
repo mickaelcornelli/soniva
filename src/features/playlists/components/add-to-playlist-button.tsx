@@ -15,18 +15,13 @@ interface AddToPlaylistButtonProps {
   track: Track;
   size?: "sm" | "md";
   className?: string;
-  /** Dans une liste : masqué au repos (sauf écran tactile). */
   revealOnHover?: boolean;
 }
 
-/** Délai avant fermeture automatique, le temps de lire la confirmation. */
+/** Leaves time to read the confirmation before closing. */
 const CLOSE_DELAY_MS = 900;
 
-/**
- * Bouton « Ajouter à une playlist ». Le panneau est un popover natif (fermeture au clic
- * extérieur et à Échap) ; son contenu n'est monté qu'à l'ouverture, pour ne charger les
- * playlists que lorsqu'on en a besoin.
- */
+/** Native popover. Its content mounts on open, so playlists are only fetched when needed. */
 export function AddToPlaylistButton({
   track,
   size = "sm",

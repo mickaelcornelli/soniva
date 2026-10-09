@@ -24,7 +24,7 @@ interface PlaylistPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Dédoublonne l'appel entre generateMetadata et la page pendant un même rendu.
+// Deduplicates the call between generateMetadata and the page within one render.
 const loadPlaylist = cache((id: string) => musicProvider.getPlaylist(id));
 
 export async function generateMetadata({ params }: PlaylistPageProps): Promise<Metadata> {

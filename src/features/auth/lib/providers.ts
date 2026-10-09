@@ -1,4 +1,4 @@
-/** Fournisseurs de connexion activés dans Supabase (Authentication > Providers). */
+/** Providers enabled in Supabase (Authentication > Providers). */
 export const AUTH_PROVIDERS = [
   { id: "github", label: "GitHub" },
   { id: "google", label: "Google" },

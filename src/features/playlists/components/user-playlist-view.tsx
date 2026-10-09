@@ -22,7 +22,7 @@ import { UserPlaylistCover } from "./user-playlist-cover";
 const SECONDARY_BUTTON =
   "inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-medium transition-colors hover:border-accent hover:text-accent disabled:opacity-60";
 
-/** Page d'une playlist perso : privée, entièrement rendue côté navigateur. */
+/** Private, fully client-rendered. */
 export function UserPlaylistView({ id }: { id: string }) {
   const { state } = useAuth();
   const accountId = useAccountId();

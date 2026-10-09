@@ -1,4 +1,4 @@
-/** Écoutes d'un morceau sur un mois : la forme commune aux données locales et au compte. */
+/** Shared shape for local and account data. */
 export interface ListeningRow {
   trackId: string;
   artistId: string;
@@ -16,7 +16,6 @@ export interface RankedArtist {
 export interface RankedGenre {
   genre: string;
   seconds: number;
-  /** Part du temps d'écoute total, entre 0 et 1. */
   share: number;
 }
 
@@ -32,12 +31,11 @@ export interface MonthSummary {
 
 const TOP_SIZE = 5;
 
-/** Classement au temps d'écoute ; à égalité, le plus écouté (en nombre de fois) d'abord. */
+/** Ties are broken by play count. */
 function byListening<T extends { seconds: number; plays: number }>(a: T, b: T): number {
   return b.seconds - a.seconds || b.plays - a.plays;
 }
 
-/** Résumé d'un mois d'écoute : totaux et classements (morceaux, artistes, genres). */
 export function summarizeMonth(rows: readonly ListeningRow[], topSize = TOP_SIZE): MonthSummary {
   const artists = new Map<string, RankedArtist>();
   const genres = new Map<string, number>();

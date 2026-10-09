@@ -12,7 +12,7 @@ export async function GET(request: Request) {
   try {
     const results = await musicProvider.search(query);
     return NextResponse.json(results, {
-      // Mêmes résultats pour tout le monde : le CDN peut les servir quelques minutes.
+      // Same results for everyone, so the CDN can serve them for a few minutes.
       headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" },
     });
   } catch (error) {

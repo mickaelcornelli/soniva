@@ -3,12 +3,9 @@ import type { ButtonHTMLAttributes } from "react";
 
 interface IconButtonProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, "children"> {
   icon: LucideIcon;
-  /** Nom accessible : le bouton n'a pas de texte visible. */
   label: string;
-  /** Pour les boutons bascule (aléatoire, répétition) : allumé en ambre. */
   active?: boolean;
   size?: "sm" | "md";
-  /** Icône pleine (cœur d'un favori, par exemple). */
   filled?: boolean;
 }
 

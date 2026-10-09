@@ -41,7 +41,6 @@ export default function HelpPage() {
   );
 }
 
-/** `<details>` natif : accessible au clavier et lisible sans JavaScript. */
 function FaqEntry({ item }: { item: FaqItem }) {
   return (
     <details className="group rounded-2xl border border-line bg-surface open:bg-raised">

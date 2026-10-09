@@ -1,7 +1,7 @@
 import "server-only";
 import { z } from "zod";
 
-// Une variable laissée vide dans .env.local (`AUDIUS_API_KEY=`) vaut "absente".
+// An empty value in .env.local (`AUDIUS_API_KEY=`) counts as missing.
 const optionalSecret = z.preprocess(
   (value) => (value === "" ? undefined : value),
   z.string().min(1).optional(),

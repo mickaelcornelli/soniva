@@ -1,5 +1,5 @@
-// Fichier généré à partir du schéma Supabase (ne pas modifier à la main).
-// Régénération : `npx supabase gen types typescript --project-id zxflwkejcnggyovkcura`
+// Generated from the Supabase schema, do not edit by hand.
+// Regenerate with: `npx supabase gen types typescript --project-id zxflwkejcnggyovkcura`
 
 export type Json =
   | string

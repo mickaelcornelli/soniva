@@ -2,13 +2,9 @@ import { NextResponse } from "next/server";
 import { musicProvider } from "@/services/music";
 
 const MAX_IDS = 100;
-// Identifiants Audius : courts et alphanumériques. Tout le reste est refusé avant d'appeler l'API.
 const ARTIST_ID_PATTERN = /^[A-Za-z0-9]{1,32}$/;
 
-/**
- * Fiches de plusieurs artistes (`/api/artists?ids=a,b,c`). Sert à afficher les artistes
- * suivis, dont la base ne stocke que les identifiants.
- */
+/** Resolves followed artists, whose IDs are the only thing stored in the database. */
 export async function GET(request: Request) {
   const raw = new URL(request.url).searchParams.get("ids") ?? "";
   const ids = [...new Set(raw.split(",").filter(Boolean))];

@@ -1,8 +1,8 @@
-/** En dessous, une recherche renvoie surtout du bruit et consomme le quota pour rien. */
+/** Shorter queries mostly return noise and waste quota. */
 export const MIN_SEARCH_LENGTH = 2;
 const MAX_SEARCH_LENGTH = 100;
 
-/** Nettoie une requête venant de l'URL ou d'un champ : texte sur une ligne, longueur bornée. */
+/** Single line, bounded length. */
 export function normalizeSearchQuery(raw: unknown): string {
   const value = Array.isArray(raw) ? raw[0] : raw;
   if (typeof value !== "string") return "";

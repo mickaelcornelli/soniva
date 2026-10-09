@@ -11,7 +11,7 @@ export const TRENDING_PERIODS: readonly { value: TrendingPeriod; label: string }
 
 const VALID = new Set<string>(TRENDING_PERIODS.map((p) => p.value));
 
-/** Lit une période venue de l'URL ; toute valeur inconnue retombe sur la semaine. */
+/** Unknown values fall back to the week. */
 export function parseTrendingPeriod(raw: string | string[] | undefined): TrendingPeriod {
   const value = Array.isArray(raw) ? raw[0] : raw;
   return value && VALID.has(value) ? (value as TrendingPeriod) : DEFAULT_TRENDING_PERIOD;

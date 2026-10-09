@@ -5,7 +5,6 @@ interface NoticeProps {
   children: React.ReactNode;
 }
 
-/** Encadré d'information à lire avant le contenu (contenu fictif, précision importante). */
 export function Notice({ title, children }: NoticeProps) {
   return (
     <aside

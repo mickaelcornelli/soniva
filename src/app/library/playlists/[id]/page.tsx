@@ -3,7 +3,6 @@ import { UserPlaylistView } from "@/features/playlists/components/user-playlist-
 
 export const metadata: Metadata = {
   title: "Ma playlist",
-  // Contenu personnel : jamais indexé.
   robots: { index: false },
 };
 

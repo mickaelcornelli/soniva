@@ -14,7 +14,6 @@ import { UserPlaylistCover } from "./user-playlist-cover";
 
 const GRID = "grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-5";
 
-/** Section « Mes playlists » de la bibliothèque. */
 export function UserPlaylistsSection() {
   const { state } = useAuth();
   const accountId = useAccountId();
@@ -37,7 +36,7 @@ export function UserPlaylistsSection() {
       ) : accountId ? (
         <PlaylistsGrid />
       ) : (
-        // Session en cours de chargement ou bibliothèque en cours de synchronisation.
+        // Session loading or library still syncing.
         <PlaylistsGridSkeleton />
       )}
     </section>

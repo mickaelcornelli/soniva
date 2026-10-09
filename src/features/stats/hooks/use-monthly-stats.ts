@@ -23,18 +23,16 @@ export interface RankedTrackWithMetadata {
 }
 
 /**
- * Statistiques d'un mois : celles du compte quand l'utilisateur est connecté (tous ses
- * appareils), sinon celles de l'appareil. Les métadonnées des morceaux et artistes du
- * classement viennent d'abord de ce qui est déjà connu localement, le reste du provider.
+ * Account stats when signed in (all devices), device stats otherwise.
+ * Chart metadata comes from local data first, then the provider.
  */
 function storesHydrated(): boolean {
   return useLibraryStore.persist.hasHydrated() && useListeningStore.persist.hasHydrated();
 }
 
 /**
- * Les stores locaux sont relus après le montage : tant que ce n'est pas fait, on ne sait
- * pas encore si l'utilisateur est connecté ni ce qu'il a écouté. Sans cette attente, la
- * page afficherait brièvement « aucune écoute ».
+ * Local stores rehydrate after mount; until then we don't know who is
+ * signed in or what was played, and the page would flash "no plays".
  */
 function useLocalStoresHydrated(): boolean {
   const [hydrated, setHydrated] = useState(false);
@@ -101,7 +99,7 @@ export function useMonthlyStats(month: string) {
       return { tracks, artists };
     },
     enabled: missingTrackIds.length + missingArtistIds.length > 0,
-    // Noms et pochettes changent rarement : inutile de les redemander pendant la session.
+    // Names and covers rarely change: no need to refetch during the session.
     staleTime: Number.POSITIVE_INFINITY,
   });
 
@@ -111,7 +109,7 @@ export function useMonthlyStats(month: string) {
     for (const track of metadata.data?.tracks ?? []) tracks.set(track.id, track);
     for (const artist of metadata.data?.artists ?? []) artists.set(artist.id, artist);
 
-    // Un morceau ou un artiste retiré du provider disparaît simplement du classement.
+    // A track or artist removed from the provider simply drops out of the chart.
     const topTracks: RankedTrackWithMetadata[] = (summary?.topTracks ?? []).flatMap((row) => {
       const track = tracks.get(row.trackId);
       return track ? [{ track, plays: row.plays, seconds: row.seconds }] : [];

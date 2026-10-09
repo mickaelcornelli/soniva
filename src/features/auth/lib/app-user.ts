@@ -1,6 +1,5 @@
 import type { User } from "@supabase/supabase-js";
 
-/** Utilisateur tel que l'interface le connaît, indépendamment du fournisseur d'authentification. */
 export interface AppUser {
   id: string;
   name: string;
@@ -11,7 +10,7 @@ function firstString(...values: unknown[]): string | undefined {
   return values.find((value): value is string => typeof value === "string" && value.trim() !== "");
 }
 
-/** Google et GitHub ne nomment pas les champs du profil de la même façon. */
+/** Google and GitHub name profile fields differently. */
 export function toAppUser(user: User): AppUser {
   const meta: Record<string, unknown> = user.user_metadata ?? {};
   return {

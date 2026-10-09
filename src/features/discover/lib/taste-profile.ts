@@ -1,19 +1,13 @@
 import type { Artist, Track } from "@/types/music";
 
-/*
- * Un favori est un signal plus fort qu'une simple écoute : il pèse davantage
- * dans le calcul des goûts.
- */
+/* A favourite is a stronger signal than a single play. */
 const FAVORITE_WEIGHT = 3;
 const PLAY_WEIGHT = 1;
 const MAX_GENRES = 2;
 
 export interface TasteProfile {
-  /** Genres dominants, du plus au moins écouté. */
   genres: string[];
-  /** Artiste le plus présent, point de départ des « artistes proches ». */
   topArtist: Artist | null;
-  /** Morceaux déjà connus, à ne pas recommander. */
   knownTrackIds: Set<string>;
 }
 
@@ -24,7 +18,6 @@ function topEntries<T>(scores: Map<string, { item: T; score: number }>, count: n
     .map(({ item }) => item);
 }
 
-/** Déduit les goûts de l'utilisateur de ses favoris et de son historique, sans rien envoyer. */
 export function buildTasteProfile(
   favorites: readonly Track[],
   history: readonly Track[],
@@ -51,7 +44,6 @@ export function buildTasteProfile(
   };
 }
 
-/** Retire les morceaux déjà connus et ceux déjà proposés ailleurs sur la page. */
 export function pickFreshTracks(
   tracks: readonly Track[],
   excluded: ReadonlySet<string>,

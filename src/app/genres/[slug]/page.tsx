@@ -29,7 +29,7 @@ interface GenrePageProps {
   searchParams: Promise<{ period?: string | string[] }>;
 }
 
-// Dédoublonne l'appel entre generateMetadata et la page pendant un même rendu.
+// Deduplicates the call between generateMetadata and the page within one render.
 const loadChart = cache((genreName: string, period: TrendingPeriod) =>
   musicProvider.getTrendingTracks({ genre: genreName, period, limit: CHART_SIZE }),
 );
@@ -45,7 +45,7 @@ export async function generateMetadata({
   const metadata = buildPageMetadata({
     title: `${genre.label} : les morceaux du moment`,
     description: `Les morceaux ${genre.label} les plus écoutés sur Soniva, à écouter gratuitement : tendances de la semaine, du mois, de l'année et de tous les temps.`,
-    // Toutes les périodes partagent la même page canonique (la semaine).
+    // Every period shares the same canonical page (week).
     path: routes.genre(genre.slug),
   });
   return period === DEFAULT_TRENDING_PERIOD

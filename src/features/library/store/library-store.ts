@@ -10,12 +10,11 @@ import {
 } from "../lib/library-sync-plan";
 
 /**
- * Bibliothèque de l'utilisateur, conservée sur l'appareil. Elle fonctionne sans compte ;
- * une fois connecté, elle sert de cache local au compte (affichage immédiat, moins
- * d'appels réseau) et les modifications sont aussi envoyées à Supabase.
+ * Works without an account; once signed in it acts as a local cache of the account
+ * (instant display, fewer requests) and changes are also sent to Supabase.
  */
 export interface LibraryState {
-  /** Compte auquel ces données appartiennent ; null pour un visiteur. */
+  /** Null for a visitor. */
   ownerId: string | null;
   favorites: FavoriteEntry[];
   history: HistoryEntry[];
@@ -23,18 +22,14 @@ export interface LibraryState {
 }
 
 export interface LibraryActions {
-  /** Ajoute un favori (sans doublon) et renvoie l'entrée créée. */
   addFavorite: (track: Track, addedAt?: string) => FavoriteEntry;
-  /** Retire un favori et renvoie l'entrée retirée, pour pouvoir annuler. */
+  /** Returns the removed entry so the action can be undone. */
   removeFavorite: (trackId: string) => FavoriteEntry | undefined;
-  /** Enregistre une écoute ; le morceau remonte en tête de l'historique. */
   recordPlay: (track: Track, playedAt?: string) => HistoryEntry;
   markPlaysSynced: (ids: readonly string[]) => void;
-  /** Suit un artiste (sans doublon) et renvoie l'entrée créée. */
   follow: (artist: Artist, followedAt?: string) => FollowEntry;
-  /** Ne suit plus un artiste et renvoie l'entrée retirée, pour pouvoir annuler. */
+  /** Returns the removed entry so the action can be undone. */
   unfollow: (artistId: string) => FollowEntry | undefined;
-  /** Remplace tout le contenu (après synchronisation avec le compte). */
   replace: (state: LibraryState) => void;
   clear: () => void;
 }
@@ -86,7 +81,7 @@ export const useLibraryStore = create<LibraryStore>()(
       },
 
       follow(artist, followedAt = new Date().toISOString()) {
-        // Seuls les champs d'`Artist` sont gardés : une fiche complète alourdirait le stockage.
+        // Keep only `Artist` fields: a full profile would bloat storage.
         const { id, name, handle, isVerified, avatar } = artist;
         const entry = { artist: { id, name, handle, isVerified, avatar }, followedAt };
         const others = get().follows.filter((follow) => follow.artist.id !== artist.id);
@@ -115,7 +110,7 @@ export const useLibraryStore = create<LibraryStore>()(
       name: DEVICE_STORAGE_KEYS.library,
       version: 1,
       storage: createJSONStorage(() => localStorage),
-      // Réhydratation manuelle après le montage (même raison que le lecteur).
+      // Manual rehydration after mount (same reason as the player store).
       skipHydration: true,
       partialize: ({ ownerId, favorites, history, follows }) => ({
         ownerId,

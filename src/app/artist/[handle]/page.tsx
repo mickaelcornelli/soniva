@@ -24,8 +24,8 @@ interface ArtistPageProps {
   params: Promise<{ handle: string }>;
 }
 
-// Dédoublonne l'appel entre generateMetadata et la page pendant un même rendu.
-// Next transmet le segment encodé : on le décode pour retrouver le handle d'origine.
+// Deduplicates the call between generateMetadata and the
+// page within one render. Next passes the encoded segment.
 const loadArtist = cache((handle: string) =>
   musicProvider.getArtistByHandle(decodeURIComponent(handle)),
 );

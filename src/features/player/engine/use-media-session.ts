@@ -6,8 +6,7 @@ import type { Track } from "@/types/music";
 import { usePlayerStore } from "../store/player-store";
 
 /**
- * Expose le morceau en cours au système (écran verrouillé, touches multimédia,
- * casque Bluetooth) via la Media Session API, quand le navigateur la supporte.
+ * Lock screen, media keys and Bluetooth headsets, when the browser supports the Media Session API.
  */
 export function useMediaSession(track: Track | undefined, isPlaying: boolean) {
   useEffect(() => {
@@ -43,7 +42,7 @@ export function useMediaSession(track: Track | undefined, isPlaying: boolean) {
       try {
         navigator.mediaSession.setActionHandler(action, handler);
       } catch {
-        // Action non supportée par ce navigateur : on l'ignore.
+        // Action not supported by this browser.
       }
     }
     return () => {
@@ -51,7 +50,7 @@ export function useMediaSession(track: Track | undefined, isPlaying: boolean) {
         try {
           navigator.mediaSession.setActionHandler(action, null);
         } catch {
-          // Idem.
+          // Same as above.
         }
       }
     };

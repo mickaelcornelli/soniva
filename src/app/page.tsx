@@ -12,7 +12,7 @@ import { musicProvider } from "@/services/music";
 export default async function HomePage() {
   const [tracks, playlists] = await Promise.all([
     musicProvider.getTrendingTracks({ period: "week" }),
-    // Section secondaire : son échec ne doit pas faire tomber tout l'accueil.
+    // Secondary section: a failure here must not take down the whole home page.
     loadOptional(() => musicProvider.getTrendingPlaylists(), [], "accueil"),
   ]);
 
@@ -31,7 +31,7 @@ export default async function HomePage() {
           description="Audius n'a renvoyé aucune tendance lisible pour cette semaine. Reviens dans quelques minutes."
         />
       )}
-      {/* Rendu côté client : dépend de la bibliothèque locale, et l'accueil reste statique. */}
+      {/* Client-rendered because it depends on the local library; keeps the home page static. */}
       <ForYouSection excludeTrackIds={tracks.map((track) => track.id)} />
       <NewReleasesSection />
       <TrendingPlaylists playlists={playlists} />

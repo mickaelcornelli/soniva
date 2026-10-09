@@ -13,7 +13,6 @@ const REPEAT_LABELS = {
 } as const;
 
 interface TransportControlsProps {
-  /** Affiche aussi aléatoire et répétition. */
   withModes?: boolean;
   size?: "md" | "lg";
 }

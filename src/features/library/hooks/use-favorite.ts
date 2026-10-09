@@ -5,15 +5,15 @@ import { createLibraryRepository } from "../api/library-repository";
 import { selectIsFavorite, useLibraryStore } from "../store/library-store";
 
 /**
- * Favori d'un morceau, avec mise à jour optimiste : le cœur change tout de suite,
- * puis le compte est mis à jour ; en cas d'échec, l'action est annulée.
+ * Optimistic update: the heart toggles immediately, then
+ * the account is updated and rolled back on failure.
  */
 export function useFavorite(track: Track) {
   const isFavorite = useLibraryStore(selectIsFavorite(track.id));
 
   async function toggle() {
     const store = useLibraryStore.getState();
-    // Connecté = le store appartient à un compte (fixé par la synchronisation).
+    // Signed in = the store belongs to an account (set by the sync).
     const repository = store.ownerId ? createLibraryRepository(store.ownerId) : null;
 
     if (isFavorite) {

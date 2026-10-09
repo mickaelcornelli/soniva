@@ -16,14 +16,11 @@ const SUBSECTION_TITLE = "font-display text-lg font-semibold";
 const ARTIST_GRID = "grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-6";
 
 interface ForYouSectionProps {
-  /** Morceaux déjà visibles sur la page (ex. le classement), à ne pas reproposer. */
   excludeTrackIds?: readonly string[];
 }
 
 /**
- * « Pour toi » : morceaux en vogue dans les genres préférés de l'utilisateur et artistes
- * proches de son artiste favori. Section secondaire : invisible tant qu'il n'y a pas de
- * goûts connus, et masquée plutôt qu'affichée en erreur.
+ * Secondary section: hidden until tastes are known, and hidden rather than shown in an error state.
  */
 export function ForYouSection({ excludeTrackIds }: ForYouSectionProps) {
   const headingId = useId();

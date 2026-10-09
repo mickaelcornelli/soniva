@@ -18,7 +18,6 @@ const SUGGESTIONS = ["Electronic", "Hip-Hop", "Lo-fi", "House", "Jazz", "Ambient
 
 interface SearchViewProps {
   initialQuery: string;
-  /** Résultats rendus par le serveur pour `initialQuery`, s'il y en a. */
   initialResults: SearchResultsData | null;
 }
 
@@ -32,7 +31,7 @@ export function SearchView({ initialQuery, initialResults }: SearchViewProps) {
     initial: initialResults ? { query: initialQuery, results: initialResults } : null,
   });
 
-  // L'URL suit la recherche (partage, rechargement) sans relancer de rendu serveur.
+  // The URL follows the query (share, reload) without a new server render.
   useEffect(() => {
     window.history.replaceState(null, "", searchable ? routes.searchFor(query) : routes.search);
   }, [query, searchable]);
@@ -43,7 +42,7 @@ export function SearchView({ initialQuery, initialResults }: SearchViewProps) {
         role="search"
         onSubmit={(event) => {
           event.preventDefault();
-          // Sur mobile, fermer le clavier pour laisser voir les résultats.
+          // On mobile, close the keyboard so results are visible.
           inputRef.current?.blur();
         }}
         className="relative max-w-2xl"
@@ -109,7 +108,7 @@ export function SearchView({ initialQuery, initialResults }: SearchViewProps) {
       ) : !data ? (
         <TrackListSkeleton rows={6} />
       ) : hasResults(data) ? (
-        // Résultats de la requête précédente estompés pendant le chargement des nouveaux.
+        // Previous results are dimmed while new ones load.
         <div className={`transition-opacity ${isPlaceholderData ? "opacity-50" : ""}`}>
           <SearchResults results={data} />
         </div>

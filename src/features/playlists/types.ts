@@ -1,6 +1,6 @@
 import type { Track } from "@/types/music";
 
-/** Playlist personnelle (stockée dans Supabase, contrairement aux playlists Audius). */
+/** Stored in Supabase, unlike Audius playlists. */
 export interface UserPlaylist {
   id: string;
   name: string;

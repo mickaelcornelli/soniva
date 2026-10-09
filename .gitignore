@@ -1,4 +1,4 @@
-# Dépendances
+# Dependencies
 node_modules/
 .pnpm-store/
 
@@ -14,13 +14,16 @@ coverage/
 playwright-report/
 test-results/
 
-# Environnement (ne jamais versionner les secrets)
+# Environment (never commit secrets)
 .env
 .env*.local
 
-# Logs & divers
+# Logs & misc
 npm-debug.log*
 pnpm-debug.log*
 .DS_Store
 Thumbs.db
 .vercel
+
+# Local scratch files (design drafts, exports)
+Claude outputs/

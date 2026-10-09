@@ -9,7 +9,6 @@ import { UserAvatar } from "./user-avatar";
 
 const MENU_ID = "menu-compte";
 
-/** Accès au compte en bas du rail (desktop) : connexion, ou avatar et déconnexion. */
 export function AccountMenu() {
   const { state, signOut } = useAuth();
   const pathname = usePathname();
@@ -32,7 +31,7 @@ export function AccountMenu() {
 
   return (
     <>
-      {/* Popover natif : fermeture au clic extérieur et à Échap fournies par le navigateur. */}
+      {/* Native popover: outside click and Escape handling come from the browser. */}
       <button
         type="button"
         popoverTarget={MENU_ID}

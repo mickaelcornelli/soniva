@@ -2,7 +2,6 @@ import { TrackListSkeleton } from "@/components/music/track-list-skeleton";
 import { Skeleton } from "@/components/ui/skeleton";
 import { PageContainer } from "./page-container";
 
-/** Squelette des pages morceau et playlist : en-tête avec pochette, puis une liste. */
 export function DetailPageSkeleton({ label }: { label: string }) {
   return (
     <PageContainer>

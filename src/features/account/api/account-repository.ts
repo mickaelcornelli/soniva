@@ -4,13 +4,11 @@ import { getSupabaseBrowserClient } from "@/services/supabase/browser-client";
 import type { Database } from "@/services/supabase/database.types";
 import type { AccountData } from "../types";
 
-/** Taille de page maximale renvoyée par l'API Supabase (PostgREST) en une requête. */
+/** PostgREST maximum page size. */
 const PAGE_SIZE = 1000;
 
 export interface AccountRepository {
-  /** Toutes les données du compte connecté (RGPD : droit d'accès et portabilité). */
   exportData(): Promise<AccountData>;
-  /** Supprime le compte et, par cascade, toutes ses données (RGPD : droit à l'effacement). */
   deleteAccount(): Promise<void>;
 }
 
@@ -29,7 +27,6 @@ function rowsOf<T>(
 export function createAccountRepository(
   getClient: () => Promise<SupabaseClient<Database>> = getSupabaseBrowserClient,
 ): AccountRepository {
-  /** Les statistiques peuvent dépasser une page : lues par tranches jusqu'à la dernière. */
   async function listAllStats() {
     const client = await getClient();
     const rows = [];

@@ -14,9 +14,8 @@ import { syncLibrary } from "./lib/sync-library";
 import { useLibraryStore } from "./store/library-store";
 
 /**
- * Relie la bibliothèque locale au compte : synchronise à la connexion, vide à la
- * déconnexion (pour ne rien laisser sur un appareil partagé), et enregistre les écoutes.
- * Ne rend rien.
+ * Syncs on sign-in, clears on sign-out (nothing left on
+ * a shared device) and records plays. Renders nothing.
  */
 export function LibrarySync() {
   const { state } = useAuth();
@@ -34,14 +33,14 @@ export function LibrarySync() {
   useEffect(() => {
     if (status === "loading") return;
     if (!userId) {
-      // Données d'un compte qui vient de se déconnecter ; celles d'un visiteur sont gardées.
+      // Data of an account that just signed out; a visitor's data is kept.
       if (useLibraryStore.getState().ownerId) {
         useLibraryStore.getState().clear();
         useListeningStore.getState().clear();
       }
       return;
     }
-    // Écoutes laissées par un autre compte sur cet appareil : jamais attribuées à celui-ci.
+    // Plays left on this device by another account are never attributed to this one.
     const previousOwner = useLibraryStore.getState().ownerId;
     if (previousOwner && previousOwner !== userId) useListeningStore.getState().clear();
 
@@ -50,7 +49,7 @@ export function LibrarySync() {
       fetchTracks,
       fetchArtists,
     })
-      // Écoutes faites sans compte ou hors ligne : ajoutées aux statistiques du compte.
+      // Plays made signed out or offline are added to the account stats.
       .then(() => flushListening(createListeningRepository()))
       .catch((error: unknown) => console.error("[bibliothèque] synchronisation impossible", error));
   }, [status, userId]);

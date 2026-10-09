@@ -5,7 +5,6 @@ interface EmptyStateProps {
   title: string;
   description: string;
   action?: React.ReactNode;
-  /** 1 quand l'état vide est tout le contenu de la page (404), 2 dans une section. */
   headingLevel?: 1 | 2;
 }
 

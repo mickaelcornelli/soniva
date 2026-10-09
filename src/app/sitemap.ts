@@ -5,8 +5,8 @@ import { loadOptional } from "@/lib/load-optional";
 import { routes } from "@/lib/routes";
 import { musicProvider } from "@/services/music";
 
-// Le catalogue Audius est trop vaste pour être listé : le sitemap expose les pages
-// fixes et les contenus du moment (tendances), régénérés toutes les heures.
+// The Audius catalogue is too large to list: expose
+// static pages and current trends, refreshed hourly.
 export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -21,7 +21,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: absoluteUrl(routes.home), changeFrequency: "daily", priority: 1 },
     { url: absoluteUrl(routes.search), changeFrequency: "monthly", priority: 0.3 },
     { url: absoluteUrl(routes.genres), changeFrequency: "monthly", priority: 0.6 },
-    // Offres d'emploi et avis fictifs sont exclus : ces pages sont en `noindex`.
+    // Fictional jobs and reviews are noindex, so they are left out.
     ...[
       routes.about,
       routes.forArtists,

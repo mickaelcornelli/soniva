@@ -7,16 +7,11 @@ const RELATED_ARTISTS_LIMIT = 3;
 const TRACKS_PER_RELATED_ARTIST = 5;
 
 export interface RadioSeed {
-  /** Genre du morceau de départ, quand il est connu. */
   genre?: string | undefined;
   artistId: string;
 }
 
-/**
- * Candidats pour prolonger une écoute : les tendances du genre et les titres phares
- * d'artistes proches. Chaque source est facultative ; la radio fait au mieux avec
- * ce qui répond.
- */
+/** Each source is optional; the radio does its best with whatever responds. */
 export async function getRadioTracks(
   provider: MusicProvider,
   { genre, artistId }: RadioSeed,

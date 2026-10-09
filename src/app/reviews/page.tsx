@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: `Exemples d'avis sur ${siteConfig.name}, projet portfolio : ces avis sont fictifs.`,
     path: routes.reviews,
   }),
-  // Avis fictifs : ils ne doivent jamais apparaître dans les résultats de recherche.
+  // Fictional reviews must never appear in search results.
   robots: { index: false, follow: true },
 };
 
@@ -52,7 +52,7 @@ function ReviewCard({ review }: { review: SampleReview }) {
       </span>
       <blockquote className="flex-1 text-pretty">« {review.quote} »</blockquote>
       <figcaption className="flex items-center gap-3">
-        {/* Initiale plutôt qu'une photo : aucun visage ne doit évoquer une personne réelle. */}
+        {/* Initial instead of a photo: no face should suggest a real person. */}
         <span
           aria-hidden="true"
           className="flex size-9 shrink-0 items-center justify-center rounded-full bg-raised font-display text-sm font-semibold"

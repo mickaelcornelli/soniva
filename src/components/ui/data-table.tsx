@@ -1,15 +1,12 @@
 interface DataTableProps {
-  /** Décrit le tableau aux lecteurs d'écran (non affiché). */
   caption: string;
   columns: readonly string[];
-  /** La première cellule de chaque ligne sert d'en-tête de ligne. */
   rows: readonly (readonly React.ReactNode[])[];
 }
 
-/** Tableau de référence des pages éditoriales, défilable horizontalement sur mobile. */
 export function DataTable({ caption, columns, rows }: DataTableProps) {
   return (
-    // Défilant sur mobile : focusable pour pouvoir le faire défiler au clavier (WCAG 2.1.1).
+    // Scrollable on mobile, so it must be focusable to scroll with the keyboard (WCAG 2.1.1).
     <div
       role="region"
       aria-label={caption}
@@ -29,7 +26,7 @@ export function DataTable({ caption, columns, rows }: DataTableProps) {
         </thead>
         <tbody className="divide-y divide-line">
           {rows.map(([head, ...cells], rowIndex) => (
-            // Tableaux statiques : l'ordre des lignes ne change jamais.
+            // Static tables: row order never changes.
             <tr key={rowIndex} className="align-top">
               <th scope="row" className="px-4 py-3 font-medium text-foreground">
                 {head}

@@ -16,11 +16,8 @@ import { ArtistLink } from "./artist-link";
 
 interface TrackRowProps {
   track: Track;
-  /** Position affichée (classement, ordre d'une playlist). */
   position: number;
-  /** Lance la lecture de ce morceau (avec sa liste en file d'attente). */
   onPlay: () => void;
-  /** Actions supplémentaires propres au contexte de la liste. */
   actions?: React.ReactNode;
 }
 
@@ -32,16 +29,13 @@ export function TrackRow({ track, position, onPlay, actions }: TrackRowProps) {
   const PlayIcon = isPlaying ? Pause : Play;
 
   return (
-    // Le lien du titre est étiré sur toute la ligne (after:inset-0) ; le bouton de lecture
-    // et le lien artiste passent au-dessus (relative z-10) pour rester cliquables.
+    // The title link is stretched over the whole row; the play button and artist link sit above it.
     <div
       className={`group relative flex items-center gap-4 rounded-xl px-2 py-2 transition-colors hover:bg-surface ${
         playback ? "bg-surface" : ""
       }`}
     >
       <span className="relative z-10 flex size-8 shrink-0 items-center justify-center">
-        {/* Au repos : la position (ou l'égaliseur si le morceau est en cours). Au survol,
-            au focus ou sur écran tactile : le bouton de lecture. */}
         <span
           aria-hidden="true"
           className="font-display text-sm font-semibold text-muted tabular-nums group-focus-within:opacity-0 group-hover:opacity-0 pointer-coarse:opacity-0"

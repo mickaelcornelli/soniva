@@ -5,16 +5,15 @@ import { useMemo } from "react";
 import { useLibraryStore } from "@/features/library/store/library-store";
 import { fetchLatestReleases } from "../api/fetch-latest-releases";
 
-/** Doit rester aligné sur la limite de /api/releases. */
+/** Must match the /api/releases limit. */
 const MAX_ARTISTS = 20;
-/** Aligné sur le cache CDN de /api/releases. */
+/** Matches the CDN cache of /api/releases. */
 const RELEASES_STALE_TIME_MS = 30 * 60 * 1000;
 
-/** Nouveautés des artistes suivis (les 20 suivis le plus récemment). */
 export function useLatestReleases() {
   const follows = useLibraryStore((state) => state.follows);
 
-  // Ids triés : la clé de cache ne dépend pas de l'ordre de suivi.
+  // Sorted IDs so the cache key doesn't depend on follow order.
   const artistIds = useMemo(
     () =>
       follows

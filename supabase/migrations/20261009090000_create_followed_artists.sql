@@ -1,5 +1,4 @@
--- Artistes suivis. Comme pour les favoris, seul l'identifiant de l'artiste chez le
--- provider est stocké : nom et avatar restent chez Audius.
+-- Followed artists. As with favourites, only the provider's artist ID is stored.
 
 create table public.followed_artists (
   user_id uuid not null default auth.uid() references auth.users (id) on delete cascade,
@@ -20,7 +19,7 @@ create policy "Artistes suivis : ajout des siens" on public.followed_artists
 create policy "Artistes suivis : retrait des siens" on public.followed_artists
   for delete to authenticated using ((select auth.uid()) = user_id);
 
--- Plan gratuit : un plafond par utilisateur borne la taille de la table.
+-- Free plan: a per-user cap bounds the table size.
 create function public.limit_followed_artists() returns trigger
   language plpgsql set search_path = '' as $$
 begin

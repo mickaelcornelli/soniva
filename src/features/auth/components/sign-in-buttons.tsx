@@ -5,7 +5,6 @@ import { useAuth } from "../auth-provider";
 import { AUTH_PROVIDERS, type AuthProviderId } from "../lib/providers";
 
 interface SignInButtonsProps {
-  /** Page où revenir après la connexion. */
   next?: string;
 }
 
@@ -18,7 +17,7 @@ export function SignInButtons({ next }: SignInButtonsProps) {
     setPending(provider);
     setFailed(false);
     try {
-      // En cas de succès, le navigateur part chez le fournisseur : pas de retour ici.
+      // On success the browser navigates to the provider and never returns here.
       await signIn(provider, next);
     } catch (error) {
       console.error("[auth] connexion impossible", error);

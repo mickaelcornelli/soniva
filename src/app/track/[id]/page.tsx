@@ -26,7 +26,7 @@ interface TrackPageProps {
   params: Promise<{ id: string }>;
 }
 
-// Dédoublonne l'appel entre generateMetadata et la page pendant un même rendu.
+// Deduplicates the call between generateMetadata and the page within one render.
 const loadTrack = cache((id: string) => musicProvider.getTrack(id));
 
 export async function generateMetadata({ params }: TrackPageProps): Promise<Metadata> {
@@ -47,7 +47,7 @@ export default async function TrackPage({ params }: TrackPageProps) {
   if (!track) notFound();
 
   const artistTracks = await loadOptional(
-    // Un de plus que nécessaire, car le morceau courant en fait souvent partie.
+    // One extra, since the current track is often among them.
     () => musicProvider.getArtistTopTracks(track.artist.id, { limit: MORE_TRACKS_COUNT + 1 }),
     [],
     "page morceau",

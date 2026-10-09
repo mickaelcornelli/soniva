@@ -27,7 +27,6 @@ function DataCard({
   );
 }
 
-/** « Mes données » dans la bibliothèque : accès, portabilité et effacement (RGPD). */
 export function MyDataSection() {
   const { state } = useAuth();
 

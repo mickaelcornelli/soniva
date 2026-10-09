@@ -9,8 +9,7 @@ interface PeriodFilterProps {
 }
 
 /**
- * Choix de la période sous forme de liens (et non de boutons) : chaque période a sa
- * propre URL, partageable, et fonctionne sans JavaScript.
+ * Links rather than buttons: each period has its own shareable URL and works without JavaScript.
  */
 export function PeriodFilter({ genreSlug, current }: PeriodFilterProps) {
   return (

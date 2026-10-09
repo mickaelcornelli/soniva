@@ -13,9 +13,9 @@ export default defineConfig([
       "no-console": ["warn", { allow: ["warn", "error"] }],
     },
   },
-  // Doit rester en dernier : désactive les règles de style gérées par Prettier.
+  // Must stay last: turns off style rules handled by Prettier.
   prettier,
-  // Fichiers générés : build Next et rapports de tests Playwright (visualiseur de traces compilé).
+  // Generated files: Next build and Playwright reports.
   globalIgnores([
     ".next/**",
     "out/**",

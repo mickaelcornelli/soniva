@@ -5,11 +5,9 @@ import { musicProvider } from "@/services/music";
 
 const querySchema = z.object({
   genre: z.string().trim().min(1).max(40).optional(),
-  // Identifiants Audius : courts et alphanumériques.
   artist: z.string().regex(/^[A-Za-z0-9]{1,32}$/),
 });
 
-/** Morceaux candidats pour la radio (`/api/radio?artist=ID&genre=G`). */
 export async function GET(request: Request) {
   const query = querySchema.safeParse(Object.fromEntries(new URL(request.url).searchParams));
   if (!query.success) {
@@ -22,7 +20,7 @@ export async function GET(request: Request) {
   });
   return NextResponse.json(tracks, {
     headers: {
-      // Une liste vide trahit souvent une panne passagère d'Audius : on ne la met pas en cache.
+      // An empty list usually means a transient Audius outage: don't cache it.
       "Cache-Control":
         tracks.length > 0 ? "public, s-maxage=600, stale-while-revalidate=3600" : "no-store",
     },

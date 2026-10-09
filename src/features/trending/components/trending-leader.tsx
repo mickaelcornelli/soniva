@@ -6,10 +6,8 @@ import { PlayTracksButton } from "@/features/player/components/play-tracks-butto
 import { routes } from "@/lib/routes";
 import type { Track } from "@/types/music";
 
-/** Le n°1 du classement, mis en scène comme la pochette d'un single. */
 interface TrendingLeaderProps {
   track: Track;
-  /** Classement complet, mis en file d'attente quand on lance la lecture. */
   chart: readonly Track[];
 }
 

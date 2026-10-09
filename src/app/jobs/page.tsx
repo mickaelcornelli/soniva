@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     description: `Exemples d'offres d'emploi chez ${siteConfig.name}, projet portfolio : ces offres sont fictives.`,
     path: routes.jobs,
   }),
-  // Offres fictives : elles ne doivent pas apparaître dans les moteurs de recherche d'emploi.
+  // Fictional offers must never reach job search engines.
   robots: { index: false, follow: true },
 };
 

@@ -1,11 +1,8 @@
-/**
- * Types du domaine musical, indépendants de tout provider.
- * Les composants et hooks ne manipulent que ces types, jamais les réponses brutes d'Audius.
- */
+/** Provider-agnostic domain types: components and hooks never see raw Audius responses. */
 
 export type ArtworkSize = "small" | "medium" | "large";
 
-/** URLs d'une image par taille ; une taille peut manquer selon le provider. */
+/** A size may be missing depending on the provider. */
 export type Artwork = Partial<Record<ArtworkSize, string>>;
 
 export interface Artist {
@@ -16,7 +13,6 @@ export interface Artist {
   avatar: Artwork;
 }
 
-/** Fiche complète d'un artiste, pour sa page publique. */
 export interface ArtistProfile extends Artist {
   bio: string | null;
   location: string | null;
@@ -34,7 +30,7 @@ export interface Track {
   mood: string | null;
   description: string | null;
   tags: string[];
-  /** Date ISO (AAAA-MM-JJ…) ou null si inconnue. */
+  /** ISO date (YYYY-MM-DD…) or null if unknown. */
   releaseDate: string | null;
   playCount: number;
   favoriteCount: number;
@@ -54,7 +50,6 @@ export interface Playlist {
   playCount: number;
 }
 
-/** Résultats d'une recherche, regroupés par type de contenu. */
 export interface SearchResults {
   tracks: Track[];
   artists: ArtistProfile[];

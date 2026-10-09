@@ -19,7 +19,6 @@ test.describe("Bibliothèque sans compte", () => {
     const favorites = page.getByRole("list", { name: /^Favoris/ });
     await expect(favorites).toContainText(title);
 
-    // Export : un fichier JSON daté, qui contient la bibliothèque de l'appareil.
     const downloadPromise = page.waitForEvent("download");
     await page.getByRole("button", { name: "Télécharger mes données" }).click();
     const download = await downloadPromise;
@@ -33,7 +32,6 @@ test.describe("Bibliothèque sans compte", () => {
     expect(exported.account).toBeNull();
     expect(JSON.stringify(exported.device["soniva-library"])).toContain(title);
 
-    // Effacement : confirmation, retour à l'accueil, bibliothèque vide.
     await page.getByRole("button", { name: "Effacer les données de cet appareil" }).click();
     await page.getByRole("button", { name: "Effacer", exact: true }).click();
     await expect(page).toHaveURL(/\/$/);
