@@ -31,6 +31,12 @@ export const routes = {
   searchApi: (query: string) => `/api/search?q=${encodeURIComponent(query)}`,
   /** Métadonnées de plusieurs morceaux, pour la bibliothèque. */
   tracksApi: (ids: readonly string[]) => `/api/tracks?ids=${ids.map(encodeURIComponent).join(",")}`,
+  /** Fiches de plusieurs artistes, pour les artistes suivis. */
+  artistsApi: (ids: readonly string[]) =>
+    `/api/artists?ids=${ids.map(encodeURIComponent).join(",")}`,
+  /** Derniers morceaux d'une liste d'artistes. */
+  releasesApi: (artistIds: readonly string[]) =>
+    `/api/releases?artists=${artistIds.map(encodeURIComponent).join(",")}`,
   /** Recommandations à partir de quelques genres et d'un artiste de référence. */
   discoverApi: ({ genres, artistId }: DiscoverApiQuery) => {
     const params = new URLSearchParams({ genres: genres.join(",") });

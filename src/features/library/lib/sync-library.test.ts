@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { makeTrack } from "@/test/factories";
+import { makeArtist, makeTrack } from "@/test/factories";
 import type { LibraryRepository } from "../api/library-repository";
 import { useLibraryStore } from "../store/library-store";
 import { syncLibrary } from "./sync-library";
@@ -11,6 +11,9 @@ function makeRepository(overrides: Partial<LibraryRepository> = {}): LibraryRepo
     removeFavorite: vi.fn().mockResolvedValue(undefined),
     listPlays: vi.fn().mockResolvedValue([]),
     addPlays: vi.fn().mockResolvedValue(undefined),
+    listFollows: vi.fn().mockResolvedValue([]),
+    addFollows: vi.fn().mockResolvedValue(undefined),
+    removeFollow: vi.fn().mockResolvedValue(undefined),
     ...overrides,
   };
 }
@@ -29,7 +32,7 @@ describe("syncLibrary", () => {
     });
     const fetchTracks = vi.fn().mockResolvedValue([makeTrack({ id: "remote" })]);
 
-    await syncLibrary("user-1", { repository, fetchTracks });
+    await syncLibrary("user-1", { repository, fetchTracks, fetchArtists: vi.fn() });
 
     expect(repository.addFavorites).toHaveBeenCalledWith([
       { trackId: "local", addedAt: "2026-10-02T00:00:00Z" },
@@ -48,7 +51,7 @@ describe("syncLibrary", () => {
       listPlays: vi.fn().mockResolvedValue([{ trackId: "a", playedAt: play.playedAt }]),
     });
 
-    await syncLibrary("user-1", { repository, fetchTracks: vi.fn() });
+    await syncLibrary("user-1", { repository, fetchTracks: vi.fn(), fetchArtists: vi.fn() });
 
     expect(repository.addPlays).toHaveBeenCalledWith([
       { trackId: "a", playedAt: "2026-10-01T10:00:00Z" },
@@ -61,9 +64,27 @@ describe("syncLibrary", () => {
     useLibraryStore.getState().addFavorite(makeTrack({ id: "theirs" }));
     const repository = makeRepository();
 
-    await syncLibrary("user-1", { repository, fetchTracks: vi.fn() });
+    await syncLibrary("user-1", { repository, fetchTracks: vi.fn(), fetchArtists: vi.fn() });
 
     expect(repository.addFavorites).toHaveBeenCalledWith([]);
     expect(useLibraryStore.getState().favorites).toEqual([]);
+  });
+
+  it("envoie les artistes suivis du visiteur et complète ceux du compte", async () => {
+    useLibraryStore.getState().follow(makeArtist({ id: "local" }), "2026-10-02T00:00:00Z");
+    const repository = makeRepository({
+      listFollows: vi
+        .fn()
+        .mockResolvedValue([{ artistId: "remote", followedAt: "2026-10-01T00:00:00Z" }]),
+    });
+    const fetchArtists = vi.fn().mockResolvedValue([makeArtist({ id: "remote" })]);
+
+    await syncLibrary("user-1", { repository, fetchTracks: vi.fn(), fetchArtists });
+
+    expect(repository.addFollows).toHaveBeenCalledWith([
+      { artistId: "local", followedAt: "2026-10-02T00:00:00Z" },
+    ]);
+    expect(fetchArtists).toHaveBeenCalledWith(["remote"]);
+    expect(useLibraryStore.getState().follows.map((f) => f.artist.id)).toEqual(["local", "remote"]);
   });
 });

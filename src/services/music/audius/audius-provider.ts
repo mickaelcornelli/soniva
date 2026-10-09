@@ -100,10 +100,26 @@ export function createAudiusProvider(client: AudiusClient): MusicProvider {
       return parseArtistProfile(await getItem(`/users/handle/${encode(handle)}`, CACHE.detail));
     },
 
+    async getArtists(ids) {
+      if (ids.length === 0) return [];
+      const artists = parseArtistProfiles(await getList("/users", { id: ids }, CACHE.detail));
+      const byId = new Map(artists.map((artist) => [artist.id, artist]));
+      return ids.flatMap((id) => byId.get(id) ?? []);
+    },
+
     async getArtistTopTracks(artistId, { limit = DEFAULT_ARTIST_TRACKS_LIMIT } = {}) {
       const items = await getList(
         `/users/${encode(artistId)}/tracks`,
         { sort: "plays", limit },
+        CACHE.list,
+      );
+      return parseTracks(items);
+    },
+
+    async getArtistLatestTracks(artistId, { limit = DEFAULT_ARTIST_TRACKS_LIMIT } = {}) {
+      const items = await getList(
+        `/users/${encode(artistId)}/tracks`,
+        { sort: "date", limit },
         CACHE.list,
       );
       return parseTracks(items);

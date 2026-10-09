@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { makeTrack } from "@/test/factories";
-import { selectIsFavorite, useLibraryStore } from "./library-store";
+import { makeArtist, makeArtistProfile, makeTrack } from "@/test/factories";
+import { selectIsFavorite, selectIsFollowing, useLibraryStore } from "./library-store";
 
 const store = () => useLibraryStore.getState();
 
@@ -51,5 +51,28 @@ describe("historique", () => {
     store().markPlaysSynced([entry.id]);
 
     expect(store().history[0]?.synced).toBe(true);
+  });
+});
+
+describe("artistes suivis", () => {
+  it("suit sans doublon et ne garde que l'essentiel de la fiche", () => {
+    store().follow(
+      makeArtistProfile({ id: "a", bio: "Longue biographie" }),
+      "2026-10-01T00:00:00Z",
+    );
+    store().follow(makeArtist({ id: "b" }), "2026-10-02T00:00:00Z");
+    store().follow(makeArtist({ id: "a" }), "2026-10-03T00:00:00Z");
+
+    expect(store().follows.map((f) => f.artist.id)).toEqual(["a", "b"]);
+    expect(store().follows[0]?.artist).not.toHaveProperty("bio");
+    expect(selectIsFollowing("b")(store())).toBe(true);
+  });
+
+  it("ne suit plus un artiste et renvoie l'entrée pour pouvoir annuler", () => {
+    store().follow(makeArtist({ id: "a" }), "2026-10-01T00:00:00Z");
+
+    expect(store().unfollow("a")?.followedAt).toBe("2026-10-01T00:00:00Z");
+    expect(store().follows).toEqual([]);
+    expect(store().unfollow("a")).toBeUndefined();
   });
 });

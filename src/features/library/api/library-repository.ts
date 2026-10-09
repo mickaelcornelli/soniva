@@ -1,7 +1,12 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/services/supabase/database.types";
 import { getSupabaseBrowserClient } from "@/services/supabase/browser-client";
-import { HISTORY_SIZE, type RemoteFavorite, type RemotePlay } from "../lib/library-sync-plan";
+import {
+  HISTORY_SIZE,
+  type RemoteFavorite,
+  type RemoteFollow,
+  type RemotePlay,
+} from "../lib/library-sync-plan";
 
 /** Accès aux tables de la bibliothèque. Les règles RLS limitent tout au compte connecté. */
 export interface LibraryRepository {
@@ -10,6 +15,9 @@ export interface LibraryRepository {
   removeFavorite(trackId: string): Promise<void>;
   listPlays(): Promise<RemotePlay[]>;
   addPlays(plays: readonly RemotePlay[]): Promise<void>;
+  listFollows(): Promise<RemoteFollow[]>;
+  addFollows(follows: readonly RemoteFollow[]): Promise<void>;
+  removeFollow(artistId: string): Promise<void>;
 }
 
 /** Les erreurs Supabase ne sont pas des `Error` : on les convertit pour garder une pile lisible. */
@@ -72,6 +80,33 @@ export function createLibraryRepository(
         })),
       );
       if (error) fail("enregistrement d'écoutes", error);
+    },
+
+    async listFollows() {
+      const { data, error } = await client
+        .from("followed_artists")
+        .select("artist_id, created_at")
+        .order("created_at", { ascending: false });
+      if (error) fail("lecture des artistes suivis", error);
+      return data.map((row) => ({ artistId: row.artist_id, followedAt: row.created_at }));
+    },
+
+    async addFollows(follows) {
+      if (follows.length === 0) return;
+      const { error } = await client.from("followed_artists").upsert(
+        follows.map(({ artistId, followedAt }) => ({
+          user_id: userId,
+          artist_id: artistId,
+          created_at: followedAt,
+        })),
+        { onConflict: "user_id,artist_id", ignoreDuplicates: true },
+      );
+      if (error) fail("suivi d'artistes", error);
+    },
+
+    async removeFollow(artistId) {
+      const { error } = await client.from("followed_artists").delete().eq("artist_id", artistId);
+      if (error) fail("arrêt du suivi d'un artiste", error);
     },
   };
 }

@@ -129,6 +129,45 @@ describe("AudiusProvider.getArtistByHandle / getArtistTopTracks", () => {
   });
 });
 
+describe("AudiusProvider.getArtists / getArtistLatestTracks", () => {
+  it("récupère plusieurs artistes dans l'ordre demandé", async () => {
+    const client = makeClient({
+      data: [
+        makeAudiusUserProfile({ id: "b", handle: "b" }),
+        makeAudiusUserProfile({ id: "a", handle: "a" }),
+      ],
+    });
+
+    const artists = await createAudiusProvider(client).getArtists(["a", "missing", "b"]);
+
+    expect(artists.map((a) => a.id)).toEqual(["a", "b"]);
+    expect(client.get).toHaveBeenCalledWith(
+      "/users",
+      { id: ["a", "missing", "b"] },
+      expect.anything(),
+    );
+  });
+
+  it("n'appelle pas Audius sans identifiant", async () => {
+    const client = makeClient({ data: [] });
+
+    await expect(createAudiusProvider(client).getArtists([])).resolves.toEqual([]);
+    expect(client.get).not.toHaveBeenCalled();
+  });
+
+  it("trie les morceaux de l'artiste par date", async () => {
+    const client = makeClient({ data: [makeAudiusTrack()] });
+
+    await createAudiusProvider(client).getArtistLatestTracks("nlGNe", { limit: 3 });
+
+    expect(client.get).toHaveBeenCalledWith(
+      "/users/nlGNe/tracks",
+      { sort: "date", limit: 3 },
+      expect.anything(),
+    );
+  });
+});
+
 describe("AudiusProvider.getRelatedArtists", () => {
   it("interroge les artistes proches", async () => {
     const client = makeClient({ data: [makeAudiusUserProfile({ id: "r1", handle: "proche" })] });

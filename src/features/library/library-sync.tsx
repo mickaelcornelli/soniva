@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
 import { createLibraryRepository } from "./api/library-repository";
+import { fetchArtists } from "./api/fetch-artists";
 import { fetchTracks } from "./api/fetch-tracks";
 import { usePlayHistoryRecorder } from "./hooks/use-play-history-recorder";
 import { syncLibrary } from "./lib/sync-library";
@@ -31,9 +32,11 @@ export function LibrarySync() {
       if (useLibraryStore.getState().ownerId) useLibraryStore.getState().clear();
       return;
     }
-    syncLibrary(userId, { repository: createLibraryRepository(userId), fetchTracks }).catch(
-      (error: unknown) => console.error("[bibliothèque] synchronisation impossible", error),
-    );
+    syncLibrary(userId, {
+      repository: createLibraryRepository(userId),
+      fetchTracks,
+      fetchArtists,
+    }).catch((error: unknown) => console.error("[bibliothèque] synchronisation impossible", error));
   }, [status, userId]);
 
   return null;

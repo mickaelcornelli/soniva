@@ -3,9 +3,12 @@ import { ArtworkImage } from "@/components/ui/artwork-image";
 import { VerifiedBadge } from "@/components/ui/verified-badge";
 import { formatCompactNumber } from "@/lib/format/number";
 import { routes } from "@/lib/routes";
-import type { ArtistProfile } from "@/types/music";
+import type { Artist, ArtistProfile } from "@/types/music";
 
-export function ArtistCard({ artist }: { artist: ArtistProfile }) {
+/** Accepte une fiche complète ou un simple artiste (le nombre d'abonnés est alors omis). */
+type ArtistCardData = Artist & Partial<Pick<ArtistProfile, "followerCount">>;
+
+export function ArtistCard({ artist }: { artist: ArtistCardData }) {
   return (
     <article className="group relative flex flex-col items-center gap-3 text-center">
       <ArtworkImage
@@ -24,10 +27,12 @@ export function ArtistCard({ artist }: { artist: ArtistProfile }) {
           </Link>
           {artist.isVerified ? <VerifiedBadge className="size-3.5" /> : null}
         </h3>
-        <p className="text-sm text-muted">
-          {formatCompactNumber(artist.followerCount)}{" "}
-          {artist.followerCount < 2 ? "abonné" : "abonnés"}
-        </p>
+        {artist.followerCount === undefined ? null : (
+          <p className="text-sm text-muted">
+            {formatCompactNumber(artist.followerCount)}{" "}
+            {artist.followerCount < 2 ? "abonné" : "abonnés"}
+          </p>
+        )}
       </div>
     </article>
   );

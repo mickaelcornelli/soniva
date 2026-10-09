@@ -1,7 +1,8 @@
 "use client";
 
-import { Heart, History } from "lucide-react";
+import { Heart, History, UserRound } from "lucide-react";
 import Link from "next/link";
+import { ArtistCard } from "@/components/music/artist-card";
 import { TrackList } from "@/components/music/track-list";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -18,6 +19,7 @@ export function LibraryView() {
   const { state } = useAuth();
   const favorites = useLibraryStore((s) => s.favorites);
   const history = useLibraryStore((s) => s.history);
+  const follows = useLibraryStore((s) => s.follows);
 
   return (
     <div className="flex flex-col gap-12">
@@ -50,6 +52,35 @@ export function LibraryView() {
       </section>
 
       <UserPlaylistsSection />
+
+      <section aria-labelledby="artistes-suivis" className="flex flex-col gap-4">
+        <h2 id="artistes-suivis" className={SECTION_TITLE}>
+          Artistes suivis
+          {follows.length > 0 ? (
+            <span className="ml-2 font-sans text-sm font-normal text-muted">
+              {pluralize(follows.length, "artiste", "artistes")}
+            </span>
+          ) : null}
+        </h2>
+        {follows.length > 0 ? (
+          <ul
+            aria-labelledby="artistes-suivis"
+            className="grid grid-cols-2 gap-x-4 gap-y-6 sm:grid-cols-3 lg:grid-cols-6"
+          >
+            {follows.map(({ artist }) => (
+              <li key={artist.id}>
+                <ArtistCard artist={artist} />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState
+            icon={UserRound}
+            title="Aucun artiste suivi"
+            description="Suis un artiste depuis sa page pour retrouver ses nouveautés sur l'accueil."
+          />
+        )}
+      </section>
 
       <section aria-labelledby="recents" className="flex flex-col gap-4">
         <h2 id="recents" className={SECTION_TITLE}>

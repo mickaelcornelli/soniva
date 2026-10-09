@@ -33,8 +33,12 @@ export interface MusicProvider {
   /** Plusieurs morceaux d'un coup, dans l'ordre des ids ; les ids introuvables sont ignorés. */
   getTracks(ids: readonly string[]): Promise<Track[]>;
   getArtistByHandle(handle: string): Promise<ArtistProfile | null>;
+  /** Plusieurs artistes d'un coup, dans l'ordre des ids ; les ids introuvables sont ignorés. */
+  getArtists(ids: readonly string[]): Promise<ArtistProfile[]>;
   /** Morceaux les plus écoutés de l'artiste. */
   getArtistTopTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
+  /** Morceaux les plus récents de l'artiste. */
+  getArtistLatestTracks(artistId: string, query?: ArtistTracksQuery): Promise<Track[]>;
   /** Artistes au style proche (calculé par le provider). */
   getRelatedArtists(artistId: string, query?: ArtistTracksQuery): Promise<ArtistProfile[]>;
   getPlaylist(id: string): Promise<Playlist | null>;

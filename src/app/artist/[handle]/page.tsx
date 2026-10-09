@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/seo/json-ld";
 import { EmptyState } from "@/components/ui/empty-state";
 import { RichText } from "@/components/ui/rich-text";
 import { ArtistHero } from "@/features/artist/components/artist-hero";
+import { FollowButton } from "@/features/library/components/follow-button";
 import { PlayTracksButton } from "@/features/player/components/play-tracks-button";
 import { ShareButton } from "@/features/share/components/share-button";
 import { pickArtworkUrl } from "@/lib/artwork";
@@ -56,7 +57,12 @@ export default async function ArtistPage({ params }: ArtistPageProps) {
       <JsonLd data={artistStructuredData(artist, topTracks)} />
       <ArtistHero
         artist={artist}
-        actions={<ShareButton title={artist.name} path={routes.artist(artist.handle)} />}
+        actions={
+          <>
+            <FollowButton artist={artist} />
+            <ShareButton title={artist.name} path={routes.artist(artist.handle)} />
+          </>
+        }
       />
 
       {artist.bio ? (

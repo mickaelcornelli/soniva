@@ -35,6 +35,24 @@ export type Database = {
         }
         Relationships: []
       }
+      followed_artists: {
+        Row: {
+          artist_id: string
+          created_at: string
+          user_id: string
+        }
+        Insert: {
+          artist_id: string
+          created_at?: string
+          user_id?: string
+        }
+        Update: {
+          artist_id?: string
+          created_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       listening_history: {
         Row: {
           id: number
