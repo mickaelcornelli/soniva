@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Artist, Track } from "@/types/music";
+import { DEVICE_STORAGE_KEYS } from "@/lib/device-storage";
 import {
   type FavoriteEntry,
   type FollowEntry,
@@ -111,7 +112,7 @@ export const useLibraryStore = create<LibraryStore>()(
       },
     }),
     {
-      name: "soniva-library",
+      name: DEVICE_STORAGE_KEYS.library,
       version: 1,
       storage: createJSONStorage(() => localStorage),
       // Réhydratation manuelle après le montage (même raison que le lecteur).

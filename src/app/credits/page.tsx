@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { EditorialPage, type EditorialSection } from "@/components/layout/editorial-page";
+import { DataTable } from "@/components/ui/data-table";
 import { siteConfig } from "@/config/site";
 import { routes } from "@/lib/routes";
 import { buildPageMetadata } from "@/lib/seo/metadata";
@@ -110,35 +111,17 @@ const SECTIONS: readonly EditorialSection[] = [
           {siteConfig.name} repose sur ces projets open source. Merci à celles et ceux qui les
           maintiennent.
         </p>
-        <div className="overflow-x-auto rounded-2xl border border-line">
-          <table className="w-full min-w-[32rem] text-left text-sm">
-            <caption className="sr-only">Logiciels et polices utilisés, avec leur licence</caption>
-            <thead className="bg-surface text-muted">
-              <tr>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  Projet
-                </th>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  Rôle
-                </th>
-                <th scope="col" className="px-4 py-3 font-medium">
-                  Licence
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-line">
-              {SOFTWARE.map((item) => (
-                <tr key={item.name}>
-                  <th scope="row" className="px-4 py-3 font-medium">
-                    <a href={item.url}>{item.name}</a>
-                  </th>
-                  <td className="px-4 py-3 text-muted">{item.role}</td>
-                  <td className="px-4 py-3 text-muted">{item.license}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <DataTable
+          caption="Logiciels et polices utilisés, avec leur licence"
+          columns={["Projet", "Rôle", "Licence"]}
+          rows={SOFTWARE.map((item) => [
+            <a key="lien" href={item.url}>
+              {item.name}
+            </a>,
+            item.role,
+            item.license,
+          ])}
+        />
       </>
     ),
   },

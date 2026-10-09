@@ -46,6 +46,20 @@ export const footerNavigation: readonly FooterColumn[] = [
       { href: routes.help, label: "Aide et FAQ" },
       { href: routes.contact, label: "Contact" },
       { href: routes.siteMap, label: "Plan du site" },
+      { href: routes.report, label: "Signaler un contenu" },
+    ],
+  },
+  {
+    id: "legal",
+    title: "Légal",
+    links: [
+      { href: routes.trust, label: "Confidentialité et sécurité" },
+      { href: routes.legal, label: "Mentions légales" },
+      { href: routes.terms, label: "Conditions d'utilisation" },
+      { href: routes.privacy, label: "Politique de confidentialité" },
+      { href: routes.cookies, label: "Cookies" },
+      { href: routes.cookieSettings, label: "Paramètres des cookies" },
+      { href: routes.accessibility, label: "Accessibilité" },
     ],
   },
 ];

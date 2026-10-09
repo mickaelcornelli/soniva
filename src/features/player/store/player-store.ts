@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Track } from "@/types/music";
+import { DEVICE_STORAGE_KEYS } from "@/lib/device-storage";
 import {
   createQueueItems,
   getNextIndex,
@@ -247,7 +248,7 @@ export const usePlayerStore = create<PlayerStore>()(
       };
     },
     {
-      name: "soniva-player",
+      name: DEVICE_STORAGE_KEYS.player,
       version: 1,
       storage: createJSONStorage(() => localStorage),
       // Réhydratation manuelle après le montage, pour éviter un écart entre le rendu

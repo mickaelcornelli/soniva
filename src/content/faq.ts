@@ -91,7 +91,7 @@ export const FAQ: readonly FaqGroup[] = [
         id: "signaler",
         question: "Comment signaler un contenu ?",
         answer:
-          "Écris-nous depuis la page Contact en indiquant le lien de la page concernée. Pour une question de droits d'auteur, le signalement doit aussi être adressé à Audius, qui héberge le morceau.",
+          "La page « Signaler un contenu », accessible depuis le pied de page, explique quoi nous envoyer. Pour une question de droits d'auteur, le signalement doit aussi être adressé à Audius, qui héberge le morceau.",
       },
     ],
   },

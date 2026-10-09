@@ -6,6 +6,7 @@ import { ArtistCard } from "@/components/music/artist-card";
 import { TrackList } from "@/components/music/track-list";
 import { EmptyState } from "@/components/ui/empty-state";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MyDataSection } from "@/features/account/components/my-data-section";
 import { useAuth } from "@/features/auth/auth-provider";
 import { AccountCard } from "@/features/auth/components/account-card";
 import { UserPlaylistsSection } from "@/features/playlists/components/user-playlists-section";
@@ -115,6 +116,8 @@ export function LibraryView() {
           />
         )}
       </section>
+
+      <MyDataSection />
     </div>
   );
 }

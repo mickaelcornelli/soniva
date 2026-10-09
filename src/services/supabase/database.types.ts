@@ -168,6 +168,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      delete_my_account: { Args: never; Returns: undefined }
       record_listening: { Args: { entries: Json }; Returns: undefined }
     }
     Enums: {

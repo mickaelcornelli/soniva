@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 import type { Track } from "@/types/music";
+import { DEVICE_STORAGE_KEYS } from "@/lib/device-storage";
 import type { ListeningRow } from "../lib/summarize-month";
 import { toMonthKey } from "../lib/month";
 
@@ -118,7 +119,7 @@ export const useListeningStore = create<ListeningState & ListeningActions>()(
       },
     }),
     {
-      name: "soniva-listening",
+      name: DEVICE_STORAGE_KEYS.listening,
       version: 1,
       storage: createJSONStorage(() => localStorage),
       // Réhydratation manuelle après le montage (même raison que la bibliothèque).
