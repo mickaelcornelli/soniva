@@ -11,10 +11,11 @@ export default defineConfig({
   forbidOnly: isCI,
   // Les données viennent d'Audius en direct : une relance absorbe un réseau capricieux.
   retries: isCI ? 2 : 1,
-  // Le rapport JSON garde le résultat de chaque test, lisible après coup.
+  // Le rapport JSON garde le résultat de chaque test, lisible après coup. Il est rangé dans
+  // test-results : le rapport HTML vide son propre dossier en fin de lancement.
   reporter: [
     isCI ? ["github"] : ["list"],
-    ["json", { outputFile: "playwright-report/results.json" }],
+    ["json", { outputFile: "test-results/results.json" }],
     ["html", { open: "never" }],
   ],
   timeout: 45_000,

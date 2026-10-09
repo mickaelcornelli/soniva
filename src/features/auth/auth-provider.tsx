@@ -35,17 +35,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       console.warn("[auth] Supabase n'est pas configuré : connexion indisponible.");
       return;
     }
-    // Visiteur sans session : Supabase n'est chargé qu'au moment de se connecter.
-    if (!hasStoredSession()) {
-      setState({ status: "signed-out", user: null });
-      return;
-    }
-
     let cancelled = false;
     let unsubscribe: (() => void) | undefined;
-    getSupabaseBrowserClient()
+    // Visiteur sans session : Supabase n'est pas chargé, il le sera au moment de se connecter.
+    // Les deux cas passent par une promesse pour que l'état ne change que dans un rappel.
+    const client = hasStoredSession() ? getSupabaseBrowserClient() : Promise.resolve(null);
+    client
       .then((supabase) => {
         if (cancelled) return;
+        if (!supabase) {
+          setState({ status: "signed-out", user: null });
+          return;
+        }
         // Déclenché aussitôt avec la session existante (INITIAL_SESSION), puis à chaque changement.
         const { data } = supabase.auth.onAuthStateChange((_event, session) => {
           setState(

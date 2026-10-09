@@ -21,8 +21,10 @@ export function NowPlaying({
   linked = true,
 }: NowPlayingProps) {
   const large = layout === "large";
-  const titleClass = `truncate font-medium ${large ? "font-display text-xl" : "text-sm"}`;
-  const artistClass = `truncate text-muted ${large ? "" : "text-xs"}`;
+  // En format compact, les deux liens empilés sont rehaussés à 24 px de haut chacun :
+  // c'est la taille minimale d'une cible tactile (WCAG 2.5.8).
+  const titleClass = `truncate font-medium ${large ? "font-display text-xl" : "py-0.5 text-sm"}`;
+  const artistClass = `truncate text-muted ${large ? "" : "py-1 text-xs"}`;
 
   return (
     <span className={`flex min-w-0 ${large ? "flex-col gap-5" : "items-center gap-3"}`}>

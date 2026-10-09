@@ -15,5 +15,14 @@ export default defineConfig([
   },
   // Doit rester en dernier : désactive les règles de style gérées par Prettier.
   prettier,
-  globalIgnores([".next/**", "out/**", "build/**", "coverage/**", "next-env.d.ts"]),
+  // Fichiers générés : build Next et rapports de tests Playwright (visualiseur de traces compilé).
+  globalIgnores([
+    ".next/**",
+    "out/**",
+    "build/**",
+    "coverage/**",
+    "playwright-report/**",
+    "test-results/**",
+    "next-env.d.ts",
+  ]),
 ]);
