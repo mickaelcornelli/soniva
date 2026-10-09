@@ -35,6 +35,22 @@
   :focus-visible {
     @apply rounded-sm outline-2 outline-offset-2 outline-accent;
   }
+
+  /*
+   * Tailwind 4 a rendu aux boutons le curseur par défaut du navigateur. Une seule règle
+   * ici évite d'ajouter `cursor-pointer` composant par composant ; les éléments
+   * désactivés gardent le curseur normal pour ne pas promettre une action impossible.
+   */
+  :is(
+      button,
+      [role="button"],
+      summary,
+      label[for],
+      select,
+      input:is([type="checkbox"], [type="radio"], [type="range"])
+    ):not(:disabled, [aria-disabled="true"]) {
+    cursor: pointer;
+  }
 }
 
 /* Égaliseur du morceau en cours : trois barres qui « jouent » tant que la lecture continue. */
