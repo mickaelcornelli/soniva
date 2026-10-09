@@ -74,6 +74,39 @@ export type Database = {
         }
         Relationships: []
       }
+      listening_stats: {
+        Row: {
+          artist_id: string
+          genre: string | null
+          month: string
+          plays: number
+          seconds: number
+          track_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          artist_id: string
+          genre?: string | null
+          month: string
+          plays?: number
+          seconds?: number
+          track_id: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          artist_id?: string
+          genre?: string | null
+          month?: string
+          plays?: number
+          seconds?: number
+          track_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       playlist_tracks: {
         Row: {
           added_at: string
@@ -135,7 +168,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      record_listening: { Args: { entries: Json }; Returns: undefined }
     }
     Enums: {
       [_ in never]: never

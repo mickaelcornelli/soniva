@@ -7,7 +7,7 @@ import { createLibraryRepository } from "../api/library-repository";
 import { useLibraryStore } from "../store/library-store";
 
 /** Une écoute ne compte qu'après ce temps : un morceau zappé n'encombre pas l'historique. */
-const PLAY_THRESHOLD_SECONDS = 15;
+export const PLAY_THRESHOLD_SECONDS = 15;
 
 /** Ajoute à l'historique chaque morceau écouté au-delà du seuil, une fois par entrée de file. */
 export function usePlayHistoryRecorder() {

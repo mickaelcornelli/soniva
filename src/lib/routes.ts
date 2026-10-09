@@ -12,6 +12,9 @@ export const routes = {
   search: "/search",
   searchFor: (query: string) => `/search?q=${encodeURIComponent(query)}`,
   library: "/library",
+  /** « Ton mois en musique » ; le mois précédent via `previous`. */
+  libraryStats: (period: "current" | "previous" = "current") =>
+    period === "current" ? "/library/stats" : "/library/stats?month=previous",
   /** Playlist personnelle (privée, hors SEO). */
   userPlaylist: (id: string) => `/library/playlists/${encodeURIComponent(id)}`,
   login: "/login",

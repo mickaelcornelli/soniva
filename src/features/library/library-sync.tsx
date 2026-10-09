@@ -2,6 +2,10 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/features/auth/auth-provider";
+import { createListeningRepository } from "@/features/stats/api/listening-repository";
+import { useListeningTracker } from "@/features/stats/hooks/use-listening-tracker";
+import { flushListening } from "@/features/stats/lib/flush-listening";
+import { useListeningStore } from "@/features/stats/store/listening-store";
 import { createLibraryRepository } from "./api/library-repository";
 import { fetchArtists } from "./api/fetch-artists";
 import { fetchTracks } from "./api/fetch-tracks";
@@ -20,23 +24,35 @@ export function LibrarySync() {
   const userId = state.user?.id ?? null;
 
   usePlayHistoryRecorder();
+  useListeningTracker();
 
   useEffect(() => {
     void useLibraryStore.persist.rehydrate();
+    void useListeningStore.persist.rehydrate();
   }, []);
 
   useEffect(() => {
     if (status === "loading") return;
     if (!userId) {
       // Données d'un compte qui vient de se déconnecter ; celles d'un visiteur sont gardées.
-      if (useLibraryStore.getState().ownerId) useLibraryStore.getState().clear();
+      if (useLibraryStore.getState().ownerId) {
+        useLibraryStore.getState().clear();
+        useListeningStore.getState().clear();
+      }
       return;
     }
+    // Écoutes laissées par un autre compte sur cet appareil : jamais attribuées à celui-ci.
+    const previousOwner = useLibraryStore.getState().ownerId;
+    if (previousOwner && previousOwner !== userId) useListeningStore.getState().clear();
+
     syncLibrary(userId, {
       repository: createLibraryRepository(userId),
       fetchTracks,
       fetchArtists,
-    }).catch((error: unknown) => console.error("[bibliothèque] synchronisation impossible", error));
+    })
+      // Écoutes faites sans compte ou hors ligne : ajoutées aux statistiques du compte.
+      .then(() => flushListening(createListeningRepository()))
+      .catch((error: unknown) => console.error("[bibliothèque] synchronisation impossible", error));
   }, [status, userId]);
 
   return null;

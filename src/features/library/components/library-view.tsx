@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, History, UserRound } from "lucide-react";
+import { ArrowRight, BarChart3, Heart, History, UserRound } from "lucide-react";
 import Link from "next/link";
 import { ArtistCard } from "@/components/music/artist-card";
 import { TrackList } from "@/components/music/track-list";
@@ -30,6 +30,25 @@ export function LibraryView() {
       ) : (
         <VisitorNotice />
       )}
+
+      <Link
+        href={routes.libraryStats()}
+        className="group flex items-center gap-4 rounded-2xl border border-line bg-surface p-4 transition-colors hover:border-accent/60 sm:p-5"
+      >
+        <span className="flex size-11 shrink-0 items-center justify-center rounded-full bg-accent/15 text-accent">
+          <BarChart3 aria-hidden="true" className="size-5" />
+        </span>
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="font-display font-semibold">Ton mois en musique</span>
+          <span className="text-sm text-muted">
+            Minutes d&apos;écoute, artistes et genres préférés du mois.
+          </span>
+        </span>
+        <ArrowRight
+          aria-hidden="true"
+          className="size-5 text-muted transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+        />
+      </Link>
 
       <section aria-labelledby="favoris" className="flex flex-col gap-4">
         <h2 id="favoris" className={SECTION_TITLE}>
