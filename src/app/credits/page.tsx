@@ -97,7 +97,7 @@ const SECTIONS: readonly EditorialSection[] = [
           <strong>Google et GitHub</strong> : connexion au compte.
         </li>
         <li>
-          <strong>Cloudflare</strong> : hébergement du site.
+          <strong>Vercel</strong> : hébergement du site.
         </li>
       </ul>
     ),

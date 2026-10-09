@@ -35,8 +35,9 @@ const SECTIONS: readonly EditorialSection[] = [
       <>
         <h3>Site</h3>
         <p>
-          {SITE_HOST.name}, {SITE_HOST.address}. Téléphone : {SITE_HOST.phone}.{" "}
-          <a href={SITE_HOST.url}>cloudflare.com</a>
+          {SITE_HOST.name}, {SITE_HOST.address}. Contact :{" "}
+          <a href={SITE_HOST.contactUrl}>formulaire de contact</a>.{" "}
+          <a href={SITE_HOST.url}>{SITE_HOST.domain}</a>
         </p>
         <h3>Données des comptes</h3>
         <p>
@@ -76,8 +77,8 @@ const SECTIONS: readonly EditorialSection[] = [
     content: (
       <p>
         Le traitement de tes données est décrit dans la{" "}
-        <Link href={routes.privacy}>politique de confidentialité</Link> et l&apos;usage des
-        cookies dans la <Link href={routes.cookies}>politique cookies</Link>.
+        <Link href={routes.privacy}>politique de confidentialité</Link> et l&apos;usage des cookies
+        dans la <Link href={routes.cookies}>politique cookies</Link>.
       </p>
     ),
   },
@@ -85,10 +86,6 @@ const SECTIONS: readonly EditorialSection[] = [
 
 export default function LegalPage() {
   return (
-    <EditorialPage
-      title="Mentions légales"
-      updatedAt={LEGAL_UPDATED_AT}
-      sections={SECTIONS}
-    />
+    <EditorialPage title="Mentions légales" updatedAt={LEGAL_UPDATED_AT} sections={SECTIONS} />
   );
 }

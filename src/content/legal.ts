@@ -15,11 +15,14 @@ export const PUBLISHER = {
   email: siteConfig.contactEmail,
 } as const;
 
+/** Plan Hobby de Vercel : gratuit, sans carte bancaire, réservé à un usage non commercial. */
 export const SITE_HOST = {
-  name: "Cloudflare, Inc.",
-  address: "101 Townsend Street, San Francisco, CA 94107, États-Unis",
-  phone: "+1 650 319 8930",
-  url: "https://www.cloudflare.com",
+  name: "Vercel Inc.",
+  address: "440 N Barranca Avenue #4133, Covina, CA 91723, États-Unis",
+  // Vercel ne publie pas de numéro de téléphone : son formulaire de contact en tient lieu.
+  contactUrl: "https://vercel.com/contact",
+  url: "https://vercel.com",
+  domain: "vercel.com",
 } as const;
 
 export const DATA_HOST = {
@@ -49,12 +52,12 @@ export const THIRD_PARTIES: readonly ThirdParty[] = [
     policyUrl: "https://supabase.com/privacy",
   },
   {
-    name: "Cloudflare",
+    name: "Vercel",
     role: "Sous-traitant : hébergement et diffusion du site",
     data: "Adresse IP et données techniques de connexion",
     location: "Réseau mondial, société aux États-Unis",
     safeguard: "Data Privacy Framework UE–États-Unis",
-    policyUrl: "https://www.cloudflare.com/privacypolicy/",
+    policyUrl: "https://vercel.com/legal/privacy-policy",
   },
   {
     name: "Google",
@@ -70,7 +73,8 @@ export const THIRD_PARTIES: readonly ThirdParty[] = [
     data: "Identifiant, e-mail, nom et avatar",
     location: "États-Unis",
     safeguard: "Data Privacy Framework UE–États-Unis",
-    policyUrl: "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement",
+    policyUrl:
+      "https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement",
   },
   {
     name: "Audius",
